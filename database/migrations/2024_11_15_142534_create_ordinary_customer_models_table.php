@@ -19,7 +19,7 @@ class CreateOrdinaryCustomerModelsTable extends Migration
             $table->string('email')->unique();
             $table->string("pic_id_card");
             $table->string("id_card")->unique();
-            $table->string("address", 500); // กำหนดความยาวให้เหมาะสม
+            $table->string("address", 500); 
             $table->string("tel");
             $table->string("tel2")->nullable();
             $table->string("tax_id")->nullable();

@@ -63,7 +63,7 @@ class Ordinary_customerController extends Controller
         DB::table('ordinary_customer_models')->insert([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'pic_id_card' => $filename, // บันทึกชื่อไฟล์ลงในฐานข้อมูล
+            'pic_id_card' => $filename, 
             'id_card' => $validated['id_card'],
             'address' => $validated['address'],
             'tel' => $validated['tel'],
@@ -94,56 +94,67 @@ class Ordinary_customerController extends Controller
     }
 
     public function update(Request $request, $id)
-{
-    // ดึงข้อมูลจากฐานข้อมูล
-    $item = DB::table('ordinary_customer_models')->where('id', $id)->first();
+    {
+        $item = DB::table('ordinary_customer_models')->where('id', $id)->first();
 
-    if (!$item) {
-        return redirect()->route('ordinary_customer.index')->with('error', 'ไม่พบข้อมูล');
-    }
-
-    // Validate ข้อมูลที่ได้รับจากฟอร์ม
-    $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|max:255',
-        'pic_id_card' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        'id_card' => 'required|string|max:13',
-        'address' => 'required|string',
-        'tel' => 'required|string|max:10',
-        'tel2' => 'required|string|max:10',
-        'tax_id' => 'required|string|max:13',
-    ]);
-
-    if ($request->hasFile('pic_id_card')) {
-        $file = $request->file('pic_id_card');
-        $filename = time() . '_' . $file->getClientOriginalName();
-        $file->move(public_path('uploads/id_cards'), $filename);
-    
-        // ลบไฟล์เก่า
-        if (!empty($item->pic_id_card) && file_exists(public_path('uploads/id_cards/' . $item->pic_id_card))) {
-            unlink(public_path('uploads/id_cards/' . $item->pic_id_card));
+        if (!$item) {
+            return redirect()->route('ordinary_customer.index')->with('error', 'ไม่พบข้อมูล');
         }
-    } else {
-        $filename = $item->pic_id_card; // ใช้ไฟล์เดิม
+
+        // ตรวจสอบและ validate ข้อมูล
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'pic_id_card' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'id_card' => 'required|string|max:13',
+            'address' => 'required|string',
+            'tel' => 'required|string|max:10',
+            'tel2' => 'required|string|max:10',
+            'tax_id' => 'required|string|max:13',
+        ]);
+
+        // จัดการรูปภาพ (ถ้ามีการอัปโหลด)
+        $filename = $item->pic_id_card; // ใช้ไฟล์เดิมเป็นค่าเริ่มต้น
+        if ($request->hasFile('pic_id_card')) {
+            // สร้างชื่อไฟล์ใหม่เพื่อไม่ให้ซ้ำกัน
+            $filename = time() . '_' . $request->file('pic_id_card')->getClientOriginalName();
+
+            // บันทึกไฟล์ไปยังโฟลเดอร์ public/id_cards
+            $request->file('pic_id_card')->move(public_path('id_cards'), $filename);
+
+            // ลบไฟล์เก่าถ้ามี
+            if (!empty($item->pic_id_card) && file_exists(public_path('id_cards/' . $item->pic_id_card))) {
+                unlink(public_path('id_cards/' . $item->pic_id_card));
+            }
+        }
+
+        // อัปเดตข้อมูลในฐานข้อมูล
+        $updated = DB::table('ordinary_customer_models')->where('id', $id)->update([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'pic_id_card' => $filename,
+            'id_card' => $validated['id_card'],
+            'address' => $validated['address'],
+            'tel' => $validated['tel'],
+            'tel2' => $validated['tel2'],
+            'tax_id' => $validated['tax_id'],
+        ]);
+
+        return $updated
+            ? redirect()->route('ordinary_customer.index')->with('success', 'ข้อมูลอัปเดตสำเร็จ')
+            : back()->with('error', 'ไม่สามารถอัปเดตข้อมูลได้');
     }
-    
 
-    // อัปเดตข้อมูลในฐานข้อมูล
-    $updated = DB::table('ordinary_customer_models')->where('id', $id)->update([
-        'name' => $validated['name'],
-        'email' => $validated['email'],
-        'pic_id_card' => $filename,
-        'id_card' => $validated['id_card'],
-        'address' => $validated['address'],
-        'tel' => $validated['tel'],
-        'tel2' => $validated['tel2'],
-        'tax_id' => $validated['tax_id'],
-    ]);
+    public function destroy($id)
+    {
+        $history = DB::table('ordinary_customer_models')->where('id', $id)->first();
 
-    return $updated
-        ? redirect()->route('ordinary_customer.index')->with('success', 'ข้อมูลอัปเดตสำเร็จ')
-        : back()->with('error', 'ไม่สามารถอัปเดตข้อมูลได้');
-}
+        if (!$history) {
+            return redirect()->route('ordinary_customer.index')->with('error', 'ไม่พบข้อมูลที่ต้องการลบ');
+        }
+        DB::table('ordinary_customer_models')->where('id', $id)->delete();
 
+        return redirect()->route('ordinary_customer.index')->with('success', 'ลบข้อมูลสำเร็จ');
+    }
 
 }

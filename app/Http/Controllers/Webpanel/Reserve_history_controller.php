@@ -38,7 +38,6 @@ class Reserve_history_controller extends Controller
 
     public function insert(Request $request)
     {
-        // Debug ข้อมูลที่ได้รับ
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -50,7 +49,6 @@ class Reserve_history_controller extends Controller
             'area' => 'required|string|max:255',
         ]);
 
-        // Debug ข้อมูลที่ Validate สำเร็จ
 
         DB::table('reserve_histories')->insert([
             'name' => $validated['name'],

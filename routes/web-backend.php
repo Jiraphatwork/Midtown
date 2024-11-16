@@ -63,17 +63,17 @@ Route::group(['middleware' => ['Webpanel']], function () {
             Route::post('/add', [Webpanel\Ordinary_customerController::class, 'insert'])->name('ordinary_customer.insert');
             Route::get('/edit/{id}', [Webpanel\Ordinary_customerController::class, 'edit'])->where(['id' => '[0-9]+'])->name('ordinary_customer.edit');
             Route::post('/edit/{id}', [Webpanel\Ordinary_customerController::class, 'update'])->where(['id' => '[0-9]+'])->name('ordinary_customer.update');
-            Route::get('/destroy/{id}', [Webpanel\Ordinary_customerController::class, 'destroy'])->where(['id' => '[0-9]+']);
+            Route::delete   ('/destroy/{id}', [Webpanel\Ordinary_customerController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('ordinary_customer.destroy');
             Route::get('/status/{id}', [Webpanel\Ordinary_customerController::class, 'status'])->where(['id' => '[0-9]+']);
         });
 
         Route::prefix('organization_customer')->group(function () {
-            Route::get('/', [Webpanel\organization_customerController::class, 'index']);
-            Route::get('/add', [Webpanel\organization_customerController::class, 'add']);
-            Route::post('/add', [Webpanel\organization_customerController::class, 'insert']);
-            Route::get('/edit/{id}', [Webpanel\organization_customerController::class, 'edit'])->where(['id' => '[0-9]+']);
-            Route::post('/edit/{id}', [Webpanel\organization_customerController::class, 'update'])->where(['id' => '[0-9]+']);
-            Route::get('/destroy/{id}', [Webpanel\organization_customerController::class, 'destroy'])->where(['id' => '[0-9]+']);
+            Route::get('/', [Webpanel\organization_customerController::class, 'index'])->name('organization_customer.index');
+            Route::get('/add', [Webpanel\organization_customerController::class, 'add'])->name('organization_customer.add');
+            Route::post('/add', [Webpanel\organization_customerController::class, 'insert'])->name('organization_customer.insert');
+            Route::get('/edit/{id}', [Webpanel\organization_customerController::class, 'edit'])->where(['id' => '[0-9]+'])->name('organization_customer.edit');
+            Route::post('/edit/{id}', [Webpanel\Organization_customerController::class, 'update'])->where(['id' => '[0-9]+'])->name('organization_customer.update');
+            Route::delete   ('/destroy/{id}', [Webpanel\Organization_customerController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('organization_customer.destroy');
             Route::get('/status/{id}', [Webpanel\organization_customerController::class, 'status'])->where(['id' => '[0-9]+']);
         });
 

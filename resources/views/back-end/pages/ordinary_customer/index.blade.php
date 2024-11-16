@@ -89,15 +89,14 @@
                                                         </td>
                                                         <td>
                                                             <!-- ฟอร์มลบ -->
-                                                            <form id="delete-form-{{ $item->id }}" action="#"
-                                                                method="POST" style="display:none;">
+                                                            <form id="delete-form-{{ $item->id }}" action="{{ route('ordinary_customer.destroy', $item->id) }}" method="POST" style="display:none;">
                                                                 @csrf
                                                                 @method('DELETE')
                                                             </form>
-                                                            <button type="button" class="btn btn-outline-danger btn-sm"
-                                                                onclick="confirmDelete('{{ $item->id }}')">
+                                                            <button type="button" class="btn btn-outline-danger btn-sm" onclick="confirmDelete('{{ $item->id }}')">
                                                                 <i class="fas fa-trash-alt"></i> <!-- Icon -->
                                                             </button>
+                                                            
                                                         </td>
                                                     </tr>
                                                     <!-- Modal สำหรับรายการนี้ -->
