@@ -1,9 +1,9 @@
-<?php 
+<?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Webpanel as Webpanel;
 use App\Http\Controllers\Functions as Functions;
 
- 
+
 Route::get('webpanel/login', [Webpanel\AuthController::class, 'getLogin']);
 Route::post('webpanel/login', [Webpanel\AuthController::class, 'postLogin']);
 Route::get('webpanel/logout', [Webpanel\AuthController::class, 'logOut']);
@@ -34,18 +34,18 @@ Route::group(['middleware' => ['Webpanel']], function () {
                 Route::get('/destroy/{id}', [Webpanel\Administrator\PermissionController::class, 'destroy'])->where(['id' => '[0-9]+']);
                 Route::get('/status/{id}', [Webpanel\Administrator\PermissionController::class, 'status'])->where(['id' => '[0-9]+']);
             });
-  
+
         });
         Route::prefix('reserve_history')->group(function () {
-            Route::get('/', [Webpanel\Reserve_history_controller::class, 'index'])->name('reserve_history.index');   
-            Route::get('/add', [Webpanel\Reserve_history_controller::class, 'add'])->name('reserve_history.add');           
-            Route::post('/add', [Webpanel\Reserve_history_controller::class, 'insert'])->name('reserve_history.insert'); 
-            Route::get('/edit/{id}', [Webpanel\Reserve_history_controller::class, 'edit'])->where(['id' => '[0-9]+']); 
-            Route::post('/edit/{id}', [Webpanel\Reserve_history_controller::class, 'update'])->where(['id' => '[0-9]+']); 
-            Route::get('/destroy/{id}', [Webpanel\Reserve_history_controller::class, 'destroy'])->where(['id' => '[0-9]+']); 
-            Route::get('/status/{id}', [Webpanel\Reserve_history_controller::class, 'status'])->where(['id' => '[0-9]+']); 
+            Route::get('/', [Webpanel\Reserve_history_controller::class, 'index'])->name('reserve_history.index');
+            Route::get('/add', [Webpanel\Reserve_history_controller::class, 'add'])->name('reserve_history.add');
+            Route::post('/add', [Webpanel\Reserve_history_controller::class, 'insert'])->name('reserve_history.insert');
+            Route::get('reserve_history/edit/{id}', [Webpanel\Reserve_history_controller::class, 'edit'])->name('reserve_history.edit');
+            Route::post('reserve_history/edit/{id}', [Webpanel\Reserve_history_controller::class, 'update'])->name('reserve_history.update');
+            Route::delete('/reserve_history/destroy/{id}', [Webpanel\Reserve_history_controller::class, 'destroy']) ->name('reserve_history.destroy')->where(['id' => '[0-9]+']); 
+            Route::get('/status/{id}', [Webpanel\Reserve_history_controller::class, 'status'])->where(['id' => '[0-9]+']);
         });
-        
+
 
         Route::prefix('calendar')->group(function () {
             Route::get('/', [Webpanel\CalendarController::class, 'index']);
@@ -58,11 +58,11 @@ Route::group(['middleware' => ['Webpanel']], function () {
         });
 
         Route::prefix('ordinary_customer')->group(function () {
-            Route::get('/', [Webpanel\Ordinary_customerController::class, 'index']);
-            Route::get('/add', [Webpanel\Ordinary_customerController::class, 'add']);
-            Route::post('/add', [Webpanel\Ordinary_customerController::class, 'insert']);
-            Route::get('/edit/{id}', [Webpanel\Ordinary_customerController::class, 'edit'])->where(['id' => '[0-9]+']);
-            Route::post('/edit/{id}', [Webpanel\Ordinary_customerController::class, 'update'])->where(['id' => '[0-9]+']);
+            Route::get('/', [Webpanel\Ordinary_customerController::class, 'index'])->name('ordinary_customer.index');
+            Route::get('/add', [Webpanel\Ordinary_customerController::class, 'add'])->name('ordinary_customer.add');
+            Route::post('/add', [Webpanel\Ordinary_customerController::class, 'insert'])->name('ordinary_customer.insert');
+            Route::get('/edit/{id}', [Webpanel\Ordinary_customerController::class, 'edit'])->where(['id' => '[0-9]+'])->name('ordinary_customer.edit');
+            Route::post('/edit/{id}', [Webpanel\Ordinary_customerController::class, 'update'])->where(['id' => '[0-9]+'])->name('ordinary_customer.update');
             Route::get('/destroy/{id}', [Webpanel\Ordinary_customerController::class, 'destroy'])->where(['id' => '[0-9]+']);
             Route::get('/status/{id}', [Webpanel\Ordinary_customerController::class, 'status'])->where(['id' => '[0-9]+']);
         });

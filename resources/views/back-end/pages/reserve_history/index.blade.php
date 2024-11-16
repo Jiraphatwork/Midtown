@@ -62,17 +62,29 @@
                                                     <tr class="text-center">
                                                         <td>{{ $index + 1 }}</td>
                                                         <td>{{ $history->name }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($history->now_date)->format('d/m/Y') }}
-                                                        </td>
-                                                        <td>{{ \Carbon\Carbon::parse($history->first_date)->format('d/m/Y') }}
-                                                        </td>
-                                                        <td>{{ \Carbon\Carbon::parse($history->last_date)->format('d/m/Y') }}
-                                                        </td>
+                                                        <td>{{ \Carbon\Carbon::parse($history->now_date)->format('d/m/Y') }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($history->first_date)->format('d/m/Y') }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($history->last_date)->format('d/m/Y') }}</td>
                                                         <td>{{ $history->status }}</td>
                                                         <td>{{ $history->product_type }}</td>
                                                         <td>{{ $history->area }}</td>
-                                                        <td></td>
-                                                        <td></td>
+                                                        <td>
+                                                            <!-- ปุ่มแก้ไขเป็นไอคอนแบบ minimal -->
+                                                            <a href="{{ route('reserve_history.edit', $history->id) }}" class="btn btn-outline-warning btn-sm">
+                                                                <i class="fas fa-edit"></i> <!-- Icon -->
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            <!-- ฟอร์มลบ -->
+                                                            <form id="delete-form-{{ $history->id }}" action="{{ route('reserve_history.destroy', $history->id) }}" method="POST" style="display:none;">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                            </form>
+                                                            <button type="button" class="btn btn-outline-danger btn-sm" onclick="confirmDelete('{{ $history->id }}')">
+                                                                <i class="fas fa-trash-alt"></i> <!-- Icon -->
+                                                            </button>
+                                                            
+                                                        </td>
                                                     </tr>
                                                 @empty
                                                     <tr>
@@ -123,5 +135,78 @@
 
 </body>
 <!--end::Body-->
-
 </html>
+<script>
+    // แจ้งเตือนการลบ
+    function confirmDelete(historyId) {
+        Swal.fire({
+            title: 'คุณแน่ใจหรือไม่?',
+            text: "การลบข้อมูลนี้ไม่สามารถกู้คืนได้!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ใช่, ลบเลย!',
+            cancelButtonText: 'ยกเลิก'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // ส่งฟอร์มลบ
+                document.getElementById(`delete-form-${historyId}`).submit();
+
+                // แจ้งเตือนหลังลบ
+                Swal.fire({
+                    title: 'ลบสำเร็จ!',
+                    text: "ข้อมูลได้ถูกลบเรียบร้อยแล้ว.",
+                    icon: 'success',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        });
+    }
+</script>
+//เมื่อเพิ่มข้อมูลสำเร็จ
+@if(session('success'))
+<script>
+    Swal.fire({
+        title: 'สำเร็จ!',
+        text: "{{ session('success') }}",
+        icon: 'success',
+        confirmButtonText: 'ตกลง'
+    });
+</script>
+@endif
+
+@if($errors->any())
+<script>
+    Swal.fire({
+        title: 'เกิดข้อผิดพลาด!',
+        text: "{{ $errors->first() }}",
+        icon: 'error',
+        confirmButtonText: 'ตกลง'
+    });
+</script>
+@endif
+//แจ้งเตือนการแก้ไข
+@if(session('success'))
+<script>
+    Swal.fire({
+        title: 'สำเร็จ!',
+        text: "{{ session('success') }}",
+        icon: 'success',
+        confirmButtonText: 'ตกลง'
+    });
+</script>
+@endif
+
+@if(session('error'))
+<script>
+    Swal.fire({
+        title: 'ข้อผิดพลาด!',
+        text: "{{ session('error') }}",
+        icon: 'error',
+        confirmButtonText: 'ตกลง'
+    });
+</script>
+@endif
+

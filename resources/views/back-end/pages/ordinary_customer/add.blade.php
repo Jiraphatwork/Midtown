@@ -38,53 +38,48 @@
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
 
                                 <div class="container mt-5">
-                                    <h2 class="text-center mb-4 text-dark">เพิ่มข้อมูลการจอง</h2>
+                                    <h2 class="text-center mb-4 text-dark">เพิ่มข้อมูลลูกค้า(บุคคล)</h2>
                                     <div class="shadow-lg p-4 bg-body-tertiary rounded">
-                                        <form action="{{ route('reserve_history.insert') }}" method="POST">
+                                        <form action="{{ route('ordinary_customer.insert') }}" method="POST" enctype="multipart/form-data">
                                             @csrf
                                             <div class="mb-3">
                                                 <label for="name" class="form-label">ชื่อ-นามสกุล</label>
-                                                <input type="text" class="form-control" id="name" name="name"
-                                                    placeholder="กรอกชื่อ-นามสกุล" required>
+                                                <input type="text" class="form-control" id="name" name="name" placeholder="กรอกชื่อ-นามสกุล" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="now_date" class="form-label">วันที่จ่ายเงิน</label>
-                                                <input type="date" class="form-control" id="now_date"
-                                                    name="now_date" required>
+                                                <label for="email" class="form-label">อีเมล</label>
+                                                <input type="email" class="form-control" id="email" name="email" placeholder="กรอกอีเมล" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="first_date" class="form-label">วันแรก</label>
-                                                <input type="date" class="form-control" id="first_date"
-                                                    name="first_date" required>
+                                                <label for="pic_id_card" class="form-label">รูปบัตรประชาชน</label>
+                                                <input type="file" class="form-control" id="pic_id_card" name="pic_id_card" accept="image/*" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="last_date" class="form-label">วันสุดท้าย</label>
-                                                <input type="date" class="form-control" id="last_date"
-                                                    name="last_date" required>
+                                                <label for="id_card" class="form-label">เลขบัตรประชาชน</label>
+                                                <input type="text" class="form-control" id="id_card" name="id_card" placeholder="กรอกเลขบัตรประชาชน" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="status" class="form-label">สถานะ</label>
-                                                <select class="form-select" id="status" name="status" required>
-                                                    <option value="จ่ายแล้ว">จ่ายแล้ว</option>
-                                                    <option value="ยังไม่จ่าย">ยังไม่จ่าย</option>
-                                                </select>
+                                                <label for="address" class="form-label">ที่อยู่</label>
+                                                <textarea class="form-control" id="address" name="address" rows="3" placeholder="กรอกที่อยู่" required></textarea>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="product_type" class="form-label">ประเภทสินค้า</label>
-                                                <input type="text" class="form-control" id="product_type"
-                                                    name="product_type" placeholder="กรอกประเภทสินค้า" required>
+                                                <label for="tel" class="form-label">เบอร์โทร</label>
+                                                <input type="text" class="form-control" id="tel" name="tel" placeholder="กรอกเบอร์โทร" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="area" class="form-label">พื้นที่</label>
-                                                <input type="text" class="form-control" id="area" name="area"
-                                                    placeholder="กรอกพื้นที่" required>
+                                                <label for="tel2" class="form-label">ตัวแทนติดต่อ</label>
+                                                <input type="text" class="form-control" id="tel2" name="tel2" placeholder="กรอกตัวแทนติดต่อ" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="tax_id" class="form-label">เลขผู้เสียภาษี</label>
+                                                <input type="text" class="form-control" id="tax_id" name="tax_id" placeholder="กรอกเลขผู้เสียภาษี" required>
                                             </div>
                                             <div class="text-center">
                                                 <button type="submit" class="btn btn-primary">บันทึก</button>
-                                                <a href="{{ route('reserve_history.index') }}"
-                                                    class="btn btn-secondary">ยกเลิก</a>
+                                                <a href="{{ route('ordinary_customer.index') }}" class="btn btn-secondary">ยกเลิก</a>
                                             </div>
                                         </form>
+                                        
                                     </div>
                                 </div>
 
