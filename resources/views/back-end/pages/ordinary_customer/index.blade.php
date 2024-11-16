@@ -37,7 +37,11 @@
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                                 <div class="container mt-5">
-                                    <h2 class="text-center mb-4 text-primary">ข้อมูลลูกค้า(บุคคล)</h2>
+                                    <h2 class="text-center mb-4 text-dark">ข้อมูลลูกค้า(บุคคล)</h2>
+                                    <div class="d-flex justify-content-end mb-3">
+                                        <a href="{{ route('ordinary_customer.add') }}"
+                                            class="btn btn-success">+เพิ่มข้อมูล</a>
+                                    </div>
                                     <div class="table-responsive shadow-lg p-3 bg-body-tertiary rounded">
                                         <table class="table table-hover table-striped table-bordered align-middle">
                                             <thead class="table-primary text-center">
@@ -55,7 +59,76 @@
                                                     <th scope="col">ลบ</th>
                                                 </tr>
                                             </thead>
-                                           
+                                            <tbody>
+                                                @foreach ($ordinary_customer as $index => $item)
+                                                    <tr class="text-center">
+                                                        <td>{{ $index + 1 }}</td>
+                                                        <td>{{ $item->name }}</td>
+                                                        <td>{{ $item->email }}</td>
+                                                        <td>
+                                                            @if ($item->pic_id_card)
+                                                                <img src="{{ asset('id_cards/' . $item->pic_id_card) }}"
+                                                                    alt="ID Card" width="70"
+                                                                    style="cursor: pointer;" data-bs-toggle="modal"
+                                                                    data-bs-target="#imageModal-{{ $item->id }}">
+                                                            @else
+                                                                ไม่มีรูปภาพ
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ $item->id_card }}</td>
+                                                        <td>{{ $item->address }}</td>
+                                                        <td>{{ $item->tel }}</td>
+                                                        <td>{{ $item->tel2 }}</td>
+                                                        <td>{{ $item->tax_id }}</td>
+                                                        <td>
+                                                            <!-- ปุ่มแก้ไข -->
+                                                            <a href="{{ route('ordinary_customer.edit', $item->id) }}"
+                                                                class="btn btn-outline-warning btn-sm">
+                                                                <i class="fas fa-edit"></i> <!-- Icon -->
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            <!-- ฟอร์มลบ -->
+                                                            <form id="delete-form-{{ $item->id }}" action="#"
+                                                                method="POST" style="display:none;">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                            </form>
+                                                            <button type="button" class="btn btn-outline-danger btn-sm"
+                                                                onclick="confirmDelete('{{ $item->id }}')">
+                                                                <i class="fas fa-trash-alt"></i> <!-- Icon -->
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- Modal สำหรับรายการนี้ -->
+                                                    <div class="modal fade" id="imageModal-{{ $item->id }}"
+                                                        tabindex="-1"
+                                                        aria-labelledby="exampleModalLabel-{{ $item->id }}"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title"
+                                                                        id="exampleModalLabel-{{ $item->id }}">
+                                                                        รูปภาพบัตรประชาชน</h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body text-center">
+                                                                    <img src="{{ asset('id_cards/' . $item->pic_id_card) }}"
+                                                                        alt="ID Card" class="img-fluid">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                                @if ($ordinary_customer->isEmpty())
+                                                    <tr>
+                                                        <td colspan="11" class="text-center">ไม่มีข้อมูล</td>
+                                                    </tr>
+                                                @endif
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -99,3 +172,55 @@
 <!--end::Body-->
 
 </html>
+<script>
+    // แจ้งเตือนการลบ
+    function confirmDelete(ordinaryID) {
+        Swal.fire({
+            title: 'คุณแน่ใจหรือไม่?',
+            text: "การลบข้อมูลนี้ไม่สามารถกู้คืนได้!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ใช่, ลบเลย!',
+            cancelButtonText: 'ยกเลิก'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // ส่งฟอร์มลบ
+                document.getElementById(`delete-form-${ordinaryID}`).submit();
+
+                // แจ้งเตือนหลังลบ
+                Swal.fire({
+                    title: 'ลบสำเร็จ!',
+                    text: "ข้อมูลได้ถูกลบเรียบร้อยแล้ว.",
+                    icon: 'success',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        });
+    }
+</script>
+
+//แจ้งเตือนการแก้ไข
+@if (session('success'))
+    <script>
+        Swal.fire({
+            title: 'สำเร็จ!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            confirmButtonText: 'ตกลง'
+        });
+    </script>
+@endif
+
+@if (session('error'))
+    <script>
+        Swal.fire({
+            title: 'ข้อผิดพลาด!',
+            text: "{{ session('error') }}",
+            icon: 'error',
+            confirmButtonText: 'ตกลง'
+        });
+    </script>
+@endif
