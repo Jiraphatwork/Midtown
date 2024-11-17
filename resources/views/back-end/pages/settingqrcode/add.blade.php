@@ -37,8 +37,7 @@
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                                 <div class="container mt-5">
-                                    <h2 class="text-center mb-4 text-primary">
-                                        เเก้ไขตั้งค่าข้อมูลเงื่อนไขการคืนเงินการยกเลิก</h2>
+                                    <h2 class="text-center mb-4 text-primary">เพิ่มตั้งค่าข้อมูลการสแกนจ่าย Qr Code</h2>
                                 </div>
                             </div>
                         </div>
@@ -48,17 +47,16 @@
                             <div id="kt_app_content_container" class="app-container container-xxl">
                                 <div class="card">
                                     <div class="card-body">
-                                        <form id="form_submit" method="POST" enctype="multipart/form-data"
-                                            class="">
+                                        <form id="form_submit" method="POST" enctype="multipart/form-data"class="">
                                             @csrf
                                             <div class="mb-3">
-                                                <label for="name" class="form-label">ชื่อเงื่อนไข</label>
-                                                <input type="text" class="form-control" id="name" name="name"
-                                                    value="{{ $item->name }}" required>
+                                                <label for="name_account" class="form-label">ชื่อบัญชี</label>
+                                                <input type="text" class="form-control" id="name_account" name="name_account"
+                                                    placeholder="กรอกชื่อเงื่อนไข" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="details" class="form-label">รายละเอียด</label>
-                                                <textarea class="form-control" id="details" name="details" rows="4" required>{{ $item->details }}</textarea>
+                                                <label for="image_path" class="form-label">เพิ่มรูปภาพ</label>
+                                                <input type="file" class="form-control" id="image_path" name="image_path" required>
                                             </div>
                                             <div class="">
                                                 <button type="reset" onclick="history.back()"
@@ -69,6 +67,14 @@
                                         </form>
                                     </div>
                                 </div>
+                            </div>
+                            <!--end::Content container-->
+                        </div>
+
+                        <div id="kt_app_content" class="app-content flex-column-fluid">
+                            <!--begin::Content container-->
+                            <div id="kt_app_content_container" class="app-container container-xxl">
+
                             </div>
                             <!--end::Content container-->
                         </div>
@@ -102,11 +108,22 @@
 <!--end::Body-->
 
 </html>
-
 <script>
     function check_add() {
         var formData = new FormData($("#form_submit")[0]);
-
+        /*
+			var username = $('#username').val();
+			var password = $('#password').val();
+			var confirm_password = $('#confirm_password').val();
+			if(username == "" || password == "" || confirm_password == ""){
+				toastr.error("Sorry, please complete the information.");
+				return false;
+			}
+			if (password != confirm_password) {
+				toastr.error('Please enter the same password.');
+				return false;
+			}
+            */
         Swal.fire({
             icon: 'warning',
             title: 'Please press confirm to complete the transaction.',
@@ -117,7 +134,7 @@
             if (result.isConfirmed) {
                 $.ajax({
                     type: 'POST',
-                    url: "{{ url('webpanel/settingrefund/edit', $item->id) }}",
+                    url: "{{ url('webpanel/settingqrcode/add') }}",
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -128,11 +145,12 @@
                             Swal.fire({
                                 icon: 'success',
                                 title: "Congratulations",
-                                text: "You have updated the data successfully",
+                                text: "You have added the data successfully",
                                 showCancelButton: false,
                                 confirmButtonText: 'Close',
                             }).then((result) => {
-                                location.href = "{{ url('webpanel/settingrefund') }}";
+                                location.href =
+                                    "{{ url('webpanel/settingqrcode') }}";
                             });
                         } else {
                             Swal.fire({
@@ -152,4 +170,5 @@
 
         return false;
     }
+
 </script>
