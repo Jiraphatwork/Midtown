@@ -37,39 +37,8 @@
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                                 <div class="container mt-5">
-                                    <h2 class="text-center mb-4 text-primary">ตั้งค่าข้อมูลเงื่อนการสมัครสมาชิกข้อตกลง</h2>
-                                    <div class="d-flex justify-content-end mb-3">
-                                        <a href="webpanel/settingmembership/add" class="btn btn-success">+เพิ่มข้อมูล</a>
-                                    </div>
-                                    <div class="table-responsive shadow-lg p-3 bg-body-tertiary rounded">
-                                        <table class="table table-hover table-striped table-bordered align-middle">
-                                            <thead class="table-primary text-center">
-                                                <tr>
-                                                    <th scope="col">ลำดับ</th>
-                                                    <th scope="col">ชื่อเงื่อนไข</h>
-                                                    <th scope="col">รายละเอียด</th>
-                                                    <th scope="col">จัดการ</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <!-- Loop through the items to display each one -->
-                                                @foreach ($items as $index => $item)
-                                                    <tr>
-                                                        <td>{{ $index + 1 }}</td>
-                                                        <td>{{ $item->name_condition }}</td>
-                                                        <td>{{ $item->details }}</td>
-                                                        <td class="text-center">
-                                                            <a href="{{ url('webpanel/settingmembership/edit/' . $item->id) }}"
-                                                                class="btn btn-warning btn-sm">แก้ไข</a>
-                                                            <a href="javascript:void(0);" class="btn btn-danger btn-sm"
-                                                                onclick="check_destroy({{ $item->id }})">ลบ</a>
-
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    <h2 class="text-center mb-4 text-primary">
+                                        เเก้ไขตั้งค่าข้อมูลเงื่อนการสมัครสมาชิกข้อตกลง</h2>
                                 </div>
                             </div>
                         </div>
@@ -77,7 +46,29 @@
                         <div id="kt_app_content" class="app-content flex-column-fluid">
                             <!--begin::Content container-->
                             <div id="kt_app_content_container" class="app-container container-xxl">
-
+                                <div class="card">
+                                    <div class="card-body">
+                                        <form id="form_submit" method="POST" enctype="multipart/form-data"
+                                            class="">
+                                            @csrf
+                                            <div class="mb-3">
+                                                <label for="name_condition" class="form-label">ชื่อเงื่อนไข</label>
+                                                <input type="text" class="form-control" id="name_condition" name="name_condition"
+                                                    value="{{ $item->name_condition }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="details" class="form-label">รายละเอียด</label>
+                                                <textarea class="form-control" id="details" name="details" rows="4" required>{{ $item->details }}</textarea>
+                                            </div>
+                                            <div class="">
+                                                <button type="reset" onclick="history.back()"
+                                                    class="btn btn-light btn-active-light-primary me-2">ยกเลิก</button>
+                                                <a href="javascript:void(0)" class="btn btn-primary" id="submit"
+                                                    onclick="check_add()">บันทึก</a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                             <!--end::Content container-->
                         </div>
@@ -111,36 +102,43 @@
 <!--end::Body-->
 
 </html>
+
 <script>
-    function check_destroy(id) {
+    function check_add() {
+        var formData = new FormData($("#form_submit")[0]);
+
         Swal.fire({
             icon: 'warning',
-            title: 'Are you sure you want to delete this item?',
+            title: 'Please press confirm to complete the transaction.',
             showCancelButton: true,
-            confirmButtonText: 'Delete',
-            cancelButtonText: 'Cancel',
+            confirmButtonText: 'Confirm',
+            cancelButtonText: `Cancel`,
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    type: 'GET',
-                    url: "{{ url('webpanel/settingmembership/destroy') }}/" + id, // ใช้ URL สำหรับลบข้อมูล
+                    type: 'POST',
+                    url: "{{ url('webpanel/settingmembership/edit', $item->id) }}",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
                     dataType: 'json',
                     success: function(data) {
-                        if (data.success) {
+                        console.log(data);
+                        if (data) {
                             Swal.fire({
                                 icon: 'success',
-                                title: "Deleted Successfully",
-                                text: "The data has been deleted successfully.",
+                                title: "Congratulations",
+                                text: "You have updated the data successfully",
                                 showCancelButton: false,
                                 confirmButtonText: 'Close',
                             }).then((result) => {
-                                location.reload(); // รีโหลดหน้าเพื่อให้ข้อมูลอัพเดต
+                                location.href = "{{ url('webpanel/settingmembership') }}";
                             });
                         } else {
                             Swal.fire({
                                 icon: 'error',
                                 title: "Error",
-                                text: "Something went wrong.",
+                                text: "Something is wrong",
                                 showCancelButton: false,
                                 confirmButtonText: 'Close',
                             });
@@ -151,5 +149,7 @@
                 return false;
             }
         });
+
+        return false;
     }
 </script>
