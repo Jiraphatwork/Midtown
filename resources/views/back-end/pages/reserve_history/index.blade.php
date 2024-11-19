@@ -39,7 +39,8 @@
                                 <div class="container mt-5">
                                     <h2 class="text-center mb-4 text-dark">ประวัติการจอง</h2>
                                     <div class="d-flex justify-content-end mb-3">
-                                        <a href="{{ route('reserve_history.add') }}" class="btn btn-success">+เพิ่มข้อมูล</a>
+                                        <a href="{{ route('reserve_history.add') }}"
+                                            class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
                                     <div class="table-responsive shadow-lg p-3 bg-body-tertiary rounded">
                                         <table class="table table-hover table-striped table-bordered align-middle">
@@ -53,8 +54,7 @@
                                                     <th scope="col">สถานะ</th>
                                                     <th scope="col">ประเภทสินค้า</th>
                                                     <th scope="col">พื้นที่</th>
-                                                    <th scope="col">แก้ไข</th>
-                                                    <th scope="col">ลบ</th>
+                                                    <th scope="col">จัดการ</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -62,29 +62,34 @@
                                                     <tr class="text-center">
                                                         <td>{{ $index + 1 }}</td>
                                                         <td>{{ $history->name }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($history->now_date)->format('d/m/Y') }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($history->first_date)->format('d/m/Y') }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($history->last_date)->format('d/m/Y') }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($history->now_date)->format('d/m/Y') }}
+                                                        </td>
+                                                        <td>{{ \Carbon\Carbon::parse($history->first_date)->format('d/m/Y') }}
+                                                        </td>
+                                                        <td>{{ \Carbon\Carbon::parse($history->last_date)->format('d/m/Y') }}
+                                                        </td>
                                                         <td>{{ $history->status }}</td>
                                                         <td>{{ $history->product_type }}</td>
                                                         <td>{{ $history->area }}</td>
                                                         <td>
-                                                            <!-- ปุ่มแก้ไขเป็นไอคอนแบบ minimal -->
-                                                            <a href="{{ route('reserve_history.edit', $history->id) }}" class="btn btn-outline-warning btn-sm">
-                                                                <i class="fas fa-edit"></i> <!-- Icon -->
+                                                            <a href="{{ route('reserve_history.edit', $history->id) }}"
+                                                                class="btn btn-warning btn-sm">แก้ไข</a>
+
                                                             </a>
-                                                        </td>
-                                                        <td>
                                                             <!-- ฟอร์มลบ -->
-                                                            <form id="delete-form-{{ $history->id }}" action="{{ route('reserve_history.destroy', $history->id) }}" method="POST" style="display:none;">
+                                                            <form id="delete-form-{{ $history->id }}"
+                                                                action="{{ route('reserve_history.destroy', $history->id) }}"
+                                                                method="POST" style="display:none;">
                                                                 @csrf
                                                                 @method('DELETE')
                                                             </form>
-                                                            <button type="button" class="btn btn-outline-danger btn-sm" onclick="confirmDelete('{{ $history->id }}')">
-                                                                <i class="fas fa-trash-alt"></i> <!-- Icon -->
+                                                            <button type="button" class="btn btn-danger btn-sm"
+                                                                onclick="confirmDelete('{{ $history->id }}')">
+                                                                ลบ
                                                             </button>
-                                                            
+
                                                         </td>
+
                                                     </tr>
                                                 @empty
                                                     <tr>
@@ -135,6 +140,7 @@
 
 </body>
 <!--end::Body-->
+
 </html>
 <script>
     // แจ้งเตือนการลบ
@@ -166,47 +172,46 @@
     }
 </script>
 //เมื่อเพิ่มข้อมูลสำเร็จ
-@if(session('success'))
-<script>
-    Swal.fire({
-        title: 'สำเร็จ!',
-        text: "{{ session('success') }}",
-        icon: 'success',
-        confirmButtonText: 'ตกลง'
-    });
-</script>
+@if (session('success'))
+    <script>
+        Swal.fire({
+            title: 'สำเร็จ!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            confirmButtonText: 'ตกลง'
+        });
+    </script>
 @endif
 
-@if($errors->any())
-<script>
-    Swal.fire({
-        title: 'เกิดข้อผิดพลาด!',
-        text: "{{ $errors->first() }}",
-        icon: 'error',
-        confirmButtonText: 'ตกลง'
-    });
-</script>
+@if ($errors->any())
+    <script>
+        Swal.fire({
+            title: 'เกิดข้อผิดพลาด!',
+            text: "{{ $errors->first() }}",
+            icon: 'error',
+            confirmButtonText: 'ตกลง'
+        });
+    </script>
 @endif
 //แจ้งเตือนการแก้ไข
-@if(session('success'))
-<script>
-    Swal.fire({
-        title: 'สำเร็จ!',
-        text: "{{ session('success') }}",
-        icon: 'success',
-        confirmButtonText: 'ตกลง'
-    });
-</script>
+@if (session('success'))
+    <script>
+        Swal.fire({
+            title: 'สำเร็จ!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            confirmButtonText: 'ตกลง'
+        });
+    </script>
 @endif
 
-@if(session('error'))
-<script>
-    Swal.fire({
-        title: 'ข้อผิดพลาด!',
-        text: "{{ session('error') }}",
-        icon: 'error',
-        confirmButtonText: 'ตกลง'
-    });
-</script>
+@if (session('error'))
+    <script>
+        Swal.fire({
+            title: 'ข้อผิดพลาด!',
+            text: "{{ session('error') }}",
+            icon: 'error',
+            confirmButtonText: 'ตกลง'
+        });
+    </script>
 @endif
-

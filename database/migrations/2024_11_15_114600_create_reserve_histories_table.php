@@ -22,6 +22,8 @@ class CreateReserveHistoriesTable extends Migration
             $table->enum("status", ["จ่ายแล้ว", "ยังไม่จ่าย"]); 
             $table->string("product_type"); 
             $table->string("area"); 
+            $table->datetime('created_at')->nullable();
+            $table->datetime('updated_at')->nullable();
         });
     }
 

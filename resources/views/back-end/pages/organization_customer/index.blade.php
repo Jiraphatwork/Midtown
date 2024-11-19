@@ -56,8 +56,7 @@
                                                     <th scope="col">ตัวแทนติดต่อ</th>
                                                     <th scope="col">เลขผู้เสียภาษี</th>
                                                     <th scope="col">ใบหัก ณ ที่จ่าย</th>
-                                                    <th scope="col">แก้ไข</th>
-                                                    <th scope="col">ลบ</th>
+                                                    <th scope="col">จัดการ</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -94,20 +93,21 @@
                                                     </td>
                                                     <td>
                                                         <!-- ปุ่มแก้ไข -->
-                                                        <a href="{{ route('organization_customer.edit', $item->id) }}" class="btn btn-outline-warning btn-sm">
-                                                            <i class="fas fa-edit"></i> <!-- Icon -->
+                                                        <a href="{{ route('organization_customer.edit', $item->id) }}" 
+                                                            class="btn btn-warning btn-sm">แก้ไข</a>
+
                                                         </a>
-                                                    </td>
-                                                    <td>
-                                                        <!-- ฟอร์มลบ -->
-                                                        <form id="delete-form-{{ $item->id }}" action="{{ route('organization_customer.destroy', $item->id) }}" method="POST" style="display:none;">
+                                                           <!-- ฟอร์มลบ -->
+                                                           <form id="delete-form-{{ $item->id }}" action="{{ route('organization_customer.destroy', $item->id) }}" method="POST" style="display:none;">
                                                             @csrf
                                                             @method('DELETE')
                                                         </form>
-                                                        <button type="button" class="btn btn-outline-danger btn-sm" onclick="confirmDelete('{{ $item->id }}')">
-                                                            <i class="fas fa-trash-alt"></i> <!-- Icon -->
-                                                        </button>
+                                                        <button type="button" class="btn btn-danger btn-sm"
+                                                        onclick="confirmDelete('{{ $item->id }}')">
+                                                        ลบ
+                                                    </button>
                                                     </td>
+                                                
                                                 </tr>
                                         
                                                 <!-- Modal สำหรับแสดงที่อยู่ -->

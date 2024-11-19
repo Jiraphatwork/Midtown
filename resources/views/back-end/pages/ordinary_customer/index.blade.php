@@ -55,8 +55,7 @@
                                                     <th scope="col">เบอร์โทร</th>
                                                     <th scope="col">ตัวแทนติดต่อ</th>
                                                     <th scope="col">เลขผู้เสียภาษี</th>
-                                                    <th scope="col">แก้ไข</th>
-                                                    <th scope="col">ลบ</th>
+                                                    <th scope="col">จัดการ</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -83,21 +82,22 @@
                                                         <td>
                                                             <!-- ปุ่มแก้ไข -->
                                                             <a href="{{ route('ordinary_customer.edit', $item->id) }}"
-                                                                class="btn btn-outline-warning btn-sm">
-                                                                <i class="fas fa-edit"></i> <!-- Icon -->
+                                                                class="btn btn-warning btn-sm">แก้ไข</a>
                                                             </a>
-                                                        </td>
-                                                        <td>
-                                                            <!-- ฟอร์มลบ -->
-                                                            <form id="delete-form-{{ $item->id }}" action="{{ route('ordinary_customer.destroy', $item->id) }}" method="POST" style="display:none;">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                            </form>
-                                                            <button type="button" class="btn btn-outline-danger btn-sm" onclick="confirmDelete('{{ $item->id }}')">
-                                                                <i class="fas fa-trash-alt"></i> <!-- Icon -->
+                                                            
+                                                                <!-- ฟอร์มลบ -->
+                                                                <form id="delete-form-{{ $item->id }}" action="{{ route('ordinary_customer.destroy', $item->id) }}" method="POST" style="display:none;">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                </form>
+                                                                <button type="button" class="btn btn-danger btn-sm"
+                                                                onclick="confirmDelete('{{ $item->id }}')">
+                                                                ลบ
                                                             </button>
+                                                                
                                                             
                                                         </td>
+                                                        
                                                     </tr>
                                                     <!-- Modal สำหรับรายการนี้ -->
                                                     <div class="modal fade" id="imageModal-{{ $item->id }}"

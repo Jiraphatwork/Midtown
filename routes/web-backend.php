@@ -78,12 +78,12 @@ Route::group(['middleware' => ['Webpanel']], function () {
         });
 
         Route::prefix('agent_customer')->group(function () {
-            Route::get('/', [Webpanel\Agent_customerController::class, 'index']);
-            Route::get('/add', [Webpanel\Agent_customerController::class, 'add']);
-            Route::post('/add', [Webpanel\Agent_customerController::class, 'insert']);
-            Route::get('/edit/{id}', [Webpanel\Agent_customerController::class, 'edit'])->where(['id' => '[0-9]+']);
-            Route::post('/edit/{id}', [Webpanel\Agent_customerController::class, 'update'])->where(['id' => '[0-9]+']);
-            Route::get('/destroy/{id}', [Webpanel\Agent_customerController::class, 'destroy'])->where(['id' => '[0-9]+']);
+            Route::get('/', [Webpanel\Agent_customerController::class, 'index'])->name('agent_customer.index');
+            Route::get('/add', [Webpanel\Agent_customerController::class, 'add'])->name('agent_customer.add');
+            Route::post('/add', [Webpanel\Agent_customerController::class, 'insert'])->name('agent_customer.insert');
+            Route::get('/edit/{id}', [Webpanel\Agent_customerController::class, 'edit'])->where(['id' => '[0-9]+'])->name('agent_customer.edit');
+            Route::post('/edit/{id}', [Webpanel\Agent_customerController::class, 'update'])->where(['id' => '[0-9]+'])->name('agent_customer.update');
+            Route::get('/destroy/{id}', [Webpanel\Agent_customerController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('agent_customer.destroy');
             Route::get('/status/{id}', [Webpanel\Agent_customerController::class, 'status'])->where(['id' => '[0-9]+']);
         });
         Route::prefix('data_equipment')->group(function () {

@@ -18,11 +18,13 @@ class CreateOrdinaryCustomerModelsTable extends Migration
             $table->string("name");
             $table->string('email')->unique();
             $table->string("pic_id_card");
-            $table->string("id_card")->unique();
-            $table->string("address", 500); 
-            $table->string("tel");
-            $table->string("tel2")->nullable();
+            $table->string("id_card", 13)->unique(); 
+            $table->string("address", 500);
+            $table->string("tel", 10); 
+            $table->string("tel2", 10)->nullable(); 
             $table->string("tax_id")->nullable();
+            $table->datetime('created_at')->nullable();
+            $table->datetime('updated_at')->nullable();
         });
     }
 

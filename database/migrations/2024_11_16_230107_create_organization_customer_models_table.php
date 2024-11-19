@@ -19,15 +19,15 @@ class CreateOrganizationCustomerModelsTable extends Migration
             $table->string('email')->unique();
             $table->string("business_card");
             $table->string("address");
-            $table->string("address2");
-            $table->string("address3");
-            $table->integer("tel")->nullable();
-            $table->integer("fax");
-            $table->integer("tel2");
-            $table->integer("tax_id")->nullable();
+            $table->string("address2")->nullable(); 
+            $table->string("address3")->nullable(); 
+            $table->string("tel", 10)->nullable(); 
+            $table->string("fax")->nullable(); 
+            $table->string("tel2", 10)->nullable(); 
+            $table->string("tax_id")->nullable(); 
             $table->string("card_slip")->nullable();
-            $table->timestamps();
-
+            $table->datetime('created_at')->nullable();
+            $table->datetime('updated_at')->nullable();
         });
     }
 
