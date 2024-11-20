@@ -28,7 +28,9 @@ class CreateAgentCustomerModelsTable extends Migration
             $table->string('fax')->nullable(); // แฟกซ์
             $table->string('tel2', 10)->nullable(); // เบอร์โทรศัพท์สำรอง
             $table->string('tax_id')->nullable(); // เลขประจำตัวผู้เสียภาษี
-            $table->string('slip_card');            
+            $table->string('slip_card');   
+            $table->string("created_by",50)->nullable();
+            $table->string("updated_by",50)->nullable();         
             $table->datetime('created_at')->nullable();
             $table->datetime('updated_at')->nullable();
         });

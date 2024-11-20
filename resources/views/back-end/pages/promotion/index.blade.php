@@ -38,6 +38,9 @@
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                                 <div class="container mt-5">
                                     <h2 class="text-center mb-4 text-primary">ข้อมูลโปรโมชั่น</h2>
+                                    <div class="d-flex justify-content-end mb-3">
+                                        <a href="{{ route('promotion.add') }}" class="btn btn-success">+เพิ่มข้อมูล</a>
+                                    </div>
                                     <div class="table-responsive shadow-lg p-3 bg-body-tertiary rounded">
                                         <table class="table table-hover table-striped table-bordered align-middle">
                                             <thead class="table-primary text-center">
@@ -48,11 +51,102 @@
                                                     <th scope="col">รายละเอียด</th>
                                                     <th scope="col">วันเริ่มต้น</th>
                                                     <th scope="col">วันสิ้นสุด</th>
-                                                    <th scope="col">แก้ไข</th>
-                                                    <th scope="col">ลบ</th>
+                                                    <th scope="col">จัดการ</th>
                                                 </tr>
                                             </thead>
-                                           
+                                            <tbody>
+                                                @foreach ($promotion_models as $index => $item)
+                                                    <tr class="text-center">
+                                                        <td>{{ $index + 1 }}</td>
+                                                        <td>{{ $item->name_promotion }}</td>
+                                                        <td>
+                                                            @if ($item->pic_promotion)
+                                                                <img src="{{ asset('pic_promotions/' . $item->pic_promotion) }}"
+                                                                    alt="error" width="50"
+                                                                    style="cursor: pointer;" data-bs-toggle="modal"
+                                                                    data-bs-target="#imageModal{{ $item->id }}">
+                                                            @else
+                                                                ไม่มีรูปภาพ
+                                                            @endif
+                                                        </td>
+                                                        <td style="max-width: 200px; word-wrap: break-word;">
+                                                            @if (strlen($item->detail) > 100)
+                                                                {{ substr($item->detail, 0, 100) }}...
+                                                                <a href="#" data-bs-toggle="modal"
+                                                                    data-bs-target="#detailModal{{ $item->id }}"
+                                                                    style="color: blue;">อ่านต่อ</a>
+                                                            @else
+                                                                {{ $item->detail }}
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ $item->first_date }}</td>
+                                                        <td>{{ $item->last_date }}</td>
+                                                        <td>
+                                                            <!-- ปุ่มแก้ไข -->
+                                                            <a href="{{ route('promotion.edit', $item->id) }}"
+                                                                class="btn btn-warning btn-sm">แก้ไข</a>
+                                                            <!-- ฟอร์มลบ -->
+                                                            <form id="delete-form-{{ $item->id }}"
+                                                                action="{{ route('promotion.destroy', $item->id) }}"
+                                                                method="POST" style="display:none;">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                            </form>
+                                                            <button type="button" class="btn btn-danger btn-sm"
+                                                                onclick="confirmDelete('{{ $item->id }}')">ลบ</button>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- Modal สำหรับแต่ละแถว -->
+                                                    <div class="modal fade" id="imageModal{{ $item->id }}"
+                                                        tabindex="-1"
+                                                        aria-labelledby="pic_promotion{{ $item->id }}"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <!-- แสดงชื่อโปรโมชั่นในหัวข้อของ Modal -->
+                                                                    <h5 class="modal-title"
+                                                                        id="pic_promotion{{ $item->id }}">
+                                                                        รูปโปรโมชั่น: {{ $item->name_promotion }}</h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body text-center">
+                                                                    @if ($item->pic_promotion)
+                                                                        <img src="{{ asset('pic_promotions/' . $item->pic_promotion) }}"
+                                                                            alt="promotion" class="img-fluid">
+                                                                    @else
+                                                                        <p>ไม่มีรูปภาพ</p>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Modal สำหรับแสดงรายละเอียด -->
+                                                    <div class="modal fade" id="detailModal{{ $item->id }}"
+                                                        tabindex="-1"
+                                                        aria-labelledby="detailModalLabel{{ $item->id }}"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title"
+                                                                        id="detailModalLabel{{ $item->id }}">
+                                                                        รายละเอียดโปรโมชั่น:
+                                                                        {{ $item->name_promotion }}</h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body text-center">
+                                                                    <p>{{ $item->detail }}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -96,3 +190,54 @@
 <!--end::Body-->
 
 </html>
+<script>
+    // แจ้งเตือนการลบ
+    function confirmDelete(promotionId) {
+        Swal.fire({
+            title: 'คุณแน่ใจหรือไม่?',
+            text: "การลบข้อมูลนี้ไม่สามารถกู้คืนได้!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ใช่, ลบเลย!',
+            cancelButtonText: 'ยกเลิก'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // ส่งฟอร์มลบ
+                document.getElementById(`delete-form-${promotionId}`).submit();
+
+                // แจ้งเตือนหลังลบ
+                Swal.fire({
+                    title: 'ลบสำเร็จ!',
+                    text: "ข้อมูลได้ถูกลบเรียบร้อยแล้ว.",
+                    icon: 'success',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        });
+    }
+</script>
+
+@if (session('success'))
+    <script>
+        Swal.fire({
+            title: 'สำเร็จ!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            confirmButtonText: 'ตกลง'
+        });
+    </script>
+@endif
+
+@if (session('error'))
+    <script>
+        Swal.fire({
+            title: 'ข้อผิดพลาด!',
+            text: "{{ session('error') }}",
+            icon: 'error',
+            confirmButtonText: 'ตกลง'
+        });
+    </script>
+@endif

@@ -246,7 +246,6 @@
     }
 </script>
 
-    //แจ้งเตือนการแก้ไข
 @if (session('success'))
     <script>
         Swal.fire({

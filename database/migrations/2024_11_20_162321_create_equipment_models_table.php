@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrdinaryCustomerModelsTable extends Migration
+class CreateEquipmentModelsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,12 @@ class CreateOrdinaryCustomerModelsTable extends Migration
      */
     public function up()
     {
-        Schema::create('ordinary_customer_models', function (Blueprint $table) {
+        Schema::create('equipment_models', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
-            $table->string('email')->unique();
-            $table->string("pic_id_card");
-            $table->string("id_card", 13)->unique(); 
-            $table->string("address", 500);
-            $table->string("tel", 10); 
-            $table->string("tel2", 10)->nullable(); 
-            $table->string("tax_id")->nullable();
+            $table->string("name_equipment");
+            $table->string("pic_equipment");
+            $table->integer("price");
+            $table->integer("quantity");
             $table->string("created_by",50)->nullable();
             $table->string("updated_by",50)->nullable();
             $table->datetime('created_at')->nullable();
@@ -37,6 +33,6 @@ class CreateOrdinaryCustomerModelsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ordinary_customer_models');
+        Schema::dropIfExists('equipment_models');
     }
 }

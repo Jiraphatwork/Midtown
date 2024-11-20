@@ -42,6 +42,7 @@
                                         <a href="{{ route('agent_customer.add') }}"
                                             class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
+                                    <div class="table-responsive shadow-lg p-3 bg-body-tertiary rounded">
                                     <div style="overflow-x: auto;">
                                         <table
                                             class="table table-hover table-striped table-bordered align-middle table-sm w-100"
@@ -318,6 +319,7 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
 
                         <div id="kt_app_content" class="app-content flex-column-fluid">
                             <!--begin::Content container-->

@@ -26,6 +26,8 @@ class CreateOrganizationCustomerModelsTable extends Migration
             $table->string("tel2", 10)->nullable(); 
             $table->string("tax_id")->nullable(); 
             $table->string("card_slip")->nullable();
+            $table->string("created_by",50)->nullable();
+            $table->string("updated_by",50)->nullable();
             $table->datetime('created_at')->nullable();
             $table->datetime('updated_at')->nullable();
         });

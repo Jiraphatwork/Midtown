@@ -87,32 +87,32 @@ Route::group(['middleware' => ['Webpanel']], function () {
             Route::get('/status/{id}', [Webpanel\Agent_customerController::class, 'status'])->where(['id' => '[0-9]+']);
         });
         Route::prefix('data_equipment')->group(function () {
-            Route::get('/', [Webpanel\Data_equipmentController::class, 'index']);
-            Route::get('/add', [Webpanel\Data_equipmentController::class, 'add']);
-            Route::post('/add', [Webpanel\Data_equipmentController::class, 'insert']);
-            Route::get('/edit/{id}', [Webpanel\Data_equipmentController::class, 'edit'])->where(['id' => '[0-9]+']);
-            Route::post('/edit/{id}', [Webpanel\Data_equipmentController::class, 'update'])->where(['id' => '[0-9]+']);
-            Route::get('/destroy/{id}', [Webpanel\Data_equipmentController::class, 'destroy'])->where(['id' => '[0-9]+']);
+            Route::get('/', [Webpanel\Data_equipmentController::class, 'index'])->name('data_equipment.index');
+            Route::get('/add', [Webpanel\Data_equipmentController::class, 'add'])->name('data_equipment.add');
+            Route::post('/add', [Webpanel\Data_equipmentController::class, 'insert'])->name('data_equipment.insert');
+            Route::get('/edit/{id}', [Webpanel\Data_equipmentController::class, 'edit'])->where(['id' => '[0-9]+'])->name('data_equipment.edit');
+            Route::post('/edit/{id}', [Webpanel\Data_equipmentController::class, 'update'])->where(['id' => '[0-9]+'])->name('data_equipment.update');
+            Route::delete('/destroy/{id}', [Webpanel\Data_equipmentController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('data_equipment.destroy');
             Route::get('/status/{id}', [Webpanel\Data_equipmentController::class, 'status'])->where(['id' => '[0-9]+']);
         });
 
         Route::prefix('promotion')->group(function () {
-            Route::get('/', [Webpanel\promotionController::class, 'index']);
-            Route::get('/add', [Webpanel\promotionController::class, 'add']);
-            Route::post('/add', [Webpanel\promotionController::class, 'insert']);
-            Route::get('/edit/{id}', [Webpanel\promotionController::class, 'edit'])->where(['id' => '[0-9]+']);
-            Route::post('/edit/{id}', [Webpanel\promotionController::class, 'update'])->where(['id' => '[0-9]+']);
-            Route::get('/destroy/{id}', [Webpanel\promotionController::class, 'destroy'])->where(['id' => '[0-9]+']);
+            Route::get('/', [Webpanel\promotionController::class, 'index'])->name('promotion.index');
+            Route::get('/add', [Webpanel\promotionController::class, 'add'])->name('promotion.add');
+            Route::post('/add', [Webpanel\promotionController::class, 'insert'])->name('promotion.insert');
+            Route::get('/edit/{id}', [Webpanel\promotionController::class, 'edit'])->where(['id' => '[0-9]+'])->name('promotion.edit');
+            Route::post('/edit/{id}', [Webpanel\promotionController::class, 'update'])->where(['id' => '[0-9]+'])->name('promotion.update');
+            Route::delete('/destroy/{id}', [Webpanel\promotionController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('promotion.destroy');
             Route::get('/status/{id}', [Webpanel\promotionController::class, 'status'])->where(['id' => '[0-9]+']);
         });
 
         Route::prefix('data_contact')->group(function () {
-            Route::get('/', [Webpanel\Data_contactController::class, 'index']);
-            Route::get('/add', [Webpanel\Data_contactController::class, 'add']);
-            Route::post('/add', [Webpanel\Data_contactController::class, 'insert']);
-            Route::get('/edit/{id}', [Webpanel\Data_contactController::class, 'edit'])->where(['id' => '[0-9]+']);
-            Route::post('/edit/{id}', [Webpanel\Data_contactController::class, 'update'])->where(['id' => '[0-9]+']);
-            Route::get('/destroy/{id}', [Webpanel\Data_contactController::class, 'destroy'])->where(['id' => '[0-9]+']);
+            Route::get('/', [Webpanel\Data_contactController::class, 'index'])->name('data_contact.index');
+            Route::get('/add', [Webpanel\Data_contactController::class, 'add'])->name('data_contact.add');
+            Route::post('/add', [Webpanel\Data_contactController::class, 'insert'])->name('data_contact.insert');
+            Route::get('/edit/{id}', [Webpanel\Data_contactController::class, 'edit'])->where(['id' => '[0-9]+'])->name('data_contact.edit');
+            Route::post('/edit/{id}', [Webpanel\Data_contactController::class, 'update'])->where(['id' => '[0-9]+'])->name('data_contact.update');
+            Route::delete('/destroy/{id}', [Webpanel\Data_contactController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('data_contact.destroy');
             Route::get('/status/{id}', [Webpanel\Data_contactController::class, 'status'])->where(['id' => '[0-9]+']);
         });
 
