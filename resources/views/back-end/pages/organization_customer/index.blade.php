@@ -165,6 +165,7 @@
                                                     </div>
                                                 </div>
                                         
+                                                
                                                 @endforeach
                                                 @if ($organization_customer->isEmpty())
                                                     <tr>
@@ -173,8 +174,6 @@
                                                 @endif
                                             </tbody>
                                         </table>
-                                        
-                                        
                                 </div>
                             </div>
                         </div>
@@ -247,7 +246,7 @@
     }
 </script>
 
-//แจ้งเตือนการแก้ไข
+    //แจ้งเตือนการแก้ไข
 @if (session('success'))
     <script>
         Swal.fire({

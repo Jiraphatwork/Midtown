@@ -175,6 +175,7 @@ class Organization_customerController extends Controller
             ? redirect()->route('organization_customer.index')->with('success', 'ข้อมูลอัปเดตสำเร็จ')
             : back()->with('error', 'ไม่สามารถอัปเดตข้อมูลได้');
     }
+    
     public function destroy($id)
     {
         $history = DB::table('organization_customer_models')->where('id', $id)->first();
