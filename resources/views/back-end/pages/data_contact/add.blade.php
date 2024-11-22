@@ -54,7 +54,7 @@
 
                                           <div class="mb-3">
                                                 <label for="tel" class="form-label">เบอร์โทร</label>
-                                                <input type="number" class="form-control" id="tel" name="tel" placeholder="กรอกที่อยู่" required>
+                                                <input type="number" class="form-control" id="tel" name="tel" placeholder="กรอกเบอร์โทร" required>
                                             </div>
                                            
                                             <div class="text-center">

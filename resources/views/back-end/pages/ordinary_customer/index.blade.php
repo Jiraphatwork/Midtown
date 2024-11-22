@@ -23,6 +23,8 @@
                 data-kt-sticky-offset="{default: '200px', lg: '0'}" data-kt-sticky-animation="false">
                 @include("$prefix.layout.head-menu")
             </div>
+            <div class="loading-spinner"></div>
+
             <!--end::Header-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
 
@@ -44,7 +46,7 @@
                                     </div>
                                     <div class="table-responsive shadow-lg p-3 bg-body-tertiary rounded">
                                         <table class="table table-hover table-striped table-bordered align-middle">
-                                            <thead class="table-primary text-center">
+                                            <thead class="table-dark text-center">
                                                 <tr>
                                                     <th scope="col">ลำดับ</th>
                                                     <th scope="col">ชื่อ-นามสกุล</th>
@@ -75,29 +77,41 @@
                                                             @endif
                                                         </td>
                                                         <td>{{ $item->id_card }}</td>
-                                                        <td>{{ $item->address }}</td>
+                                                        <td>
+                                                            @php
+                                                                $text = $item->address;
+                                                                $shortText = Str::limit($text, 20); // ตัดข้อความ
+                                                            @endphp
+
+                                                            <span>{{ $shortText }}</span>
+                                                            @if (strlen($text) > 20)
+                                                                <button class="btn btn-link p-0" data-bs-toggle="modal"
+                                                                    data-bs-target="#detailsModal{{ $item->id }}">
+                                                                    อ่านเพิ่มเติม
+                                                                </button>
+                                                            @endif
                                                         <td>{{ $item->tel }}</td>
-                                                        <td>{{ $item->tel2 }}</td>
-                                                        <td>{{ $item->tax_id }}</td>
+                                                        <td>{{ $item->tel2 ?? 'ไม่มีข้อมูล' }}</td>
+                                                        <td>{{ $item->tax_id ?? 'ไม่มีข้อมูล' }}</td>
                                                         <td>
                                                             <!-- ปุ่มแก้ไข -->
                                                             <a href="{{ route('ordinary_customer.edit', $item->id) }}"
                                                                 class="btn btn-warning btn-sm">แก้ไข</a>
                                                             </a>
-                                                            
-                                                                <!-- ฟอร์มลบ -->
-                                                                <form id="delete-form-{{ $item->id }}" action="{{ route('ordinary_customer.destroy', $item->id) }}" method="POST" style="display:none;">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                </form>
-                                                                <button type="button" class="btn btn-danger btn-sm"
+
+                                                            <!-- ฟอร์มลบ -->
+                                                            <form id="delete-form-{{ $item->id }}"
+                                                                action="{{ route('ordinary_customer.destroy', $item->id) }}"
+                                                                method="POST" style="display:none;">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                            </form>
+                                                            <button type="button" class="btn btn-danger btn-sm"
                                                                 onclick="confirmDelete('{{ $item->id }}')">
                                                                 ลบ
                                                             </button>
-                                                                
-                                                            
+
                                                         </td>
-                                                        
                                                     </tr>
                                                     <!-- Modal สำหรับรายการนี้ -->
                                                     <div class="modal fade" id="imageModal-{{ $item->id }}"
@@ -117,6 +131,31 @@
                                                                 <div class="modal-body text-center">
                                                                     <img src="{{ asset('id_cards/' . $item->pic_id_card) }}"
                                                                         alt="ID Card" class="img-fluid">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="detailsModal{{ $item->id }}"
+                                                        tabindex="-1"
+                                                        aria-labelledby="detailsModalLabel{{ $item->id }}"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title"
+                                                                        id="detailsModalLabel{{ $item->id }}">
+                                                                        รายละเอียด</h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    {{ $text }}
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">ปิด</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -201,7 +240,7 @@
     }
 </script>
 
-//แจ้งเตือนการแก้ไข
+<!--แจ้งเตือนการลบ-->
 @if (session('success'))
     <script>
         Swal.fire({
@@ -223,3 +262,39 @@
         });
     </script>
 @endif
+<style>
+    .loading-spinner {
+        position: fixed;
+        top: 50%;
+        left: 58%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        border: 4px solid #ccc;
+        border-top-color: #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        z-index: 9999;
+    }
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<script>
+    // Simulate loading delay
+    window.addEventListener("load", () => {
+        setTimeout(() => {
+            document.querySelector(".loading-spinner").style.display = "none";
+            document.getElementById("main-content").style.visibility = "visible";
+        }, 500);
+    });
+</script>

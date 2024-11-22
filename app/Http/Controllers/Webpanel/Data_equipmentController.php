@@ -110,6 +110,17 @@ public function edit($id)
                }
            }
 
+           if (
+            $item->name_equipment == $validated['name_equipment'] &&
+            $item->pic_equipment == $picequipmentFilename &&
+            $item->price == $validated['price'] &&
+            $item->quantity == $validated['quantity']
+        ) {
+            // หากไม่มีการเปลี่ยนแปลงข้อมูล, กลับไปยังหน้า index
+            return redirect()->route('data_equipment.index');
+        }
+        
+
                   // อัปเดตข้อมูลในฐานข้อมูล
         $updated = DB::table('equipment_models')->where('id', $id)->update([
             'name_equipment' => $validated['name_equipment'],

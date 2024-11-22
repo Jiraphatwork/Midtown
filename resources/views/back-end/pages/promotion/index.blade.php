@@ -23,6 +23,8 @@
                 data-kt-sticky-offset="{default: '200px', lg: '0'}" data-kt-sticky-animation="false">
                 @include("$prefix.layout.head-menu")
             </div>
+            <div class="loading-spinner"></div>
+
             <!--end::Header-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
 
@@ -37,13 +39,13 @@
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                                 <div class="container mt-5">
-                                    <h2 class="text-center mb-4 text-primary">ข้อมูลโปรโมชั่น</h2>
+                                    <h2 class="text-center mb-4 text-dark">ข้อมูลโปรโมชั่น</h2>
                                     <div class="d-flex justify-content-end mb-3">
                                         <a href="{{ route('promotion.add') }}" class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
                                     <div class="table-responsive shadow-lg p-3 bg-body-tertiary rounded">
                                         <table class="table table-hover table-striped table-bordered align-middle">
-                                            <thead class="table-primary text-center">
+                                            <thead class="table-dark text-center">
                                                 <tr>
                                                     <th scope="col">ลำดับ</th>
                                                     <th scope="col">ชื่อโปรโมชั่น</th>
@@ -69,14 +71,18 @@
                                                                 ไม่มีรูปภาพ
                                                             @endif
                                                         </td>
-                                                        <td style="max-width: 200px; word-wrap: break-word;">
-                                                            @if (strlen($item->detail) > 100)
-                                                                {{ substr($item->detail, 0, 100) }}...
-                                                                <a href="#" data-bs-toggle="modal"
-                                                                    data-bs-target="#detailModal{{ $item->id }}"
-                                                                    style="color: blue;">อ่านต่อ</a>
-                                                            @else
-                                                                {{ $item->detail }}
+                                                        <td>
+                                                            @php
+                                                                $text = $item->detail;
+                                                                $shortText = Str::limit($text, 30); // ตัดข้อความให้เหลือ 100 ตัว
+                                                            @endphp
+
+                                                            <span>{{ $shortText }}</span>
+                                                            @if (strlen($text) > 30)
+                                                                <button class="btn btn-link p-0" data-bs-toggle="modal"
+                                                                    data-bs-target="#detailsModal{{ $item->id }}">
+                                                                    อ่านเพิ่มเติม
+                                                                </button>
                                                             @endif
                                                         </td>
                                                         <td>{{ $item->first_date }}</td>
@@ -124,15 +130,15 @@
                                                         </div>
                                                     </div>
                                                     <!-- Modal สำหรับแสดงรายละเอียด -->
-                                                    <div class="modal fade" id="detailModal{{ $item->id }}"
+                                                    <div class="modal fade" id="detailsModal{{ $item->id }}"
                                                         tabindex="-1"
-                                                        aria-labelledby="detailModalLabel{{ $item->id }}"
+                                                        aria-labelledby="detailsModalLabel{{ $item->id }}"
                                                         aria-hidden="true">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title"
-                                                                        id="detailModalLabel{{ $item->id }}">
+                                                                        id="detailsModalLabel{{ $item->id }}">
                                                                         รายละเอียดโปรโมชั่น:
                                                                         {{ $item->name_promotion }}</h5>
                                                                     <button type="button" class="btn-close"
@@ -241,3 +247,40 @@
         });
     </script>
 @endif
+
+<style>
+    .loading-spinner {
+        position: fixed;
+        top: 50%;
+        left: 58%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        border: 4px solid #ccc;
+        border-top-color: #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        z-index: 9999;
+    }
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<script>
+    // Simulate loading delay
+    window.addEventListener("load", () => {
+        setTimeout(() => {
+            document.querySelector(".loading-spinner").style.display = "none";
+            document.getElementById("main-content").style.visibility = "visible";
+        }, 500);
+    });
+</script>

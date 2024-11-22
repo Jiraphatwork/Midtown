@@ -41,17 +41,17 @@ class Organization_customerController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'business_card' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'address' => 'required|string',
             'address2' => 'nullable|string',
             'address3' => 'nullable|string',
             'tel' => 'nullable|string|max:10',
-            'fax' => 'required|string|max:10',
+            'fax' => 'nullable|string|max:10',
             'tel2' => 'nullable|string|', 
             'tax_id' => 'nullable|string|max:13',
             'card_slip' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
+        
         $businessCardFilename = null;
         if ($request->hasFile('business_card')) {
             $businessCardFilename = time() . '_' . $request->file('business_card')->getClientOriginalName();
@@ -69,13 +69,13 @@ class Organization_customerController extends Controller
             'email' => $validated['email'],
             'business_card' => $businessCardFilename,
             'address' => $validated['address'],
-            'address2' => $validated['address2'],
-            'address3' => $validated['address3'],
+            'address2' => $validated['address2'] ?? null,
+            'address3' => $validated['address3'] ?? null,
             'tel' => $validated['tel'],
-            'fax' => $validated['fax'],
-            'tel2' => $validated['tel2'],
-            'tax_id' => $validated['tax_id'],
-            'card_slip' => $cardSlipFilename,
+            'fax' => $validated['fax'] ?? null,
+            'tel2' => $validated['tel2'] ?? null, 
+            'tax_id' => $validated['tax_id'] ?? null,
+            'card_slip' => $cardSlipFilename ?? null,
         ]);
 
         return redirect()->route('organization_customer.index')->with('success', 'เพิ่มข้อมูลสำเร็จ');
@@ -119,13 +119,13 @@ class Organization_customerController extends Controller
             'address2' => 'nullable|string',
             'address3' => 'nullable|string',
             'tel' => 'nullable|string|max:10',
-            'fax' => 'required|string|max:10',
-            'tel2' => 'required|string|max:10',
+            'fax' => 'nullable|string|max:10', // ทำให้เป็น nullable ถ้าไม่กรอก
+            'tel2' => 'nullable|string|max:10', // ทำให้เป็น nullable ถ้าไม่กรอก
             'tax_id' => 'nullable|string|max:13',
             'card_slip' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
     
-        // จัดการรูปภาพ (ถ้ามีการอัปโหลด) - business_card
+        // เริ่มต้นการจัดการไฟล์ (ใช้ไฟล์เดิมถ้าไม่มีการอัปโหลดใหม่)
         $businessCardFilename = $item->business_card; // ใช้ไฟล์เดิมเป็นค่าเริ่มต้น
         if ($request->hasFile('business_card')) {
             // สร้างชื่อไฟล์ใหม่เพื่อไม่ให้ซ้ำกัน
@@ -155,19 +155,35 @@ class Organization_customerController extends Controller
             }
         }
     
+        // ตรวจสอบว่าไม่มีการเปลี่ยนแปลงข้อมูล
+        if ($item->name == $validated['name'] &&
+            $item->email == $validated['email'] &&
+            $item->business_card == $businessCardFilename &&
+            $item->address == $validated['address'] &&
+            $item->address2 == $validated['address2'] &&
+            $item->address3 == $validated['address3'] &&
+            $item->tel == $validated['tel'] &&
+            $item->fax == $validated['fax'] &&
+            $item->tel2 == $validated['tel2'] &&
+            $item->tax_id == $validated['tax_id'] &&
+            $item->card_slip == $cardSlipFilename) {
+            // หากไม่มีการเปลี่ยนแปลงข้อมูล, กลับไปยังหน้า index
+            return redirect()->route('organization_customer.index');
+        }
+    
         // อัปเดตข้อมูลในฐานข้อมูล
         $updated = DB::table('organization_customer_models')->where('id', $id)->update([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'business_card' => $businessCardFilename,  // อัปเดตไฟล์ใบประกอบกิจการ
+            'business_card' => $businessCardFilename,
             'address' => $validated['address'],
-            'address2' => $validated['address2'],
-            'address3' => $validated['address3'],
+            'address2' => $validated['address2'] ?? null,
+            'address3' => $validated['address3'] ?? null,
             'tel' => $validated['tel'],
-            'fax' => $validated['fax'],
-            'tel2' => $validated['tel2'],
-            'tax_id' => $validated['tax_id'],
-            'card_slip' => $cardSlipFilename,  // อัปเดตไฟล์ใบหัก ณ ที่จ่าย
+            'fax' => $validated['fax'] ?? null,
+            'tel2' => $validated['tel2'] ?? null,
+            'tax_id' => $validated['tax_id'] ?? null,
+            'card_slip' => $cardSlipFilename,
         ]);
     
         // ถ้าอัปเดตสำเร็จให้กลับไปที่หน้ารายการลูกค้า
@@ -175,6 +191,7 @@ class Organization_customerController extends Controller
             ? redirect()->route('organization_customer.index')->with('success', 'ข้อมูลอัปเดตสำเร็จ')
             : back()->with('error', 'ไม่สามารถอัปเดตข้อมูลได้');
     }
+    
     
     public function destroy($id)
     {

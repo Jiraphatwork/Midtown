@@ -38,7 +38,7 @@
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
 
                                 <div class="container mt-5">
-                                    <h2 class="text-center mb-4">แก้ไขข้อมูลอุปกรณ์</h2>
+                                    <h2 class="text-center mb-4">แก้ไขข้อมูลติดต่อเรา</h2>
                                     <div class="shadow-lg p-4 bg-body-tertiary rounded">
                                         <form action="{{ route('data_contact.update', $item->id) }}" method="POST" enctype="multipart/form-data">
                                             @csrf
@@ -58,13 +58,13 @@
                                             <div class="mb-3">
                                                 <label for="address" class="form-label">ที่อยู่</label>
                                                 <input type="text" class="form-control" id="address" name="address" 
-                                                    value="{{ old('address', $item->address) }}" placeholder="กรอกที่อยู่" required>
+                                                    value="{{ old('address', $item->address) }}" placeholder="กรอกที่อยู่" >
                                             </div>
                                         
                                             <div class="mb-3">
                                                 <label for="tel" class="form-label">เบอร์โทร</label>
                                                 <input type="number" class="form-control" id="tel" name="tel" 
-                                                    value="{{ old('tel', $item->tel) }}" placeholder="กรอกเบอร์โทร" required>
+                                                    value="{{ old('tel', $item->tel) }}" placeholder="กรอกเบอร์โทร" >
                                             </div>
                                      
                                             <div class="text-center">

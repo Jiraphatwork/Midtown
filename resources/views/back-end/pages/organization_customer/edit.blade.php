@@ -91,13 +91,13 @@
                                             <div class="mb-3">
                                                 <label for="fax" class="form-label">เบอร์แฟกซ์</label>
                                                 <input type="text" class="form-control" id="fax" name="fax" 
-                                                    value="{{ old('fax', $item->fax) }}" placeholder="กรอกเบอร์แฟกซ์" required>
+                                                    value="{{ old('fax', $item->fax) }}" placeholder="กรอกเบอร์แฟกซ์" >
                                             </div>
                                 
                                             <div class="mb-3">
                                                 <label for="tel2" class="form-label">ตัวแทนติดต่อ</label>
                                                 <input type="text" class="form-control" id="tel2" name="tel2" 
-                                                    value="{{ old('tel2', $item->tel2) }}" placeholder="กรอกเบอร์โทรสำรอง" required>
+                                                    value="{{ old('tel2', $item->tel2) }}" placeholder="กรอกเบอร์โทรสำรอง" >
                                             </div>
                                 
                                             <div class="mb-3">

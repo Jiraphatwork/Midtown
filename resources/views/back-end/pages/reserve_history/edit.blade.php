@@ -40,64 +40,75 @@
                                 <div class="container mt-5">
                                     <h2 class="text-center mb-4">แก้ไขข้อมูลการจอง</h2>
                                     <div class="shadow-lg p-4 bg-body-tertiary rounded">
-                                        <form action="{{ route('reserve_history.update', $history->id) }}" method="POST">
+                                        <form action="{{ route('reserve_history.update', $history->id) }}"
+                                            method="POST">
                                             @csrf
                                             @method('POST')
-                                            
+
                                             <div class="mb-3">
                                                 <label for="name" class="form-label">ชื่อ-นามสกุล</label>
                                                 <input type="text" class="form-control" id="name" name="name"
-                                                       value="{{ old('name', $history->name) }}" required>
+                                                    value="{{ old('name', $history->name) }}" required>
                                             </div>
-                                            
+
                                             <div class="mb-3">
                                                 <label for="now_date" class="form-label">วันที่จ่ายเงิน</label>
-                                                <input type="date" class="form-control" id="now_date" name="now_date" 
-                                                       value="{{ old('now_date', \Carbon\Carbon::parse($history->now_date)->format('Y-m-d')) }}" required>
+                                                <input type="date" class="form-control" id="now_date"
+                                                    name="now_date"
+                                                    value="{{ old('now_date', \Carbon\Carbon::parse($history->now_date)->format('Y-m-d')) }}"
+                                                    required>
                                             </div>
-                                            
+
                                             <div class="mb-3">
                                                 <label for="first_date" class="form-label">วันแรก</label>
-                                                <input type="date" class="form-control" id="first_date" name="first_date" 
-                                                       value="{{ old('first_date', \Carbon\Carbon::parse($history->first_date)->format('Y-m-d')) }}" required>
+                                                <input type="date" class="form-control" id="first_date"
+                                                    name="first_date"
+                                                    value="{{ old('first_date', \Carbon\Carbon::parse($history->first_date)->format('Y-m-d')) }}"
+                                                    required>
                                             </div>
-                                            
+
                                             <div class="mb-3">
                                                 <label for="last_date" class="form-label">วันสุดท้าย</label>
-                                                <input type="date" class="form-control" id="last_date" name="last_date" 
-                                                       value="{{ old('last_date', \Carbon\Carbon::parse($history->last_date)->format('Y-m-d')) }}" required>
+                                                <input type="date" class="form-control" id="last_date"
+                                                    name="last_date"
+                                                    value="{{ old('last_date', \Carbon\Carbon::parse($history->last_date)->format('Y-m-d')) }}"
+                                                    required>
                                             </div>
-                                            
+
                                             <div class="mb-3">
                                                 <label for="status" class="form-label">สถานะ</label>
                                                 <select class="form-select" id="status" name="status" required>
-                                                    <option value="จ่ายแล้ว" {{ old('status', $history->status) == 'จ่ายแล้ว' ? 'selected' : '' }}>
+                                                    <option value="จ่ายแล้ว"
+                                                        {{ old('status', $history->status) == 'จ่ายแล้ว' ? 'selected' : '' }}>
                                                         จ่ายแล้ว
                                                     </option>
-                                                    <option value="ยังไม่จ่าย" {{ old('status', $history->status) == 'ยังไม่จ่าย' ? 'selected' : '' }}>
+                                                    <option value="ยังไม่จ่าย"
+                                                        {{ old('status', $history->status) == 'ยังไม่จ่าย' ? 'selected' : '' }}>
                                                         ยังไม่จ่าย
                                                     </option>
                                                 </select>
                                             </div>
-                                            
+
                                             <div class="mb-3">
                                                 <label for="product_type" class="form-label">ประเภทสินค้า</label>
-                                                <input type="text" class="form-control" id="product_type" name="product_type"
-                                                       value="{{ old('product_type', $history->product_type) }}" required>
+                                                <input type="text" class="form-control" id="product_type"
+                                                    name="product_type"
+                                                    value="{{ old('product_type', $history->product_type) }}" required>
                                             </div>
-                                            
+
                                             <div class="mb-3">
                                                 <label for="area" class="form-label">พื้นที่</label>
-                                                <input type="text" class="form-control" id="area" name="area" 
-                                                       value="{{ old('area', $history->area) }}" required>
+                                                <input type="text" class="form-control" id="area" name="area"
+                                                    value="{{ old('area', $history->area) }}" required>
                                             </div>
-                                            
+
                                             <div class="text-center">
                                                 <button type="submit" class="btn btn-primary">บันทึก</button>
-                                                <a href="{{ route('reserve_history.index') }}" class="btn btn-secondary">ยกเลิก</a>
+                                                <a href="{{ route('reserve_history.index') }}"
+                                                    class="btn btn-secondary">ยกเลิก</a>
                                             </div>
                                         </form>
-                                        
+
                                     </div>
                                 </div>
 

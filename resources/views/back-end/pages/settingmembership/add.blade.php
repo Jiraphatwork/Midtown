@@ -37,7 +37,7 @@
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                                 <div class="container mt-5">
-                                    <h2 class="text-center mb-4 text-primary">
+                                    <h2 class="text-center mb-4 text-dark">
                                         เพิ่มตั้งค่าข้อมูลเงื่อนการสมัครสมาชิกข้อตกลง</h2>
                                 </div>
                             </div>
@@ -59,11 +59,9 @@
                                                 <label for="details" class="form-label">รายละเอียด</label>
                                                 <textarea class="form-control" id="details" name="details" rows="4" placeholder="กรอกรายละเอียด" required></textarea>
                                             </div>
-                                            <div class="">
-                                                <button type="reset" onclick="history.back()"
-                                                    class="btn btn-light btn-active-light-primary me-2">ยกเลิก</button>
-                                                <a href="javascript:void(0)" class="btn btn-primary" id="submit"
-                                                    onclick="check_add()">บันทึก</a>
+                                            <div class="d-flex justify-content-center text-center">
+                                                <a href="javascript:void(0)" class="btn btn-primary me-2" id="submit" onclick="check_add()">บันทึก</a>
+                                                <button type="reset" onclick="history.back()" class="btn btn-light btn-active-light-primary">ยกเลิก</button>
                                             </div>
                                         </form>
                                     </div>
@@ -128,10 +126,10 @@
             */
         Swal.fire({
             icon: 'warning',
-            title: 'Please press confirm to complete the transaction.',
+            title: 'ต้องการจะบันทึกข้อมูลใช่หรือไม่',
             showCancelButton: true,
-            confirmButtonText: 'Confirm',
-            cancelButtonText: `Cancel`,
+            confirmButtonText: 'ยืนยัน',
+            cancelButtonText: `ยกเลิก`,
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
@@ -146,10 +144,10 @@
                         if (data) {
                             Swal.fire({
                                 icon: 'success',
-                                title: "Congratulations",
-                                text: "You have added the data successfully",
+                                title: "สำเร็จ!",
+                                text: "เพิ่มข้อมูลสำเร็จ",
                                 showCancelButton: false,
-                                confirmButtonText: 'Close',
+                                confirmButtonText: 'ตกลง',
                             }).then((result) => {
                                 location.href =
                                     "{{ url('webpanel/settingmembership') }}";

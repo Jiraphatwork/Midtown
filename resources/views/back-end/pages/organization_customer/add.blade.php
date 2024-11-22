@@ -52,7 +52,7 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label for="business_card" class="form-label">ใบประกอบกิจการ</label>
-                                                <input type="file" class="form-control" id="business_card" name="business_card" accept="image/*" required>
+                                                <input type="file" class="form-control" id="business_card" name="business_card"  required>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="address" class="form-label">ที่อยู่ 1</label>
@@ -72,11 +72,11 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label for="fax" class="form-label">เบอร์แฟกซ์</label>
-                                                <input type="text" class="form-control" id="fax" name="fax" placeholder="กรอกเบอร์แฟกซ์" required>
+                                                <input type="text" class="form-control" id="fax" name="fax" placeholder="กรอกเบอร์แฟกซ์">
                                             </div>
                                             <div class="mb-3">
                                                 <label for="tel2" class="form-label">ตัวแทนติดต่อ</label>
-                                                <input type="text" class="form-control" id="tel2" name="tel2" placeholder="กรอกเบอร์โทรสำรอง" required>
+                                                <input type="text" class="form-control" id="tel2" name="tel2" placeholder="กรอกเบอร์ตัวแทนติดต่อ" >
                                             </div>
                                             <div class="mb-3">
                                                 <label for="tax_id" class="form-label">เลขผู้เสียภาษี</label>
@@ -84,7 +84,7 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label for="card_slip" class="form-label">ใบหัก ณ ที่จ่าย</label>
-                                                <input type="file" class="form-control" id="card_slip" name="card_slip" accept="image/*" required>
+                                                <input type="file" class="form-control" id="card_slip" name="card_slip" accept="image/*" >
                                             </div>
                                             <div class="text-center">
                                                 <button type="submit" class="btn btn-primary">บันทึก</button>

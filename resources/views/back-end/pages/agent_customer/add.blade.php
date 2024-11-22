@@ -61,15 +61,16 @@
                                             <div class="mb-3">
                                                 <label for="business_card" class="form-label">ใบประกอบกิจการ</label>
                                                 <input type="file" class="form-control" id="business_card"
-                                                    name="business_card" accept="image/*" required>
+                                                    name="business_card">
                                             </div>
+
 
                                             <!-- ใบทะเบียนภาษีมูลค่าเพิ่ม -->
                                             <div class="mb-3">
                                                 <label for="tax_card"
                                                     class="form-label">ใบทะเบียนภาษีมูลค่าเพิ่ม</label>
                                                 <input type="file" class="form-control" id="tax_card"
-                                                    name="tax_card" accept="image/*" required>
+                                                    name="tax_card">
                                             </div>
 
                                             <!-- รูปบัตรประชาชน -->
@@ -111,15 +112,16 @@
                                             <div class="mb-3">
                                                 <label for="fax" class="form-label">เบอร์แฟกซ์</label>
                                                 <input type="text" class="form-control" id="fax"
-                                                    name="fax" placeholder="กรอกเบอร์แฟกซ์" required>
+                                                    name="fax" placeholder="กรอกเบอร์แฟกซ์">
                                             </div>
 
                                             <!-- ตัวแทนติดต่อ -->
                                             <div class="mb-3">
                                                 <label for="tel2" class="form-label">ตัวแทนติดต่อ</label>
                                                 <input type="text" class="form-control" id="tel2"
-                                                    name="tel2" placeholder="กรอกเบอร์โทรสำรอง" required>
+                                                    name="tel2" placeholder="กรอกเบอร์ตัวแทนติดต่อ">
                                             </div>
+
 
                                             <!-- เลขผู้เสียภาษี -->
                                             <div class="mb-3">
@@ -132,15 +134,14 @@
                                             <div class="mb-3">
                                                 <label for="slip_card" class="form-label">ใบหัก ณ ที่จ่าย</label>
                                                 <input type="file" class="form-control" id="slip_card"
-                                                    name="slip_card" accept="image/*" required>
-                                            </div>
+                                                    name="slip_card" </div>
 
-                                            <!-- ปุ่มบันทึกข้อมูล -->
-                                            <div class="text-center">
-                                                <button type="submit" class="btn btn-primary">บันทึก</button>
-                                                <a href="{{ route('agent_customer.index') }}"
-                                                    class="btn btn-secondary">ยกเลิก</a>
-                                            </div>
+                                                <!-- ปุ่มบันทึกข้อมูล -->
+                                                <div class="text-center">
+                                                    <button type="submit" class="btn btn-primary">บันทึก</button>
+                                                    <a href="{{ route('agent_customer.index') }}"
+                                                        class="btn btn-secondary">ยกเลิก</a>
+                                                </div>
                                         </form>
                                     </div>
                                 </div>

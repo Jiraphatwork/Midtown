@@ -23,6 +23,8 @@
                 data-kt-sticky-offset="{default: '200px', lg: '0'}" data-kt-sticky-animation="false">
                 @include("$prefix.layout.head-menu")
             </div>
+            <div class="loading-spinner"></div>
+
             <!--end::Header-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
 
@@ -37,13 +39,14 @@
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                                 <div class="container mt-5">
-                                    <h2 class="text-center mb-4 text-primary">ตั้งค่าข้อมูลเงื่อนการสมัครสมาชิกข้อตกลง</h2>
+                                    <h2 class="text-center mb-4 text-dark">ตั้งค่าข้อมูลเงื่อนการสมัครสมาชิกข้อตกลง</h2>
                                     <div class="d-flex justify-content-end mb-3">
-                                        <a href="webpanel/settingmembership/add" class="btn btn-success">+เพิ่มข้อมูล</a>
+                                        <a href="webpanel/settingmembership/add"
+                                            class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
                                     <div class="table-responsive shadow-lg p-3 bg-body-tertiary rounded">
                                         <table class="table table-hover table-striped table-bordered align-middle">
-                                            <thead class="table-primary text-center">
+                                            <thead class="table-dark text-center">
                                                 <tr>
                                                     <th scope="col">ลำดับ</th>
                                                     <th scope="col">ชื่อเงื่อนไข</h>
@@ -52,20 +55,55 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <!-- Loop through the items to display each one -->
                                                 @foreach ($items as $index => $item)
-                                                    <tr>
+                                                    <tr class="text-center">
                                                         <td>{{ $index + 1 }}</td>
                                                         <td>{{ $item->name_condition }}</td>
-                                                        <td>{{ $item->details }}</td>
+                                                        <td>
+                                                            @php
+                                                                $text = $item->details;
+                                                                $shortText = Str::limit($text, 100); // ตัดข้อความให้เหลือ 100 ตัว
+                                                            @endphp
+
+                                                            <span>{{ $shortText }}</span>
+                                                            @if (strlen($text) > 100)
+                                                                <button class="btn btn-link p-0" data-bs-toggle="modal"
+                                                                    data-bs-target="#detailsModal{{ $item->id }}">
+                                                                    อ่านเพิ่มเติม
+                                                                </button>
+                                                            @endif
                                                         <td class="text-center">
                                                             <a href="{{ url('webpanel/settingmembership/edit/' . $item->id) }}"
                                                                 class="btn btn-warning btn-sm">แก้ไข</a>
                                                             <a href="javascript:void(0);" class="btn btn-danger btn-sm"
                                                                 onclick="check_destroy({{ $item->id }})">ลบ</a>
-
                                                         </td>
                                                     </tr>
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="detailsModal{{ $item->id }}"
+                                                        tabindex="-1"
+                                                        aria-labelledby="detailsModalLabel{{ $item->id }}"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title"
+                                                                        id="detailsModalLabel{{ $item->id }}">
+                                                                        รายละเอียด</h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    {{ $text }}
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">ปิด</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 @endforeach
                                             </tbody>
                                         </table>
@@ -115,10 +153,10 @@
     function check_destroy(id) {
         Swal.fire({
             icon: 'warning',
-            title: 'Are you sure you want to delete this item?',
+            title: 'การลบข้อมูลนี้ไม่สามารถกู้คืนได้!',
             showCancelButton: true,
-            confirmButtonText: 'Delete',
-            cancelButtonText: 'Cancel',
+            confirmButtonText: 'ใช่, ลบเลย!',
+            cancelButtonText: 'ยกเลิก',
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
@@ -129,8 +167,8 @@
                         if (data.success) {
                             Swal.fire({
                                 icon: 'success',
-                                title: "Deleted Successfully",
-                                text: "The data has been deleted successfully.",
+                                title: "ลบสำเร็จ!",
+                                text: "ข้อมูลได้ถูกลบเรียบร้อยแล้ว.",
                                 showCancelButton: false,
                                 confirmButtonText: 'Close',
                             }).then((result) => {
@@ -139,10 +177,10 @@
                         } else {
                             Swal.fire({
                                 icon: 'error',
-                                title: "Error",
-                                text: "Something went wrong.",
+                                title: "ข้อผิดพลาด!",
+                                text: "ข้อผิดพลาด!",
                                 showCancelButton: false,
-                                confirmButtonText: 'Close',
+                                confirmButtonText: 'ตกลง',
                             });
                         }
                     }
@@ -152,4 +190,39 @@
             }
         });
     }
+</script>
+<style>
+    .loading-spinner {
+        position: fixed;
+        top: 50%;
+        left: 58%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        border: 4px solid #ccc;
+        border-top-color: #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        z-index: 9999;
+    }
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+<script>
+    // Simulate loading delay
+    window.addEventListener("load", () => {
+        setTimeout(() => {
+            document.querySelector(".loading-spinner").style.display = "none";
+            document.getElementById("main-content").style.visibility = "visible";
+        }, 500);
+    });
 </script>

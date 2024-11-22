@@ -17,7 +17,7 @@ class CreatePromotionModelsTable extends Migration
             $table->id();
             $table->string("name_promotion");
             $table->string("pic_promotion");
-            $table->string("detail");
+            $table->string("detail",5000);
             $table->date("first_date");
             $table->date("last_date");
             $table->string("created_by",50)->nullable();

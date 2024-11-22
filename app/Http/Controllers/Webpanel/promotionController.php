@@ -41,28 +41,28 @@ class promotionController extends Controller
         $validated = $request->validate([
             'name_promotion' => 'required|string|max:255',
             'pic_promotion' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'detail' =>   'required|string',
+            'detail' => 'required|string',
             'first_date' => 'required|date',
-            'last_date' => 'required|date',    
+            'last_date' => 'required|date',
         ]);
         $picpromotionFilename = null;
         if ($request->hasFile('pic_promotion')) {
             $picpromotionFilename = time() . '_' . $request->file('pic_promotion')->getClientOriginalName();
             $request->file('pic_promotion')->move(public_path('pic_promotions'), $picpromotionFilename);
         }
-         // บันทึกข้อมูลลงฐานข้อมูล
-         DB::table('promotion_models')->insert([
+        // บันทึกข้อมูลลงฐานข้อมูล
+        DB::table('promotion_models')->insert([
             'name_promotion' => $validated['name_promotion'],
-            'pic_promotion' => $picpromotionFilename, 
+            'pic_promotion' => $picpromotionFilename,
             'detail' => $validated['detail'],
             'first_date' => $validated['first_date'],
             'last_date' => $validated['last_date'],
         ]);
 
         return redirect()->route('promotion.index')->with('success', 'เพิ่มข้อมูลสำเร็จ');
-}
+    }
 
-public function edit($id)
+    public function edit($id)
     {
         // ดึงข้อมูลจากฐานข้อมูลตาม ID
         $item = DB::table('promotion_models')->find($id);
@@ -70,39 +70,39 @@ public function edit($id)
         if (!$item) {
             return redirect()->route('promotion.index')->with('error', 'ไม่พบข้อมูล');
         }
-// ส่งข้อมูลไปยังหน้า View พร้อมตัวแปรอื่นๆ
-return view('back-end.pages.promotion.edit', [
-    'item' => $item,
-    'prefix' => $this->prefix,  // ส่งตัวแปร $prefix
-    'segment' => $this->segment,
-    'folder' => $this->folder,
-]);
-}
-
-public function update(Request $request, $id)
-{
-    // ดึงข้อมูลปัจจุบันของลูกค้าจากฐานข้อมูล
-    $item = DB::table('promotion_models')->where('id', $id)->first();
-
-    // ถ้าไม่พบข้อมูลให้ย้อนกลับไปหน้าหลัก
-    if (!$item) {
-        return redirect()->route('promotion.index')->with('error', 'ไม่พบข้อมูล');
+        // ส่งข้อมูลไปยังหน้า View พร้อมตัวแปรอื่นๆ
+        return view('back-end.pages.promotion.edit', [
+            'item' => $item,
+            'prefix' => $this->prefix,  // ส่งตัวแปร $prefix
+            'segment' => $this->segment,
+            'folder' => $this->folder,
+        ]);
     }
-    // ตรวจสอบและ validate ข้อมูล
-    $validated = $request->validate([
-       'name_promotion' => 'required|string|max:255',
+
+    public function update(Request $request, $id)
+    {
+        // ดึงข้อมูลปัจจุบันของลูกค้าจากฐานข้อมูล
+        $item = DB::table('promotion_models')->where('id', $id)->first();
+
+        // ถ้าไม่พบข้อมูลให้ย้อนกลับไปหน้าหลัก
+        if (!$item) {
+            return redirect()->route('promotion.index')->with('error', 'ไม่พบข้อมูล');
+        }
+        // ตรวจสอบและ validate ข้อมูล
+        $validated = $request->validate([
+            'name_promotion' => 'required|string|max:255',
             'pic_promotion' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'detail' =>   'required|string',
+            'detail' => 'required|string',
             'first_date' => 'required|date',
-            'last_date' => 'required|date',    
-    ]);
+            'last_date' => 'required|date',
+        ]);
 
         // จัดการรูปภาพ (ถ้ามีการอัปโหลด) -pic_promotion
         $picpromotionFilename = $item->pic_promotion; // ใช้ไฟล์เดิมเป็นค่าเริ่มต้น
         if ($request->hasFile('pic_promotion')) {
             // สร้างชื่อไฟล์ใหม่เพื่อไม่ให้ซ้ำกัน
             $picpromotionFilename = time() . '_' . $request->file('pic_promotion')->getClientOriginalName();
-            
+
             // บันทึกไฟล์ไปยังโฟลเดอร์ public/pic_promotions
             $request->file('pic_promotion')->move(public_path('pic_promotions'), $picpromotionFilename);
 
@@ -111,30 +111,42 @@ public function update(Request $request, $id)
                 unlink(public_path('pic_promotions/' . $item->pic_promotion));
             }
         }
-                     // อัปเดตข้อมูลในฐานข้อมูล
-                     $updated = DB::table('promotion_models')->where('id', $id)->update([
-                            'name_promotion' => $validated['name_promotion'],
-                            'pic_promotion' => $picpromotionFilename, 
-                            'detail' => $validated['detail'],
-                            'first_date' => $validated['first_date'],
-                            'last_date' => $validated['last_date'],
-                    ]);
-                   
+
+        if (
+            $item->name_promotion == $validated['name_promotion'] &&
+            $item->pic_promotion == $picpromotionFilename &&
+            $item->detail == $validated['detail'] &&
+            $item->first_date == $validated['first_date'] &&
+            $item->last_date == $validated['last_date']
+        ) {
+            // หากไม่มีการเปลี่ยนแปลงข้อมูล, กลับไปยังหน้า index
+            return redirect()->route('promotion.index');
+        }
+
+        // อัปเดตข้อมูลในฐานข้อมูล
+        $updated = DB::table('promotion_models')->where('id', $id)->update([
+            'name_promotion' => $validated['name_promotion'],
+            'pic_promotion' => $picpromotionFilename,
+            'detail' => $validated['detail'],
+            'first_date' => $validated['first_date'],
+            'last_date' => $validated['last_date'],
+        ]);
+
         return $updated
-        ? redirect()->route('promotion.index')->with('success', 'ข้อมูลอัปเดตสำเร็จ')
-        : back()->with('error', 'ไม่สามารถอัปเดตข้อมูลได้');
+            ? redirect()->route('promotion.index')->with('success', 'ข้อมูลอัปเดตสำเร็จ')
+            : back()->with('error', 'ไม่สามารถอัปเดตข้อมูลได้');
 
-        }
+    }
 
-        public function destroy($id)
-        {
-            $item = DB::table('promotion_models')->where('id', $id)->first();
-    
-            if (!$item) {
-                return redirect()->route('promotion.index')->with('error', 'ไม่พบข้อมูลที่ต้องการลบ');
-            }
-            DB::table('promotion_models')->where('id', $id)->delete();
-    
-            return redirect()->route('promotion.index')->with('success', 'ลบข้อมูลสำเร็จ');
+    public function destroy($id)
+    {
+        $item = DB::table('promotion_models')->where('id', $id)->first();
+
+        if (!$item) {
+            return redirect()->route('promotion.index')->with('error', 'ไม่พบข้อมูลที่ต้องการลบ');
         }
+        DB::table('promotion_models')->where('id', $id)->delete();
+
+        return redirect()->route('promotion.index')->with('success', 'ลบข้อมูลสำเร็จ');
+    }
 }

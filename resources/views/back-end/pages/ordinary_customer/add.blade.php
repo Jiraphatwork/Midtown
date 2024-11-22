@@ -68,11 +68,11 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label for="tel2" class="form-label">ตัวแทนติดต่อ</label>
-                                                <input type="text" class="form-control" id="tel2" name="tel2" placeholder="กรอกตัวแทนติดต่อ" required>
+                                                <input type="text" class="form-control" id="tel2" name="tel2" placeholder="กรอกตัวแทนติดต่อ" >
                                             </div>
                                             <div class="mb-3">
                                                 <label for="tax_id" class="form-label">เลขผู้เสียภาษี</label>
-                                                <input type="text" class="form-control" id="tax_id" name="tax_id" placeholder="กรอกเลขผู้เสียภาษี" required>
+                                                <input type="text" class="form-control" id="tax_id" name="tax_id" placeholder="กรอกเลขผู้เสียภาษี">
                                             </div>
                                             <div class="text-center">
                                                 <button type="submit" class="btn btn-primary">บันทึก</button>

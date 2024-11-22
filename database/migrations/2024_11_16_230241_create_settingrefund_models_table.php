@@ -16,7 +16,7 @@ class CreateSettingrefundModelsTable extends Migration
         Schema::create('settingrefund_models', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string("details");
+            $table->string("details",5000);
             $table->string("created_by",50)->nullable();
             $table->string("updated_by",50)->nullable();
             $table->datetime('created_at')->nullable();

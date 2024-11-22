@@ -75,25 +75,25 @@
                                         
                                             <div class="mb-3">
                                                 <label for="address" class="form-label">ที่อยู่</label>
-                                                <textarea class="form-control" id="address" name="address" rows="3" placeholder="กรอกที่อยู่" required>{{ old('address', $item->address) }}</textarea>
+                                                <textarea class="form-control" id="address" name="address" rows="3" placeholder="กรอกที่อยู่" >{{ old('address', $item->address) }}</textarea>
                                             </div>
                                         
                                             <div class="mb-3">
                                                 <label for="tel" class="form-label">เบอร์โทร</label>
                                                 <input type="text" class="form-control" id="tel" name="tel" 
-                                                       value="{{ old('tel', $item->tel) }}" placeholder="กรอกเบอร์โทร" required>
+                                                       value="{{ old('tel', $item->tel) }}" placeholder="กรอกเบอร์โทร" >
                                             </div>
                                         
                                             <div class="mb-3">
                                                 <label for="tel2" class="form-label">ตัวแทนติดต่อ</label>
                                                 <input type="text" class="form-control" id="tel2" name="tel2" 
-                                                       value="{{ old('tel2', $item->tel2) }}" placeholder="กรอกตัวแทนติดต่อ" required>
+                                                       value="{{ old('tel2', $item->tel2) }}" placeholder="กรอกตัวแทนติดต่อ">
                                             </div>
                                         
                                             <div class="mb-3">
                                                 <label for="tax_id" class="form-label">เลขผู้เสียภาษี</label>
                                                 <input type="text" class="form-control" id="tax_id" name="tax_id" 
-                                                       value="{{ old('tax_id', $item->tax_id) }}" placeholder="กรอกเลขผู้เสียภาษี" required>
+                                                       value="{{ old('tax_id', $item->tax_id) }}" placeholder="กรอกเลขผู้เสียภาษี" >
                                             </div>
                                         
                                             <div class="text-center">

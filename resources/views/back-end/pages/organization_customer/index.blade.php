@@ -23,6 +23,8 @@
                 data-kt-sticky-offset="{default: '200px', lg: '0'}" data-kt-sticky-animation="false">
                 @include("$prefix.layout.head-menu")
             </div>
+            <div class="loading-spinner"></div>
+
             <!--end::Header-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
 
@@ -37,168 +39,162 @@
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                                 <div class="container mt-5">
-                                    <h2 class="text-center mb-4 text-primary">ข้อมูลลูกค้า(องกรณ์)</h2>
+                                    <h2 class="text-center mb-4 text-dark">ข้อมูลลูกค้า(องกรณ์)</h2>
                                     <div class="d-flex justify-content-end mb-3">
                                         <a href="{{ route('organization_customer.add') }}"
                                             class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
                                     <div class="table-responsive shadow-lg p-3 bg-body-tertiary rounded">
                                         <table class="table table-hover table-striped table-bordered align-middle">
-                                            <thead class="table-primary text-center">
+                                            <thead class="table-dark text-center">
                                                 <tr>
                                                     <th scope="col">ลำดับ</th>
                                                     <th scope="col">ชื่อ-นามสกุล</th>
                                                     <th scope="col">อีเมล</th>
-                                                    <th scope="col">ใบประกอบกิจการ</th>
-                                                    <th scope="col">ที่อยู่</th>
-                                                    <th scope="col">เบอร์โทร</th>
-                                                    <th scope="col">เบอร์แฟกซ์</th>
-                                                    <th scope="col">ตัวแทนติดต่อ</th>
-                                                    <th scope="col">เลขผู้เสียภาษี</th>
-                                                    <th scope="col">ใบหัก ณ ที่จ่าย</th>
+                                                    <th scope="col">ดูข้อมูล</th>
                                                     <th scope="col">จัดการ</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach ($organization_customer as $index => $item)
-                                                <tr class="text-center">
-                                                    <td>{{ $index + 1 }}</td>
-                                                    <td>{{ $item->name }}</td>
-                                                    <td>{{ $item->email }}</td>
-                                                    <td>
-                                                        @if ($item->business_card)
-                                                            <img src="{{ asset('business_cards/' . $item->business_card) }}" alt="Business Card" width="70"
-                                                                style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#businessCardModal-{{ $item->id }}">
-                                                        @else
-                                                            ไม่มีรูปภาพ
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        <!-- ปุ่มที่อยู่ -->
-                                                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#addressModal-{{ $item->id }}">
-                                                            ดูที่อยู่
-                                                        </button>
-                                                    </td>
-                                                    <td>{{ $item->tel }}</td>
-                                                    <td>{{ $item->fax }}</td>
-                                                    <td>{{ $item->tel2 }}</td>
-                                                    <td>{{ $item->tax_id }}</td>
-                                                    <td>
-                                                        @if ($item->card_slip)
-                                                            <img src="{{ asset('card_slips/' . $item->card_slip) }}" alt="Card Slip" width="70"
-                                                                style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#cardSlipModal-{{ $item->id }}">
-                                                        @else
-                                                            ไม่มีรูปภาพ
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        <!-- ปุ่มแก้ไข -->
-                                                        <a href="{{ route('organization_customer.edit', $item->id) }}" 
-                                                            class="btn btn-warning btn-sm">แก้ไข</a>
+                                                    <tr class="text-center">
+                                                        <td>{{ $index + 1 }}</td>
+                                                        <td>{{ $item->name }}</td>
+                                                        <td>{{ $item->email }}</td>
+                                                        <td>
+                                                            <!-- ปุ่มเปิด Modal -->
+                                                            <button type="button" class="btn btn-info btn-sm"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#detailModal-{{ $item->id }}">ดูข้อมูล</button>
+                                                        </td>
+                                                        <td>
+                                                            <!-- ปุ่มแก้ไข -->
+                                                            <a href="{{ route('organization_customer.edit', $item->id) }}"
+                                                                class="btn btn-warning btn-sm">แก้ไข</a>
+                                                            <!-- ฟอร์มลบ -->
+                                                            <form id="delete-form-{{ $item->id }}"
+                                                                action="{{ route('organization_customer.destroy', $item->id) }}"
+                                                                method="POST" style="display:none;">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                            </form>
+                                                            <button type="button" class="btn btn-danger btn-sm"
+                                                                onclick="confirmDelete('{{ $item->id }}')">ลบ</button>
+                                                        </td>
 
-                                                        </a>
-                                                           <!-- ฟอร์มลบ -->
-                                                           <form id="delete-form-{{ $item->id }}" action="{{ route('organization_customer.destroy', $item->id) }}" method="POST" style="display:none;">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                        </form>
-                                                        <button type="button" class="btn btn-danger btn-sm"
-                                                        onclick="confirmDelete('{{ $item->id }}')">
-                                                        ลบ
-                                                    </button>
-                                                    </td>
-                                                
-                                                </tr>
-                                        
-                                                <!-- Modal สำหรับแสดงที่อยู่ -->
-                                                <div class="modal fade" id="addressModal-{{ $item->id }}" tabindex="-1" aria-labelledby="addressModalLabel-{{ $item->id }}" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="addressModalLabel-{{ $item->id }}">ที่อยู่ของ {{ $item->name }}</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <p><strong>ที่อยู่ 1:</strong> {{ $item->address }}</p>
-                                                                <p><strong>ที่อยู่ 2:</strong> {{ $item->address2 ?? 'ไม่มีข้อมูล' }}</p>
-                                                                <p><strong>ที่อยู่ 3:</strong> {{ $item->address3 ?? 'ไม่มีข้อมูล' }}</p>
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="detailModal-{{ $item->id }}"
+                                                            tabindex="-1"
+                                                            aria-labelledby="detailModalLabel-{{ $item->id }}"
+                                                            aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title"
+                                                                            id="detailModalLabel-{{ $item->id }}">
+                                                                            รายละเอียดลูกค้า</h5>
+                                                                        <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <!-- ใช้ col-md-12 เพื่อให้ข้อมูลเรียงในแนวตั้ง -->
+                                                                        <div class="row">
+                                                                            <div class="col-md-12 text-center mb-3">
+                                                                                <h6>ใบประกอบกิจการ</h6>
+                                                                                @if ($item->business_card)
+                                                                                    <img src="{{ asset('business_cards/' . $item->business_card) }}"
+                                                                                    style="width: 50%"
+                                                                                        alt="Business Card"
+                                                                                        class="img-fluid">
+                                                                                @else
+                                                                                    <p>ไม่มีข้อมูล</p>
+                                                                                @endif
+                                                                            </div>
+
+
+                                                                           
+                                                                            <div class="col-md-12 text-center mb-3">
+                                                                                <h6>ที่อยู่</h6>
+                                                                                <p>{{ $item->address ?? 'ไม่มีข้อมูล' }}
+                                                                                </p>
+                                                                            </div>
+
+                                                                            <div class="col-md-12 text-center mb-3">
+                                                                                <h6>เบอร์โทร</h6>
+                                                                                <p>{{ $item->tel ?? 'ไม่มีข้อมูล' }}
+                                                                                </p>
+                                                                            </div>
+
+                                                                            <div class="col-md-12 text-center mb-3">
+                                                                                <h6>เบอร์แฟกซ์</h6>
+                                                                                <p>{{ $item->fax ?? 'ไม่มีข้อมูล' }}
+                                                                                </p>
+                                                                            </div>
+
+                                                                            <div class="col-md-12 text-center mb-3">
+                                                                                <h6>ตัวแทนติดต่อ</h6>
+                                                                                <p>{{ $item->tel2 ?? 'ไม่มีข้อมูล' }}
+                                                                                </p>
+                                                                            </div>
+
+                                                                            <div class="col-md-12 text-center mb-3">
+                                                                                <h6>เลขผู้เสียภาษี</h6>
+                                                                                <p>{{ $item->tax_id ?? 'ไม่มีข้อมูล' }}
+                                                                                </p>
+                                                                            </div>
+
+                                                                            <div class="col-md-12 text-center mb-3">
+                                                                                <h6>ใบหัก ณ ที่จ่าย</h6>
+                                                                                @if ($item->card_slip)
+                                                                                    <img src="{{ asset('card_slips/' . $item->card_slip) }}"
+                                                                                        alt="Card Slip"
+                                                                                        class="img-fluid">
+                                                                                @else
+                                                                                    <p>ไม่มีข้อมูล</p>
+                                                                                @endif
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">ปิด</button>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                        
-                                                <!-- Modal สำหรับ Business Card -->
-                                                <div class="modal fade" id="businessCardModal-{{ $item->id }}" tabindex="-1" aria-labelledby="businessCardModalLabel-{{ $item->id }}" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="businessCardModalLabel-{{ $item->id }}">ใบประกอบกิจการ</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body text-center">
-                                                                @if ($item->business_card)
-                                                                    <img src="{{ asset('business_cards/' . $item->business_card) }}" alt="Business Card" class="img-fluid">
-                                                                @else
-                                                                    <p>ไม่มีรูปภาพ</p>
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                        
-                                                <!-- Modal สำหรับ Card Slip -->
-                                                <div class="modal fade" id="cardSlipModal-{{ $item->id }}" tabindex="-1" aria-labelledby="cardSlipModalLabel-{{ $item->id }}" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="cardSlipModalLabel-{{ $item->id }}">ใบหัก ณ ที่จ่าย</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body text-center">
-                                                                @if ($item->card_slip)
-                                                                    <img src="{{ asset('card_slips/' . $item->card_slip) }}" alt="Card Slip" class="img-fluid">
-                                                                @else
-                                                                    <p>ไม่มีรูปภาพ</p>
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                        
-                                                
-                                                @endforeach
-                                                @if ($organization_customer->isEmpty())
-                                                    <tr>
-                                                        <td colspan="13" class="text-center">ไม่มีข้อมูล</td>
                                                     </tr>
-                                                @endif
+                                                @endforeach
                                             </tbody>
                                         </table>
+
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div id="kt_app_content" class="app-content flex-column-fluid">
-                        <!--begin::Content container-->
-                        <div id="kt_app_content_container" class="app-container container-xxl">
+                        <div id="kt_app_content" class="app-content flex-column-fluid">
+                            <!--begin::Content container-->
+                            <div id="kt_app_content_container" class="app-container container-xxl">
 
+                            </div>
+                            <!--end::Content container-->
                         </div>
-                        <!--end::Content container-->
+
                     </div>
+                    <!--end::Content wrapper-->
 
+                    <!--begin::Footer-->
+                    <div id="kt_app_footer" class="app-footer">
+                        @include("$prefix.layout.footer")
+                    </div>
+                    <!--End::Footer-->
                 </div>
-                <!--end::Content wrapper-->
-
-                <!--begin::Footer-->
-                <div id="kt_app_footer" class="app-footer">
-                    @include("$prefix.layout.footer")
-                </div>
-                <!--End::Footer-->
+                <!--End::Main-->
             </div>
-            <!--End::Main-->
         </div>
-    </div>
     </div>
 
     <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
@@ -267,3 +263,39 @@
         });
     </script>
 @endif
+<style>
+    .loading-spinner {
+        position: fixed;
+        top: 50%;
+        left: 58%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        border: 4px solid #ccc;
+        border-top-color: #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        z-index: 9999;
+    }
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<script>
+    // Simulate loading delay
+    window.addEventListener("load", () => {
+        setTimeout(() => {
+            document.querySelector(".loading-spinner").style.display = "none";
+            document.getElementById("main-content").style.visibility = "visible";
+        }, 500);
+    });
+</script>

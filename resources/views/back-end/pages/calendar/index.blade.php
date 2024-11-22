@@ -23,6 +23,8 @@
                 data-kt-sticky-offset="{default: '200px', lg: '0'}" data-kt-sticky-animation="false">
                 @include("$prefix.layout.head-menu")
             </div>
+            <div class="loading-spinner"></div>
+
             <!--end::Header-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
 
@@ -194,3 +196,38 @@
         KTGeneralFullCalendarSelectDemos.init();
     });
 </script>
+
+<style>
+    .loading-spinner {
+     position: fixed;
+     top: 50%;
+     left: 58%; 
+     transform: translate(-50%, -50%);
+     width: 40px;
+     height: 40px;
+     border: 4px solid #ccc;
+     border-top-color: #3498db;
+     border-radius: 50%;
+     animation: spin 1s linear infinite;
+     z-index: 9999;
+   }
+   }
+   @keyframes spin {
+     0% {
+       transform: rotate(0deg);
+     }
+     100% {
+       transform: rotate(360deg);
+     }
+   }
+   </style>
+
+<script>
+    // Simulate loading delay
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        document.querySelector(".loading-spinner").style.display = "none";
+        document.getElementById("main-content").style.visibility = "visible";
+      }, 500); 
+    });
+  </script>

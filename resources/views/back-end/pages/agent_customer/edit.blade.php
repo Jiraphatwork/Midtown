@@ -91,9 +91,10 @@
                                         
                                             <div class="mb-3">
                                                 <label for="id_card" class="form-label">รหัสบัตรประชาชน</label>
-                                                <textarea class="form-control" id="id_card" name="id_card" rows="2" placeholder="กรอกที่อยู่ 1" required>{{ old('address', $item->address) }}</textarea>
+                                                <input type="text" class="form-control" id="id_card" name="id_card" 
+                                                    value="{{ old('id_card', $item->id_card) }}" placeholder="กรอกหมายเลขบัตรประชาชน" required>
                                             </div>
-
+                                        
                                             <div class="mb-3">
                                                 <label for="address" class="form-label">ที่อยู่ 1</label>
                                                 <textarea class="form-control" id="address" name="address" rows="2" placeholder="กรอกที่อยู่ 1" required>{{ old('address', $item->address) }}</textarea>
@@ -124,7 +125,7 @@
                                             <div class="mb-3">
                                                 <label for="tel2" class="form-label">ตัวแทนติดต่อ</label>
                                                 <input type="text" class="form-control" id="tel2" name="tel2" 
-                                                    value="{{ old('tel2', $item->tel2) }}" placeholder="กรอกเบอร์โทรสำรอง">
+                                                    value="{{ old('tel2', $item->tel2) }}" placeholder="กรอกเบอร์ตัวแทนติดต่อ">
                                             </div>
                                         
                                             <div class="mb-3">
@@ -149,6 +150,7 @@
                                                 <a href="{{ route('agent_customer.index') }}" class="btn btn-secondary">ยกเลิก</a>
                                             </div>
                                         </form>
+                                        
                                         
                                     </div>
                                 </div>                                

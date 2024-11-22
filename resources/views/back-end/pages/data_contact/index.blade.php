@@ -23,6 +23,8 @@
                 data-kt-sticky-offset="{default: '200px', lg: '0'}" data-kt-sticky-animation="false">
                 @include("$prefix.layout.head-menu")
             </div>
+            <div class="loading-spinner"></div>
+
             <!--end::Header-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
 
@@ -37,13 +39,13 @@
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                                 <div class="container mt-5">
-                                    <h2 class="text-center mb-4 text-primary">ข้อมูลติดต่อเรา</h2>
+                                    <h2 class="text-center mb-4 text-dark">ข้อมูลติดต่อเรา</h2>
                                     <div class="d-flex justify-content-end mb-3">
                                         <a href="{{ route('data_contact.add') }}" class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
                                     <div class="table-responsive shadow-lg p-3 bg-body-tertiary rounded">
                                         <table class="table table-hover table-striped table-bordered align-middle">
-                                            <thead class="table-primary text-center">
+                                            <thead class="table-dark text-center">
                                                 <tr>
                                                     <th scope="col">ลำดับ</th>
                                                     <th scope="col">แผนที่</h>
@@ -206,3 +208,38 @@
         });
     </script>
 @endif
+
+<style>
+    .loading-spinner {
+     position: fixed;
+     top: 50%;
+     left: 58%; 
+     transform: translate(-50%, -50%);
+     width: 40px;
+     height: 40px;
+     border: 4px solid #ccc;
+     border-top-color: #3498db;
+     border-radius: 50%;
+     animation: spin 1s linear infinite;
+     z-index: 9999;
+   }
+   }
+   @keyframes spin {
+     0% {
+       transform: rotate(0deg);
+     }
+     100% {
+       transform: rotate(360deg);
+     }
+   }
+   </style>
+
+   <script>
+    // Simulate loading delay
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        document.querySelector(".loading-spinner").style.display = "none";
+        document.getElementById("main-content").style.visibility = "visible";
+      }, 500); 
+    });
+  </script>

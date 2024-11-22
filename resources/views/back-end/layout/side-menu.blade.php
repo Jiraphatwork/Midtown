@@ -50,13 +50,14 @@
                                 <!-- Begin:Menu -->
                                 @if($subs->count() <= 0)
                                 <div class="menu-item">
-                                    <a class="menu-link @if(@$folder == $menu->url) active  @endif" href="{{"".$menu->url}}">
+                                    <a class="menu-link @if(@$folder == $menu->url) active  @endif" href="{{"".$menu->url}}" style="text-decoration: none;">
                                         <span class="menu-icon">
                                             <i class="{{@$menu->icon}}"> </i>
                                         </span>
-                                        <span class="menu-title">{{@$menu->name}}</span>
+                                        <span class="menu-title" style="font-size: 15px; font-weight: 500;">{{@$menu->name}}</span>
                                     </a>
                                 </div>
+                                
                                 @else
                                 <div data-kt-menu-trigger="click" id="main_menu_{{@$menu->id}}" class="menu-item menu-accordion">
                                     <!--begin:Menu link-->

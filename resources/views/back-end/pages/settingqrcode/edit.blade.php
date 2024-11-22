@@ -37,7 +37,7 @@
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                                 <div class="container mt-5">
-                                    <h2 class="text-center mb-4 text-primary">แก้ไขตั้งค่าข้อมูลการสแกนจ่าย Qr Code</h2>
+                                    <h2 class="text-center mb-4 text-dark">แก้ไขตั้งค่าข้อมูลการสแกนจ่าย Qr Code</h2>
                                 </div>
                             </div>
                         </div>
@@ -72,11 +72,9 @@
                                             <!-- Hidden input เพื่อเก็บค่าการลบรูปภาพ -->
                                             <input type="hidden" name="delete_image" id="delete_image" value="">
 
-                                            <div class="">
-                                                <button type="reset" onclick="history.back()"
-                                                    class="btn btn-light btn-active-light-primary me-2">ยกเลิก</button>
-                                                <a href="javascript:void(0)" class="btn btn-primary" id="submit"
-                                                    onclick="check_add()">บันทึก</a>
+                                            <div class="d-flex justify-content-center text-center">
+                                                <a href="javascript:void(0)" class="btn btn-primary me-2" id="submit" onclick="check_add()">บันทึก</a>
+                                                <button type="reset" onclick="history.back()" class="btn btn-light btn-active-light-primary">ยกเลิก</button>
                                             </div>
                                         </form>
                                     </div>
@@ -138,10 +136,10 @@
 
         Swal.fire({
             icon: 'warning',
-            title: 'Please press confirm to complete the transaction.',
+            title: 'ยืนยันการแก้ไข!',
             showCancelButton: true,
-            confirmButtonText: 'Confirm',
-            cancelButtonText: `Cancel`,
+            confirmButtonText: 'ยืนยัน',
+            cancelButtonText: `ยกเลิก`,
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
@@ -156,8 +154,8 @@
                         if (data) {
                             Swal.fire({
                                 icon: 'success',
-                                title: "Congratulations",
-                                text: "You have updated the data successfully",
+                                title: "สำเร็จ!",
+                                text: "แก้ไขข้อมูลสำเร็จ",
                                 showCancelButton: false,
                                 confirmButtonText: 'Close',
                             }).then((result) => {
