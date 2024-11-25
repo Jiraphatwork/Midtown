@@ -58,6 +58,8 @@ class Reserve_history_controller extends Controller
             'status' => $validated['status'],
             'product_type' => $validated['product_type'],
             'area' => $validated['area'],
+            'created_at' => now(), 
+            'updated_at' => now(), 
         ]);
 
         return redirect()->route('reserve_history.index')->with('success', 'เพิ่มข้อมูลสำเร็จ');
@@ -107,10 +109,11 @@ class Reserve_history_controller extends Controller
             $existingData->status == $validated['status'] &&
             $existingData->product_type == $validated['product_type'] &&
             $existingData->area == $validated['area']
+            
         ) {
 
             // หากข้อมูลไม่มีการเปลี่ยนแปลง, กลับไปยังหน้า index
-            return redirect()->route('reserve_history.index');
+            return redirect()->route('reserve_history.index')->with('success', 'ข้อมูลอัปเดตสำเร็จ');
         }
 
         // อัปเดตข้อมูลในฐานข้อมูล
@@ -122,6 +125,7 @@ class Reserve_history_controller extends Controller
             'status' => $validated['status'],
             'product_type' => $validated['product_type'],
             'area' => $validated['area'],
+            'updated_at' => now(),  
         ]);
 
         // ตรวจสอบการอัปเดตข้อมูล

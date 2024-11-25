@@ -16,11 +16,11 @@ class CreateAgentCustomerModelsTable extends Migration
         Schema::create('agent_customer_models', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('business_card')->nullable(); 
             $table->string('tax_card')->nullable(); 
             $table->string('pic_id_card')->nullable(); // รูปบัตรประชาชน
-            $table->string('id_card', 13)->unique(); // รหัสบัตรประชาชน
+            $table->string('id_card', 13); // รหัสบัตรประชาชน
             $table->string('address');
             $table->string('address2')->nullable(); // ที่อยู่สำรอง 1
             $table->string('address3')->nullable(); // ที่อยู่สำรอง 2

@@ -44,9 +44,9 @@
                                         <a href="{{ route('organization_customer.add') }}"
                                             class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
-                                    <div class="table-responsive shadow-lg p-3 bg-body-tertiary rounded">
-                                        <table class="table table-hover table-striped table-bordered align-middle">
-                                            <thead class="table-dark text-center">
+                                    <div class="table-responsive shadow-lg p-3 rounded">
+                                        <table class="table table-hover table-striped table-bordered text-center align-middle">
+                                            <thead class="table-dark">
                                                 <tr>
                                                     <th scope="col">ลำดับ</th>
                                                     <th scope="col">ชื่อ-นามสกุล</th>
@@ -63,7 +63,7 @@
                                                         <td>{{ $item->email }}</td>
                                                         <td>
                                                             <!-- ปุ่มเปิด Modal -->
-                                                            <button type="button" class="btn btn-info btn-sm"
+                                                            <button type="button" class="btn btn-primary btn-sm"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#detailModal-{{ $item->id }}">ดูข้อมูล</button>
                                                         </td>
@@ -81,120 +81,121 @@
                                                             <button type="button" class="btn btn-danger btn-sm"
                                                                 onclick="confirmDelete('{{ $item->id }}')">ลบ</button>
                                                         </td>
-
-                                                        <!-- Modal -->
-                                                        <div class="modal fade" id="detailModal-{{ $item->id }}"
-                                                            tabindex="-1"
-                                                            aria-labelledby="detailModalLabel-{{ $item->id }}"
-                                                            aria-hidden="true">
-                                                            <div class="modal-dialog modal-dialog-centered modal-lg">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title"
-                                                                            id="detailModalLabel-{{ $item->id }}">
-                                                                            รายละเอียดลูกค้า</h5>
-                                                                        <button type="button" class="btn-close"
-                                                                            data-bs-dismiss="modal"
-                                                                            aria-label="Close"></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <!-- ใช้ col-md-12 เพื่อให้ข้อมูลเรียงในแนวตั้ง -->
-                                                                        <div class="row">
-                                                                            <div class="col-md-12 text-center mb-3">
-                                                                                <h6>ใบประกอบกิจการ</h6>
-                                                                                @if ($item->business_card)
-                                                                                    <img src="{{ asset('business_cards/' . $item->business_card) }}"
-                                                                                    style="width: 50%"
-                                                                                        alt="Business Card"
-                                                                                        class="img-fluid">
-                                                                                @else
-                                                                                    <p>ไม่มีข้อมูล</p>
-                                                                                @endif
-                                                                            </div>
-
-
-                                                                           
-                                                                            <div class="col-md-12 text-center mb-3">
-                                                                                <h6>ที่อยู่</h6>
-                                                                                <p>{{ $item->address ?? 'ไม่มีข้อมูล' }}
-                                                                                </p>
-                                                                            </div>
-
-                                                                            <div class="col-md-12 text-center mb-3">
-                                                                                <h6>เบอร์โทร</h6>
-                                                                                <p>{{ $item->tel ?? 'ไม่มีข้อมูล' }}
-                                                                                </p>
-                                                                            </div>
-
-                                                                            <div class="col-md-12 text-center mb-3">
-                                                                                <h6>เบอร์แฟกซ์</h6>
-                                                                                <p>{{ $item->fax ?? 'ไม่มีข้อมูล' }}
-                                                                                </p>
-                                                                            </div>
-
-                                                                            <div class="col-md-12 text-center mb-3">
-                                                                                <h6>ตัวแทนติดต่อ</h6>
-                                                                                <p>{{ $item->tel2 ?? 'ไม่มีข้อมูล' }}
-                                                                                </p>
-                                                                            </div>
-
-                                                                            <div class="col-md-12 text-center mb-3">
-                                                                                <h6>เลขผู้เสียภาษี</h6>
-                                                                                <p>{{ $item->tax_id ?? 'ไม่มีข้อมูล' }}
-                                                                                </p>
-                                                                            </div>
-
-                                                                            <div class="col-md-12 text-center mb-3">
-                                                                                <h6>ใบหัก ณ ที่จ่าย</h6>
-                                                                                @if ($item->card_slip)
-                                                                                    <img src="{{ asset('card_slips/' . $item->card_slip) }}"
-                                                                                        alt="Card Slip"
-                                                                                        class="img-fluid">
-                                                                                @else
-                                                                                    <p>ไม่มีข้อมูล</p>
-                                                                                @endif
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-bs-dismiss="modal">ปิด</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
                                         </table>
-
-
                                     </div>
+
+                                    <!-- Modal -->
+                                    @foreach ($organization_customer as $item)
+                                        <div class="modal fade" id="detailModal-{{ $item->id }}" tabindex="-1"
+                                            aria-labelledby="detailModalLabel-{{ $item->id }}" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title"
+                                                            id="detailsModalLabel{{ $item->id }}">
+                                                            รายละเอียดลูกค้า: {{ $item->name }}
+                                                        </h5>
+                                                        <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+                                                            data-bs-dismiss="modal" aria-label="Close">
+                                                            <i class="ki-duotone ki-cross fs-1"><span
+                                                                    class="path1"></span><span
+                                                                    class="path2"></span></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <table class="table table-hover table-striped table-bordered align-middle">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th class="text-end">ใบประกอบกิจการ</th>
+                                                                    <td class="text-center">
+                                                                        @if ($item->business_card)
+                                                                            <img src="{{ asset('business_cards/' . $item->business_card) }}"
+                                                                                style="width: 50%" alt="Business Card"
+                                                                                class="img-fluid">
+                                                                        @else
+                                                                            <p>ไม่มีข้อมูล</p>
+                                                                        @endif
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-end">ที่อยู่</th>
+                                                                    <td>{{ $item->address ?? 'ไม่มีข้อมูล' }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-end">ที่อยู่สอง</th>
+                                                                    <td>{{ $item->address2 ?? 'ไม่มีข้อมูล' }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-end">ที่อยู่สาม</th>
+                                                                    <td>{{ $item->address3 ?? 'ไม่มีข้อมูล' }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-end">เบอร์โทร</th>
+                                                                    <td>{{ $item->tel ?? 'ไม่มีข้อมูล' }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-end">เบอร์แฟกซ์</th>
+                                                                    <td>{{ $item->fax ?? 'ไม่มีข้อมูล' }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-end">ตัวแทนติดต่อ</th>
+                                                                    <td>{{ $item->tel2 ?? 'ไม่มีข้อมูล' }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-end">เลขผู้เสียภาษี</th>
+                                                                    <td>{{ $item->tax_id ?? 'ไม่มีข้อมูล' }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-end">ใบหัก ณ ที่จ่าย</th>
+                                                                    <td class="text-center">
+                                                                        @if ($item->card_slip)
+                                                                            <img src="{{ asset('card_slips/' . $item->card_slip) }}"
+                                                                                style="width: 50%" alt="Card Slip"
+                                                                                class="img-fluid">
+                                                                        @else
+                                                                            <p>ไม่มีข้อมูล</p>
+                                                                        @endif
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
                                 </div>
+                                @endforeach
+                                </tbody>
+                                </table>
                             </div>
                         </div>
-
-                        <div id="kt_app_content" class="app-content flex-column-fluid">
-                            <!--begin::Content container-->
-                            <div id="kt_app_content_container" class="app-container container-xxl">
-
-                            </div>
-                            <!--end::Content container-->
-                        </div>
-
                     </div>
-                    <!--end::Content wrapper-->
-
-                    <!--begin::Footer-->
-                    <div id="kt_app_footer" class="app-footer">
-                        @include("$prefix.layout.footer")
-                    </div>
-                    <!--End::Footer-->
                 </div>
-                <!--End::Main-->
+
+                <div id="kt_app_content" class="app-content flex-column-fluid">
+                    <!--begin::Content container-->
+                    <div id="kt_app_content_container" class="app-container container-xxl">
+
+                    </div>
+                    <!--end::Content container-->
+                </div>
+
             </div>
+            <!--end::Content wrapper-->
+
+            <!--begin::Footer-->
+            <div id="kt_app_footer" class="app-footer">
+                @include("$prefix.layout.footer")
+            </div>
+            <!--End::Footer-->
         </div>
+        <!--End::Main-->
+    </div>
+    </div>
     </div>
 
     <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">

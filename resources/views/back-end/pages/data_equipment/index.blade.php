@@ -15,7 +15,7 @@
     class="app-default">
     <!--begin::App-->
     </div>
-   
+
     <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
         <!--begin::Page-->
         <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
@@ -46,9 +46,9 @@
                                         <a href="{{ route('data_equipment.add') }}"
                                             class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
-                                    <div class="table-responsive shadow-lg p-3 bg-body-tertiary rounded">
-                                        <table class="table table-hover table-striped table-bordered align-middle">
-                                            <thead class="table-dark text-center">
+                                    <div class="table-responsive shadow-lg p-3 rounded">
+                                        <table class="table table-hover table-striped table-bordered text-center align-middle">
+                                            <thead class="table-dark">
                                                 <tr>
                                                     <th scope="col">ลำดับ</th>
                                                     <th scope="col">ชื่ออุปกรณ์</h>
@@ -67,7 +67,7 @@
                                                         <td>
                                                             @if ($item->pic_equipment)
                                                                 <img src="{{ asset('pic_equipments/' . $item->pic_equipment) }}"
-                                                                    alt="error" width="50"
+                                                                    alt="error" width="70px"
                                                                     style="cursor: pointer;" data-bs-toggle="modal"
                                                                     data-bs-target="#imageModal{{ $item->id }}">
                                                             @else
@@ -102,10 +102,14 @@
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title"
                                                                         id="businessCardModalLabel{{ $item->id }}">
-                                                                        รูปอุปกรณ์</h5>
-                                                                    <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal"
-                                                                        aria-label="Close"></button>
+                                                                        รูปอุปกรณ์: {{ $item->name_equipment }}
+                                                                    </h5>
+                                                                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+                                                                        data-bs-dismiss="modal" aria-label="Close">
+                                                                        <i class="ki-duotone ki-cross fs-1"><span
+                                                                                class="path1"></span><span
+                                                                                class="path2"></span></i>
+                                                                    </div>
                                                                 </div>
                                                                 <div class="modal-body text-center">
                                                                     @if ($item->pic_equipment)
@@ -218,33 +222,35 @@
 <script>
     // Simulate loading delay
     window.addEventListener("load", () => {
-      setTimeout(() => {
-        document.querySelector(".loading-spinner").style.display = "none";
-        document.getElementById("main-content").style.visibility = "visible";
-      }, 500); 
+        setTimeout(() => {
+            document.querySelector(".loading-spinner").style.display = "none";
+            document.getElementById("main-content").style.visibility = "visible";
+        }, 500);
     });
-  </script>
-  <style>
+</script>
+<style>
     .loading-spinner {
-     position: fixed;
-     top: 50%;
-     left: 58%; 
-     transform: translate(-50%, -50%);
-     width: 40px;
-     height: 40px;
-     border: 4px solid #ccc;
-     border-top-color: #3498db;
-     border-radius: 50%;
-     animation: spin 1s linear infinite;
-     z-index: 9999;
-   }
-   }
-   @keyframes spin {
-     0% {
-       transform: rotate(0deg);
-     }
-     100% {
-       transform: rotate(360deg);
-     }
-   }
-   </style>
+        position: fixed;
+        top: 50%;
+        left: 58%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        border: 4px solid #ccc;
+        border-top-color: #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        z-index: 9999;
+    }
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>

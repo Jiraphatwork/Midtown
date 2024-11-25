@@ -42,14 +42,18 @@ class Agent_customerController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'pic_id_card' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'id_card' => 'required|string|max:13',
+            'id_card' => 'required|string|digits:13',
             'address' => 'required|string|max:255',
             'address2' => 'nullable|string|max:255',
             'address3' => 'nullable|string|max:255',
-            'tel' => 'required|string|max:10',
+            'tel' => 'required|string|digits:10',
             'tel2' => 'nullable|string|max:10',
             'fax' => 'nullable|string|max:10',
-            'tax_id' => 'nullable|string|max:13',
+            'tax_id' => 'nullable|string|digits:13',
+        ], [
+            'id_card.digits' => 'หมายเลขบัตรประชาชนต้องมีความยาว 13 หลักเท่านั้น',  
+            'tel.digits' => 'หมายเลขเบอร์โทรศัพท์ต้องมีความยาว 10 หลักเท่านั้น', 
+            'tax_id.digits' => 'หมายเลขผู้เสียภาษีต้องมีความยาว 13 หลักเท่านั้น', 
         ]);
 
 
@@ -93,6 +97,8 @@ class Agent_customerController extends Controller
             'tel2' => $validated['tel2'] ?? null,         // ใช้ null หากไม่มีค่า
             'tax_id' => $validated['tax_id'] ?? null,     // ใช้ null หากไม่มีค่า
             'slip_card' => $slipcardFilename,
+            'created_at' => now(), 
+            'updated_at' => now(), 
         ]);
 
         return redirect()->route('agent_customer.index')->with('success', 'เพิ่มข้อมูลสำเร็จ');
@@ -133,15 +139,19 @@ class Agent_customerController extends Controller
         'business_card' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         'tax_card' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         'pic_id_card' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        'id_card' => 'required|string|max:13',
+        'id_card' => 'required|string|digits:13',
         'address' => 'required|string|max:255',
         'address2' => 'nullable|string|max:255',
         'address3' => 'nullable|string|max:255',
-        'tel' => 'required|string|max:10',
+        'tel' => 'required|string|digits:10',
         'fax' => 'nullable|string|max:10',
         'tel2' => 'nullable|string|max:10',
-        'tax_id' => 'nullable|string|max:13',
+        'tax_id' => 'nullable|string|digits:13',
         'slip_card' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+    ], [
+        'id_card.digits' => 'หมายเลขบัตรประชาชนต้องมีความยาว 13 หลักเท่านั้น',  
+        'tel.digits' => 'หมายเลขเบอร์โทรศัพท์ต้องมีความยาว 10 หลักเท่านั้น', 
+        'tax_id.digits' => 'หมายเลขผู้เสียภาษีต้องมีความยาว 13 หลักเท่านั้น', 
     ]);
 
     // จัดการไฟล์ (ถ้ามีการอัปโหลด)
@@ -217,6 +227,7 @@ if (
         'tel2' => $validated['tel2'] ?? null,
         'tax_id' => $validated['tax_id'] ?? null,
         'slip_card' => $slipCardFilename,
+        'updated_at' => now(), 
     ]);
     // ถ้าอัปเดตสำเร็จให้กลับไปที่หน้ารายการลูกค้า
     return $updated

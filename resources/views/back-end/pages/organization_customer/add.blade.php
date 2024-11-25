@@ -40,19 +40,23 @@
                                 <div class="container mt-5">
                                     <h2 class="text-center mb-4 text-dark">เพิ่มข้อมูลลูกค้า(องกรณ์)</h2>
                                     <div class="shadow-lg p-4 bg-body-tertiary rounded">
-                                        <form action="{{ route('organization_customer.insert') }}" method="POST" enctype="multipart/form-data">
+                                        <form action="{{ route('organization_customer.insert') }}" method="POST"
+                                            enctype="multipart/form-data">
                                             @csrf
                                             <div class="mb-3">
                                                 <label for="name" class="form-label">ชื่อ</label>
-                                                <input type="text" class="form-control" id="name" name="name" placeholder="กรอกชื่อ" required>
+                                                <input type="text" class="form-control" id="name" name="name"
+                                                    placeholder="กรอกชื่อ-นามสกุล" required>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="email" class="form-label">อีเมล</label>
-                                                <input type="email" class="form-control" id="email" name="email" placeholder="กรอกอีเมล" required>
+                                                <input type="email" class="form-control" id="email" name="email"
+                                                    placeholder="กรอกอีเมล" required>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="business_card" class="form-label">ใบประกอบกิจการ</label>
-                                                <input type="file" class="form-control" id="business_card" name="business_card"  required>
+                                                <input type="file" class="form-control" id="business_card"
+                                                    name="business_card" required>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="address" class="form-label">ที่อยู่ 1</label>
@@ -68,30 +72,42 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label for="tel" class="form-label">เบอร์โทร</label>
-                                                <input type="text" class="form-control" id="tel" name="tel" placeholder="กรอกเบอร์โทร">
+                                                <input type="text" class="form-control" id="tel" name="tel" placeholder="กรอกเบอร์โทร" maxlength="10" required oninput="validateTel()">
+                                                <div id="charCountTel" class="form-text text-muted mt-2">กรอกไปแล้ว 0/10 ตัวอักษร</div>
+                                                @error('tel')
+                                                    <div class="alert alert-danger mt-2">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                             <div class="mb-3">
                                                 <label for="fax" class="form-label">เบอร์แฟกซ์</label>
-                                                <input type="text" class="form-control" id="fax" name="fax" placeholder="กรอกเบอร์แฟกซ์">
+                                                <input type="text" class="form-control" id="fax"
+                                                    name="fax" placeholder="กรอกเบอร์แฟกซ์">
                                             </div>
                                             <div class="mb-3">
                                                 <label for="tel2" class="form-label">ตัวแทนติดต่อ</label>
-                                                <input type="text" class="form-control" id="tel2" name="tel2" placeholder="กรอกเบอร์ตัวแทนติดต่อ" >
+                                                <input type="text" class="form-control" id="tel2"
+                                                    name="tel2" placeholder="กรอกเบอร์ตัวแทนติดต่อ">
                                             </div>
                                             <div class="mb-3">
                                                 <label for="tax_id" class="form-label">เลขผู้เสียภาษี</label>
-                                                <input type="text" class="form-control" id="tax_id" name="tax_id" placeholder="กรอกเลขผู้เสียภาษี">
+                                                <input type="text" class="form-control" id="tax_id" name="tax_id" placeholder="กรอกเลขผู้เสียภาษี" maxlength="13" required oninput="validateTaxId()">
+                                                <div id="charCountTaxId" class="form-text text-muted mt-2">กรอกไปแล้ว 0/13 ตัวอักษร</div>
+                                                @error('tax_id')
+                                                    <div class="alert alert-danger mt-2">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                             <div class="mb-3">
                                                 <label for="card_slip" class="form-label">ใบหัก ณ ที่จ่าย</label>
-                                                <input type="file" class="form-control" id="card_slip" name="card_slip" accept="image/*" >
+                                                <input type="file" class="form-control" id="card_slip"
+                                                    name="card_slip" accept="image/*">
                                             </div>
                                             <div class="text-center">
                                                 <button type="submit" class="btn btn-primary">บันทึก</button>
-                                                <a href="{{ route('organization_customer.index') }}" class="btn btn-secondary">ยกเลิก</a>
+                                                <a href="{{ route('organization_customer.index') }}"
+                                                    class="btn btn-secondary">ยกเลิก</a>
                                             </div>
                                         </form>
-                                        
+
 
                                     </div>
                                 </div>
@@ -137,3 +153,52 @@
 <!--end::Body-->
 
 </html>
+<script>
+     // ฟังก์ชันสำหรับแสดงจำนวนที่กรอกไปแล้ว
+     function updateLengthTel() {
+        var input = document.getElementById('tel');
+        var charCount = document.getElementById('charCountTel');
+        charCount.textContent = `กรอกไปแล้ว ${input.value.length}/10 ตัวอักษร`;
+    }
+
+    // ฟังก์ชันตรวจสอบเบอร์โทร
+    function validateTel() {
+        var tel = document.getElementById('tel');
+        var validTel = /^[0-9]{10}$/;  // ตรวจสอบว่าเบอร์โทรเป็นตัวเลข 10 หลัก
+        var charCount = document.getElementById('charCountTel');
+        
+        // แสดงจำนวนตัวอักษรที่กรอกไปแล้ว
+        updateLengthTel();
+        
+        // ตรวจสอบว่าเบอร์โทรเป็นไปตามรูปแบบที่กำหนดหรือไม่
+        if (!validTel.test(tel.value)) {
+            tel.setCustomValidity("กรุณากรอกเบอร์โทรที่ถูกต้อง (10 หลัก)");
+        } else {
+            tel.setCustomValidity("");  // รีเซ็ตข้อความ error
+        }
+    }
+
+    // ฟังก์ชันสำหรับแสดงจำนวนที่กรอกไปแล้ว
+    function updateLengthTaxId() {
+        var input = document.getElementById('tax_id');
+        var charCount = document.getElementById('charCountTaxId');
+        charCount.textContent = `กรอกไปแล้ว ${input.value.length}/13 ตัวอักษร`;
+    }
+
+    // ฟังก์ชันตรวจสอบเลขผู้เสียภาษี
+    function validateTaxId() {
+        var taxId = document.getElementById('tax_id');
+        var validTaxId = /^[0-9]{13}$/;  // ตรวจสอบว่าเลขผู้เสียภาษีเป็นตัวเลข 13 หลัก
+        var charCount = document.getElementById('charCountTaxId');
+        
+        // แสดงจำนวนตัวอักษรที่กรอกไปแล้ว
+        updateLengthTaxId();
+        
+        // ตรวจสอบว่าเลขผู้เสียภาษีเป็นไปตามรูปแบบที่กำหนดหรือไม่
+        if (!validTaxId.test(taxId.value)) {
+            taxId.setCustomValidity("กรุณากรอกเลขผู้เสียภาษีที่ถูกต้อง (13 หลัก)");
+        } else {
+            taxId.setCustomValidity("");  // รีเซ็ตข้อความ error
+        }
+    }
+</script>

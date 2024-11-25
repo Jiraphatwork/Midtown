@@ -57,6 +57,8 @@ class promotionController extends Controller
             'detail' => $validated['detail'],
             'first_date' => $validated['first_date'],
             'last_date' => $validated['last_date'],
+            'created_at' => now(), 
+            'updated_at' => now(), 
         ]);
 
         return redirect()->route('promotion.index')->with('success', 'เพิ่มข้อมูลสำเร็จ');
@@ -120,7 +122,7 @@ class promotionController extends Controller
             $item->last_date == $validated['last_date']
         ) {
             // หากไม่มีการเปลี่ยนแปลงข้อมูล, กลับไปยังหน้า index
-            return redirect()->route('promotion.index');
+            return redirect()->route('promotion.index')->with('success', 'ข้อมูลอัปเดตสำเร็จ');
         }
 
         // อัปเดตข้อมูลในฐานข้อมูล
@@ -130,6 +132,7 @@ class promotionController extends Controller
             'detail' => $validated['detail'],
             'first_date' => $validated['first_date'],
             'last_date' => $validated['last_date'],
+            'updated_at' => now(), 
         ]);
 
         return $updated

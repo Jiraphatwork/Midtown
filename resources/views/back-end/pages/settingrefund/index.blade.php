@@ -44,9 +44,9 @@
                                     <div class="d-flex justify-content-end mb-3">
                                         <a href="webpanel/settingrefund/add" class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
-                                    <div class="table-responsive shadow-lg p-3 bg-body-tertiary rounded">
-                                        <table class="table table-hover table-striped table-bordered align-middle">
-                                            <thead class="table-dark text-center">
+                                    <div class="table-responsive shadow-lg p-3 rounded">
+                                        <table class="table table-hover table-striped table-bordered text-center align-middle">
+                                            <thead class="table-dark">
                                                 <tr>
                                                     <th scope="col">ลำดับ</th>
                                                     <th scope="col">ชื่อเงื่อนไข</th>
@@ -57,8 +57,8 @@
                                             <tbody>
                                                 <!-- Loop through the items to display each one -->
                                                 @foreach ($items as $index => $item)
-                                                <tr class="text-center">
-                                                    <td>{{ $index + 1 }}</td>
+                                                    <tr class="text-center">
+                                                        <td>{{ $index + 1 }}</td>
                                                         <td>{{ $item->name }}</td>
                                                         <td>
                                                             @php
@@ -91,17 +91,20 @@
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title"
                                                                         id="detailsModalLabel{{ $item->id }}">
-                                                                        รายละเอียด</h5>
-                                                                    <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal"
-                                                                        aria-label="Close"></button>
+                                                                        รายละเอียด: {{ $item->name }}
+                                                                    </h5>
+                                                                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+                                                                        data-bs-dismiss="modal" aria-label="Close">
+                                                                        <i class="ki-duotone ki-cross fs-1"><span
+                                                                                class="path1"></span><span
+                                                                                class="path2"></span></i>
+                                                                    </div>
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     {{ $text }}
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">ปิด</button>
+                                                                 
                                                                 </div>
                                                             </div>
                                                         </div>

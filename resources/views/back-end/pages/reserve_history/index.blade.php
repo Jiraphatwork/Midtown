@@ -43,15 +43,15 @@
                                         <a href="{{ route('reserve_history.add') }}"
                                             class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
-                                    <div class="table-responsive shadow-lg p-3 bg-body-tertiary rounded">
-                                        <table class="table table-hover table-striped table-bordered align-middle">
-                                            <thead class="table-dark text-center">
+                                    <div class="table-responsive shadow-lg p-3 rounded">
+                                        <table class="table table-hover table-striped table-bordered text-center align-middle">
+                                            <thead class="table-dark">
                                                 <tr>
                                                     <th scope="col">ลำดับ</th>
                                                     <th scope="col">ชื่อ-นามสกุล</th>
                                                     <th scope="col">วันที่จ่ายเงิน</th>
-                                                    <th scope="col">วันแรก</th>
-                                                    <th scope="col">วันสุดท้าย</th>
+                                                    <th scope="col">วันแรกของการจอง</th>
+                                                    <th scope="col">วันสุดท้ายของการจอง</th>
                                                     <th scope="col">สถานะ</th>
                                                     <th scope="col">ประเภทสินค้า</th>
                                                     <th scope="col">พื้นที่</th>
@@ -76,7 +76,7 @@
                                                                 <span class="badge bg-danger">ยังไม่จ่าย</span>
                                                             @endif
                                                         </td>
-                                                                                                        <td>{{ $history->product_type }}</td>
+                                                        <td>{{ $history->product_type }}</td>
                                                         <td>{{ $history->area }}</td>
                                                         <td>
                                                             <a href="{{ route('reserve_history.edit', $history->id) }}"
@@ -94,9 +94,7 @@
                                                                 onclick="confirmDelete('{{ $history->id }}')">
                                                                 ลบ
                                                             </button>
-
                                                         </td>
-
                                                     </tr>
                                                 @empty
                                                     <tr>
@@ -107,7 +105,6 @@
                                         </table>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -178,8 +175,8 @@
         });
     }
 </script>
-    <!--เมื่อเพิ่มข้อมูลสำเร็จ-->
-    @if (session('success'))
+<!--เมื่อเพิ่มข้อมูลสำเร็จ-->
+@if (session('success'))
     <script>
         Swal.fire({
             title: 'สำเร็จ!',
@@ -200,8 +197,8 @@
         });
     </script>
 @endif
-    <!--แจ้งเตือนการลบ-->
-    @if (session('success'))
+<!--แจ้งเตือนการลบ-->
+@if (session('success'))
     <script>
         Swal.fire({
             title: 'สำเร็จ!',
@@ -224,37 +221,47 @@
 @endif
 
 <style>
- .loading-spinner {
-  position: fixed;
-  top: 50%;
-  left: 58%; 
-  transform: translate(-50%, -50%);
-  width: 40px;
-  height: 40px;
-  border: 4px solid #ccc;
-  border-top-color: #3498db;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  z-index: 9999;
-}
-}
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
+    .loading-spinner {
+        position: fixed;
+        top: 50%;
+        left: 58%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        border: 4px solid #ccc;
+        border-top-color: #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        z-index: 9999;
+    }
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    span.badge.bg-danger {
+        font-size: 11px;
+    }
+
+    span.badge.bg-success {
+        font-size: 11px;
+    }
 </style>
 
 
 <script>
     // Simulate loading delay
     window.addEventListener("load", () => {
-      setTimeout(() => {
-        document.querySelector(".loading-spinner").style.display = "none";
-        document.getElementById("main-content").style.visibility = "visible";
-      }, 500); 
+        setTimeout(() => {
+            document.querySelector(".loading-spinner").style.display = "none";
+            document.getElementById("main-content").style.visibility = "visible";
+        }, 500);
     });
-  </script>
+</script>

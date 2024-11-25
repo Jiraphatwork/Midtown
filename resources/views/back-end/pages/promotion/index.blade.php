@@ -43,16 +43,16 @@
                                     <div class="d-flex justify-content-end mb-3">
                                         <a href="{{ route('promotion.add') }}" class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
-                                    <div class="table-responsive shadow-lg p-3 bg-body-tertiary rounded">
-                                        <table class="table table-hover table-striped table-bordered align-middle">
-                                            <thead class="table-dark text-center">
+                                    <div class="table-responsive shadow-lg p-3 rounded">
+                                        <table class="table table-hover table-striped table-bordered text-center align-middle">
+                                            <thead class="table-dark">
                                                 <tr>
                                                     <th scope="col">ลำดับ</th>
                                                     <th scope="col">ชื่อโปรโมชั่น</th>
                                                     <th scope="col">รูปภาพ</th>
                                                     <th scope="col">รายละเอียด</th>
-                                                    <th scope="col">วันเริ่มต้น</th>
-                                                    <th scope="col">วันสิ้นสุด</th>
+                                                    <th scope="col">วันเริ่มต้นโปรโมชั่น</th>
+                                                    <th scope="col">วันสิ้นสุดโปรโมชั่น</th>
                                                     <th scope="col">จัดการ</th>
                                                 </tr>
                                             </thead>
@@ -64,7 +64,7 @@
                                                         <td>
                                                             @if ($item->pic_promotion)
                                                                 <img src="{{ asset('pic_promotions/' . $item->pic_promotion) }}"
-                                                                    alt="error" width="50"
+                                                                    alt="error" width="60px"
                                                                     style="cursor: pointer;" data-bs-toggle="modal"
                                                                     data-bs-target="#imageModal{{ $item->id }}">
                                                             @else
@@ -114,9 +114,12 @@
                                                                     <h5 class="modal-title"
                                                                         id="pic_promotion{{ $item->id }}">
                                                                         รูปโปรโมชั่น: {{ $item->name_promotion }}</h5>
-                                                                    <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal"
-                                                                        aria-label="Close"></button>
+                                                                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+                                                                        data-bs-dismiss="modal" aria-label="Close">
+                                                                        <i class="ki-duotone ki-cross fs-1"><span
+                                                                                class="path1"></span><span
+                                                                                class="path2"></span></i>
+                                                                    </div>
                                                                 </div>
                                                                 <div class="modal-body text-center">
                                                                     @if ($item->pic_promotion)
@@ -141,9 +144,12 @@
                                                                         id="detailsModalLabel{{ $item->id }}">
                                                                         รายละเอียดโปรโมชั่น:
                                                                         {{ $item->name_promotion }}</h5>
-                                                                    <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal"
-                                                                        aria-label="Close"></button>
+                                                                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+                                                                        data-bs-dismiss="modal" aria-label="Close">
+                                                                        <i class="ki-duotone ki-cross fs-1"><span
+                                                                                class="path1"></span><span
+                                                                                class="path2"></span></i>
+                                                                    </div>
                                                                 </div>
                                                                 <div class="modal-body text-center">
                                                                     <p>{{ $item->detail }}</p>

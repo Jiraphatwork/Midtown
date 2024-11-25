@@ -41,7 +41,9 @@ class Data_contactController extends Controller
         $validated = $request->validate([
             'map' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'address' => 'required|string',
-            'tel' => 'required|string',
+            'tel' => 'required|digits:10',
+        ], [
+            'tel.digits' => 'หมายเลขเบอร์โทรศัพท์ต้องมีความยาว 10 หลักเท่านั้น', 
         ]);
 
         $mapFilename = null;
@@ -54,6 +56,8 @@ class Data_contactController extends Controller
             'map' => $mapFilename,
             'address' => $validated['address'],
             'tel' => $validated['tel'],
+            'created_at' => now(), 
+            'updated_at' => now(), 
         ]);
         return redirect()->route('data_contact.index')->with('success', 'เพิ่มข้อมูลสำเร็จ');
     }
@@ -89,7 +93,9 @@ class Data_contactController extends Controller
         $validated = $request->validate([
             'map' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'address' => 'required|string',
-            'tel' => 'required|string',
+            'tel' => 'required|digits:10',
+        ], [
+            'tel.digits' => 'หมายเลขเบอร์โทรศัพท์ต้องมีความยาว 10 หลักเท่านั้น', 
         ]);
 
         // เริ่มต้นการจัดการไฟล์แผนที่
@@ -112,22 +118,23 @@ class Data_contactController extends Controller
         // ตรวจสอบว่าไม่มีการเปลี่ยนแปลงข้อมูล
         if ($item->map == $mapFilename && $item->address == $validated['address'] && $item->tel == $validated['tel']) {
             // ถ้าไม่มีการเปลี่ยนแปลงกลับไปหน้า index
-            return redirect()->route('data_contact.index');
+            return redirect()->route('data_contact.index')->with('success', 'ข้อมูลอัปเดตสำเร็จ');
         }
 
         if (
             $item->map == $mapFilename &&
             $item->address == $validated['address'] &&
             $item->tel == $validated['tel'] 
+            
         ) {
-            // หากไม่มีการเปลี่ยนแปลงข้อมูล, กลับไปยังหน้า index
-            return redirect()->route('promotion.index');
+         
         }
         // อัปเดตข้อมูลในฐานข้อมูล
         $updated = DB::table('data_contact_models')->where('id', $id)->update([
             'map' => $mapFilename,
             'address' => $validated['address'],
             'tel' => $validated['tel'],
+            'updated_at' => now(), 
         ]);
 
         // ตรวจสอบผลการอัปเดตข้อมูล

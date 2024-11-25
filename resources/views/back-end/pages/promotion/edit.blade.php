@@ -51,10 +51,10 @@
                                             </div>
                                         
                                             <div class="mb-3">
-                                                <label for="pic_promotion" class="form-label">ใบประกอบกิจการ</label>
+                                                <label for="pic_promotion" class="form-label">รูปโปรโมชั่น</label>
                                                 @if ($item->pic_promotion)
                                                     <div class="mb-2">
-                                                        <img src="{{ asset('pic_promotions/' . $item->pic_promotion) }}" alt="Business Card" width="150">
+                                                        <img src="{{ asset('pic_promotions/' . $item->pic_promotion) }}" alt="pic_promotion" width="150">
                                                     </div>
                                                 @endif
                                                 <input type="file" class="form-control" id="pic_promotion" name="pic_promotion" accept="image/*">
@@ -68,13 +68,13 @@
                                             </div>
                                         
                                             <div class="mb-3">
-                                                <label for="first_date" class="form-label">วันเริ่มต้น</label>
+                                                <label for="first_date" class="form-label">วันเริ่มต้นโปรโมชั่น</label>
                                                 <input type="date" class="form-control" id="first_date" name="first_date" 
                                                     value="{{ old('first_date', $item->first_date) }}" placeholder="วันเริ่มต้น" required>
                                             </div>
 
                                             <div class="mb-3">
-                                                <label for="last_date" class="form-label">วันสิ้นสุด</label>
+                                                <label for="last_date" class="form-label">วันสิ้นสุดโปรโมชั่น</label>
                                                 <input type="date" class="form-control" id="last_date" name="last_date" 
                                                     value="{{ old('last_date', $item->last_date) }}" placeholder="วันสิ้นสุด" required>
                                             </div>

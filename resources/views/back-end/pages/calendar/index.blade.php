@@ -39,7 +39,6 @@
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                                 <div class="container mt-5">
-                                    <h2 class="text-center mb-4">ปฎิทินการจอง</h2>
                                     <div class="table-responsive">
                                         <div id="kt_docs_fullcalendar_selectable"></div>
                                     </div>
@@ -101,7 +100,7 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                initialDate: '2020-09-12',
+                initialDate: '2024-11-01',
                 navLinks: true, 
                 selectable: true,
                 selectMirror: true,
@@ -109,12 +108,12 @@
                 // Create new event
                 select: function(arg) {
                     Swal.fire({
-                        html: '<div class="mb-7">Create new event?</div><div class="fw-bolder mb-5">Event Name:</div><input type="text" class="form-control" name="event_name" />',
+                        html: '<div class="mb-7">สร้างการจองพื้นที่?</div><div class="fw-bolder mb-5">พื้นที่การจอง:</div><input type="text" class="form-control" name="event_name" />',
                         icon: "info",
                         showCancelButton: true,
                         buttonsStyling: false,
-                        confirmButtonText: "Yes, create it!",
-                        cancelButtonText: "No, return",
+                        confirmButtonText: "ยืนยัน",
+                        cancelButtonText: "ยกเลิก",
                         customClass: {
                             confirmButton: "btn btn-primary",
                             cancelButton: "btn btn-active-light"
@@ -149,12 +148,12 @@
                 // Delete event
                 eventClick: function(arg) {
                     Swal.fire({
-                        text: 'Are you sure you want to delete this event?',
+                        text: 'การลบข้อมูลนี้ไม่สามารถกู้คืนได้!',
                         icon: "warning",
                         showCancelButton: true,
                         buttonsStyling: false,
-                        confirmButtonText: "Yes, delete it!",
-                        cancelButtonText: "No, return",
+                        confirmButtonText: "ยืนยัน",
+                        cancelButtonText: "ยกเลิก",
                         customClass: {
                             confirmButton: "btn btn-primary",
                             cancelButton: "btn btn-active-light"
@@ -196,6 +195,10 @@
         KTGeneralFullCalendarSelectDemos.init();
     });
 </script>
+
+
+
+
 
 <style>
     .loading-spinner {

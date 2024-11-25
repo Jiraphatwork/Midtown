@@ -16,9 +16,9 @@ class CreateOrdinaryCustomerModelsTable extends Migration
         Schema::create('ordinary_customer_models', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string("pic_id_card");
-            $table->string("id_card", 13)->unique(); 
+            $table->string("id_card", 13); 
             $table->string("address", 500);
             $table->string("tel", 10); 
             $table->string("tel2", 10)->nullable(); 

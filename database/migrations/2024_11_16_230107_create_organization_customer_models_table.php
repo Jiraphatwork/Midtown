@@ -16,7 +16,7 @@ class CreateOrganizationCustomerModelsTable extends Migration
         Schema::create('organization_customer_models', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string("business_card");
             $table->string("address");
             $table->string("address2")->nullable(); 

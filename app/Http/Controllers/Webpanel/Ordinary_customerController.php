@@ -43,12 +43,16 @@ class Ordinary_customerController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'pic_id_card' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'id_card' => 'required|string|max:13',
+            'id_card' => 'required|string|digits:13',
             'address' => 'required|string',
-            'tel' => 'required|string|max:10',
+            'tel' => 'required|string|digits:10',
             'tel2' => 'nullable|string|max:10',
-            'tax_id' => 'nullable|string|max:13',
-        ]);
+            'tax_id' => 'nullable|string|digits:13',
+            ], [
+                'id_card.digits' => 'หมายเลขบัตรประชาชนต้องมีความยาว 13 หลักเท่านั้น',  
+                'tel.digits' => 'หมายเลขเบอร์โทรศัพท์ต้องมีความยาว 10 หลักเท่านั้น', 
+                'tax_id.digits' => 'หมายเลขผู้เสียภาษีต้องมีความยาว 13 หลักเท่านั้น', 
+            ]);
 
         // จัดการรูปภาพ (ถ้ามีการอัปโหลด)
         $filename = null;
@@ -69,6 +73,8 @@ class Ordinary_customerController extends Controller
             'tel' => $validated['tel'],
             'tel2' => $validated['tel2'] ?? null, 
             'tax_id' => $validated['tax_id'] ?? null, 
+            'created_at' => now(), 
+            'updated_at' => now(), 
         ]);
 
         return redirect()->route('ordinary_customer.index')->with('success', 'เพิ่มข้อมูลสำเร็จ');
@@ -108,11 +114,15 @@ class Ordinary_customerController extends Controller
         'name' => 'required|string|max:255',
         'email' => 'required|email|max:255',
         'pic_id_card' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        'id_card' => 'required|string|max:13',
+        'id_card' => 'required|string|digits:13',
         'address' => 'required|string',
-        'tel' => 'required|string|max:10',
-        'tel2' => 'nullable|string|max:10', // ใช้ nullable ถ้าไม่กรอก
-        'tax_id' => 'nullable|string|max:13', // ใช้ nullable ถ้าไม่กรอก
+        'tel' => 'required|string|digits:10',
+        'tel2' => 'nullable|string|max:10', 
+        'tax_id' => 'nullable|string|digits:13', 
+    ], [
+        'id_card.digits' => 'หมายเลขบัตรประชาชนต้องมีความยาว 13 หลักเท่านั้น',  
+        'tel.digits' => 'หมายเลขเบอร์โทรศัพท์ต้องมีความยาว 10 หลักเท่านั้น', 
+        'tax_id.digits' => 'หมายเลขผู้เสียภาษีต้องมีความยาว 13 หลักเท่านั้น', 
     ]);
 
     // เริ่มต้นการจัดการรูปภาพ (ใช้ไฟล์เดิมถ้าไม่มีการอัปโหลดใหม่)
@@ -140,7 +150,7 @@ class Ordinary_customerController extends Controller
         $item->tel2 == $validated['tel2'] &&
         $item->tax_id == $validated['tax_id']) {
         // หากไม่มีการเปลี่ยนแปลงข้อมูล, กลับไปยังหน้า index
-        return redirect()->route('ordinary_customer.index');
+        return redirect()->route('ordinary_customer.index')->with('success', 'ข้อมูลอัปเดตสำเร็จ');
     }
 
     // อัปเดตข้อมูลในฐานข้อมูล
@@ -153,6 +163,7 @@ class Ordinary_customerController extends Controller
         'tel' => $validated['tel'],
         'tel2' => $validated['tel2'] ?? null, 
         'tax_id' => $validated['tax_id'] ?? null, 
+        'updated_at' => now(), 
     ]);
 
     // ตรวจสอบผลการอัปเดตข้อมูล

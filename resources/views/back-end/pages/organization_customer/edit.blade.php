@@ -86,6 +86,9 @@
                                                 <label for="tel" class="form-label">เบอร์โทร</label>
                                                 <input type="text" class="form-control" id="tel" name="tel" 
                                                     value="{{ old('tel', $item->tel) }}" placeholder="กรอกเบอร์โทร">
+                                                    @error('tel')
+                                                    <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                 
                                             <div class="mb-3">
@@ -104,6 +107,9 @@
                                                 <label for="tax_id" class="form-label">เลขผู้เสียภาษี</label>
                                                 <input type="text" class="form-control" id="tax_id" name="tax_id" 
                                                     value="{{ old('tax_id', $item->tax_id) }}" placeholder="กรอกเลขผู้เสียภาษี">
+                                                    @error('tax_id')
+                                                    <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                 
                                             <div class="mb-3">

@@ -41,16 +41,17 @@
                                 <div class="container mt-5">
                                     <h2 class="text-center mb-4 text-dark">ข้อมูลติดต่อเรา</h2>
                                     <div class="d-flex justify-content-end mb-3">
-                                        <a href="{{ route('data_contact.add') }}" class="btn btn-success">+เพิ่มข้อมูล</a>
+                                        <a href="{{ route('data_contact.add') }}"
+                                            class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
-                                    <div class="table-responsive shadow-lg p-3 bg-body-tertiary rounded">
-                                        <table class="table table-hover table-striped table-bordered align-middle">
-                                            <thead class="table-dark text-center">
+                                    <div class="table-responsive shadow-lg p-3 rounded">
+                                        <table class="table table-hover table-striped table-bordered text-center align-middle">
+                                            <thead class="table-dark">
                                                 <tr>
                                                     <th scope="col">ลำดับ</th>
                                                     <th scope="col">แผนที่</h>
                                                     <th scope="col">ที่อยู่</th>
-                                                    <th scope="col">เบอร์โทร</th>                                                   
+                                                    <th scope="col">เบอร์โทร</th>
                                                     <th scope="col">จัดการ</th>
                                                 </tr>
                                             </thead>
@@ -61,39 +62,51 @@
                                                         <td>
                                                             @if ($item->map)
                                                                 <img src="{{ asset('maps/' . $item->map) }}"
-                                                                    alt="error" width="50"
+                                                                    alt="error" width="90px"
                                                                     style="cursor: pointer;" data-bs-toggle="modal"
                                                                     data-bs-target="#imageModal{{ $item->id }}">
                                                             @else
                                                                 ไม่มีรูปภาพ
                                                             @endif
-                                                        </td>                                                      
-                                                        <td>{{ $item->address }}</td>
-                                                        <td>{{ $item->tel}}</td>
+                                                        </td>
+                                                        <td>
+                                                            @php
+                                                                $text = $item->address;
+                                                                $shortText = Str::limit($text, 60);
+                                                            @endphp
+                                                            <span>{{ $shortText }}</span>
+                                                            @if (strlen($text) > 100)
+                                                                <button class="btn btn-link p-0" data-bs-toggle="modal"
+                                                                    data-bs-target="#detailsModal{{ $item->id }}">
+                                                                    อ่านเพิ่มเติม
+                                                                </button>
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ $item->tel }}</td>
                                                         <td>
                                                             <!-- ปุ่มแก้ไข -->
                                                             <a href="{{ route('data_contact.edit', $item->id) }}"
                                                                 class="btn btn-warning btn-sm">แก้ไข</a>
+
                                                             <!-- ฟอร์มลบ -->
                                                             <form id="delete-form-{{ $item->id }}"
                                                                 action="{{ route('data_contact.destroy', $item->id) }}"
-                                                                method="POST" style="display:none;">
+                                                                method="POST" style="display:inline;">
                                                                 @csrf
                                                                 @method('DELETE')
+                                                                <button type="button" class="btn btn-danger btn-sm"
+                                                                    onclick="confirmDelete('{{ $item->id }}')">ลบ</button>
                                                             </form>
-                                                            <button type="button" class="btn btn-danger btn-sm"
-                                                                onclick="confirmDelete('{{ $item->id }}')">ลบ</button>
                                                         </td>
                                                     </tr>
+
                                                     <!-- Modal สำหรับแต่ละแถว -->
                                                     <div class="modal fade" id="imageModal{{ $item->id }}"
-                                                        tabindex="-1"
-                                                        aria-labelledby="map{{ $item->id }}"
+                                                        tabindex="-1" aria-labelledby="map{{ $item->id }}"
                                                         aria-hidden="true">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <!-- แสดงชื่อโปรโมชั่นในหัวข้อของ Modal -->
                                                                     <h5 class="modal-title"
                                                                         id="map{{ $item->id }}">
                                                                         รูปMap</h5>
@@ -111,8 +124,33 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                
+                                                    </div>
+
+                                                    <!-- Modal แสดงรายละเอียดที่อยู่ -->
+                                                    <div class="modal fade" id="detailsModal{{ $item->id }}"
+                                                        tabindex="-1"
+                                                        aria-labelledby="detailsModalLabel{{ $item->id }}"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title"
+                                                                        id="detailsModalLabel{{ $item->id }}">
+                                                                        ที่อยู่</h5>
+                                                                        <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                                                                            <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                                                        </div>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    {{ $text }}
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 @endforeach
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -211,35 +249,37 @@
 
 <style>
     .loading-spinner {
-     position: fixed;
-     top: 50%;
-     left: 58%; 
-     transform: translate(-50%, -50%);
-     width: 40px;
-     height: 40px;
-     border: 4px solid #ccc;
-     border-top-color: #3498db;
-     border-radius: 50%;
-     animation: spin 1s linear infinite;
-     z-index: 9999;
-   }
-   }
-   @keyframes spin {
-     0% {
-       transform: rotate(0deg);
-     }
-     100% {
-       transform: rotate(360deg);
-     }
-   }
-   </style>
+        position: fixed;
+        top: 50%;
+        left: 58%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        border: 4px solid #ccc;
+        border-top-color: #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        z-index: 9999;
+    }
+    }
 
-   <script>
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<script>
     // Simulate loading delay
     window.addEventListener("load", () => {
-      setTimeout(() => {
-        document.querySelector(".loading-spinner").style.display = "none";
-        document.getElementById("main-content").style.visibility = "visible";
-      }, 500); 
+        setTimeout(() => {
+            document.querySelector(".loading-spinner").style.display = "none";
+            document.getElementById("main-content").style.visibility = "visible";
+        }, 500);
     });
-  </script>
+</script>

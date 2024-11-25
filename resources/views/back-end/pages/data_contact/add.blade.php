@@ -40,26 +40,34 @@
                                 <div class="container mt-5">
                                     <h2 class="text-center mb-4 text-dark">เพิ่มข้อมูลติดต่อเรา</h2>
                                     <div class="shadow-lg p-4 bg-body-tertiary rounded">
-                                        <form action="{{ route('data_contact.insert') }}" method="POST" enctype="multipart/form-data">
+                                        <form action="{{ route('data_contact.insert') }}" method="POST"
+                                            enctype="multipart/form-data">
                                             @csrf
                                             <div class="mb-3">
                                                 <label for="map" class="form-label">รูปMap</label>
-                                                <input type="file" class="form-control" id="map" name="map" accept="image/*" required>
-                                            </div>
-                                           
-                                            <div class="mb-3">
-                                                <label for="address" class="form-label">ที่อยู่</label>
-                                                <input type="text" class="form-control" id="address" name="address" placeholder="กรอกที่อยู่" required>
+                                                <input type="file" class="form-control" id="map" name="map"
+                                                    accept="image/*" required>
                                             </div>
 
-                                          <div class="mb-3">
-                                                <label for="tel" class="form-label">เบอร์โทร</label>
-                                                <input type="number" class="form-control" id="tel" name="tel" placeholder="กรอกเบอร์โทร" required>
+                                            <div class="mb-3">
+                                                <label for="address" class="form-label">ที่อยู่</label>
+                                                <input type="text" class="form-control" id="address" name="address"
+                                                    placeholder="กรอกที่อยู่" required>
                                             </div>
-                                           
+
+                                            <div class="mb-3">
+                                                <label for="tel" class="form-label">เบอร์โทร</label>
+                                                <input type="number" class="form-control" id="tel" name="tel"
+                                                    placeholder="กรอกเบอร์โทร" required>
+                                                    @error('tel')
+                                                    <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+
                                             <div class="text-center">
                                                 <button type="submit" class="btn btn-primary">บันทึก</button>
-                                                <a href="{{ route('data_contact.index') }}" class="btn btn-secondary">ยกเลิก</a>
+                                                <a href="{{ route('data_contact.index') }}"
+                                                    class="btn btn-secondary">ยกเลิก</a>
                                             </div>
                                         </form>
                                     </div>

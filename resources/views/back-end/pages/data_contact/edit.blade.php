@@ -65,6 +65,9 @@
                                                 <label for="tel" class="form-label">เบอร์โทร</label>
                                                 <input type="number" class="form-control" id="tel" name="tel" 
                                                     value="{{ old('tel', $item->tel) }}" placeholder="กรอกเบอร์โทร" >
+                                                    @error('tel')
+                                                    <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                      
                                             <div class="text-center">

@@ -43,9 +43,9 @@
                                     <div class="d-flex justify-content-end mb-3">
                                         <a href="webpanel/settingqrcode/add" class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
-                                    <div class="table-responsive shadow-lg p-3 bg-body-tertiary rounded">
-                                        <table class="table table-hover table-striped table-bordered align-middle">
-                                            <thead class="table-dark text-center">
+                                    <div class="table-responsive shadow-lg p-3 rounded">
+                                        <table class="table table-hover table-striped table-bordered text-center align-middle">
+                                            <thead class="table-dark">
                                                 <tr>
                                                     <th scope="col">ลำดับ</th>
                                                     <th scope="col">Qrcode</th>
@@ -54,43 +54,56 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach($items as $index => $item)
-                                                <tr class="text-center">
-                                                    <td>{{ $index + 1 }}</td>
-                                                    <td>
-                                                        @if ($item->image_path)
-                                                            <!-- รูปภาพที่สามารถคลิกเพื่อดูใน Modal -->
-                                                            <img src="{{ asset($item->image_path) }}" alt="Image" width="100" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal-{{ $item->id }}">
-                                                        @else
-                                                            ไม่มีรูปภาพ
-                                                        @endif
-                                                    </td>
-                                                    <td>{{ $item->name_account }}</td>
-                                                    <td class="text-center">
-                                                        <a href="{{ url('webpanel/settingqrcode/edit/' . $item->id) }}"
-                                                            class="btn btn-warning btn-sm">แก้ไข</a>
-                                                        <a href="javascript:void(0);" class="btn btn-danger btn-sm"
-                                                            onclick="check_destroy({{ $item->id }})">ลบ</a>
+                                                @foreach ($items as $index => $item)
+                                                    <tr class="text-center">
+                                                        <td>{{ $index + 1 }}</td>
+                                                        <td>
+                                                            @if ($item->image_path)
+                                                                <!-- รูปภาพที่สามารถคลิกเพื่อดูใน Modal -->
+                                                                <img src="{{ asset($item->image_path) }}" alt="error"
+                                                                    width="60px" style="cursor: pointer;"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#imageModal-{{ $item->id }}">
+                                                            @else
+                                                                ไม่มีรูปภาพ
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ $item->name_account }}</td>
+                                                        <td class="text-center">
+                                                            <a href="{{ url('webpanel/settingqrcode/edit/' . $item->id) }}"
+                                                                class="btn btn-warning btn-sm">แก้ไข</a>
+                                                            <a href="javascript:void(0);" class="btn btn-danger btn-sm"
+                                                                onclick="check_destroy({{ $item->id }})">ลบ</a>
 
-                                                    </td>
-                                                </tr>
+                                                        </td>
+                                                    </tr>
                                                 @endforeach
                                             </tbody>
                                         </table>
                                     </div>
-                                    
+
                                     <!-- Modal สำหรับแสดงรูปภาพ -->
-                                    @foreach($items as $index => $item)
-                                        <div class="modal fade" id="imageModal-{{ $item->id }}" tabindex="-1" aria-labelledby="exampleModalLabel-{{ $item->id }}" aria-hidden="true">
+                                    @foreach ($items as $index => $item)
+                                        <div class="modal fade" id="imageModal-{{ $item->id }}" tabindex="-1"
+                                            aria-labelledby="exampleModalLabel-{{ $item->id }}" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel-{{ $item->id }}">รูปภาพ</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <h5 class="modal-title"
+                                                        id="exampleModalLabel{{ $item->id }}">
+                                                        ชื่อบัญชี: {{ $item->name_account  }}
+                                                    </h5>
+                                                        <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+                                                            data-bs-dismiss="modal" aria-label="Close">
+                                                            <i class="ki-duotone ki-cross fs-1"><span
+                                                                    class="path1"></span><span
+                                                                    class="path2"></span></i>
+                                                        </div>
                                                     </div>
                                                     <div class="modal-body text-center">
                                                         <!-- แสดงรูปภาพใน Modal -->
-                                                        <img src="{{ asset($item->image_path) }}" alt="Image" class="img-fluid">
+                                                        <img src="{{ asset($item->image_path) }}" alt="Image"
+                                                            class="img-fluid">
                                                     </div>
                                                 </div>
                                             </div>
@@ -181,35 +194,37 @@
 </script>
 <style>
     .loading-spinner {
-     position: fixed;
-     top: 50%;
-     left: 58%; 
-     transform: translate(-50%, -50%);
-     width: 40px;
-     height: 40px;
-     border: 4px solid #ccc;
-     border-top-color: #3498db;
-     border-radius: 50%;
-     animation: spin 1s linear infinite;
-     z-index: 9999;
-   }
-   }
-   @keyframes spin {
-     0% {
-       transform: rotate(0deg);
-     }
-     100% {
-       transform: rotate(360deg);
-     }
-   }
-   </style>
+        position: fixed;
+        top: 50%;
+        left: 58%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        border: 4px solid #ccc;
+        border-top-color: #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        z-index: 9999;
+    }
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
 
 <script>
     // Simulate loading delay
     window.addEventListener("load", () => {
-      setTimeout(() => {
-        document.querySelector(".loading-spinner").style.display = "none";
-        document.getElementById("main-content").style.visibility = "visible";
-      }, 500); 
+        setTimeout(() => {
+            document.querySelector(".loading-spinner").style.display = "none";
+            document.getElementById("main-content").style.visibility = "visible";
+        }, 500);
     });
-  </script>
+</script>

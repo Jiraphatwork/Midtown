@@ -55,11 +55,11 @@
                                                 <input type="text" class="form-control" id="detail" name="detail" placeholder="กรอกรายละเอียด" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="first_date" class="form-label">วันเริ่มต้น</label>
+                                                <label for="first_date" class="form-label">วันเริ่มต้นโปรโมชั่น</label>
                                                 <input type="date" class="form-control" id="first_date" name="first_date" placeholder="" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="last_date" class="form-label">วันสิ้นสุด</label>
+                                                <label for="last_date" class="form-label">วันสิ้นสุดโปรโมชั่น</label>
                                                 <input type="date" class="form-control" id="last_date" name="last_date" placeholder="" required>
                                             </div>
                                             <div class="text-center">

@@ -53,12 +53,12 @@
                                                     name="now_date" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="first_date" class="form-label">วันแรก</label>
+                                                <label for="first_date" class="form-label">วันแรกของการจอง</label>
                                                 <input type="date" class="form-control" id="first_date"
                                                     name="first_date" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="last_date" class="form-label">วันสุดท้าย</label>
+                                                <label for="last_date" class="form-label">วันสุดท้ายของการจอง</label>
                                                 <input type="date" class="form-control" id="last_date"
                                                     name="last_date" required>
                                             </div>

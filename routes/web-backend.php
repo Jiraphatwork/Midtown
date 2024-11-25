@@ -48,12 +48,12 @@ Route::group(['middleware' => ['Webpanel']], function () {
 
 
         Route::prefix('calendar')->group(function () {
-            Route::get('/', [Webpanel\CalendarController::class, 'index']);
-            Route::get('/add', [Webpanel\CalendarController::class, 'add']);
-            Route::post('/add', [Webpanel\CalendarController::class, 'insert']);
-            Route::get('/edit/{id}', [Webpanel\CalendarController::class, 'edit'])->where(['id' => '[0-9]+']);
-            Route::post('/edit/{id}', [Webpanel\CalendarController::class, 'update'])->where(['id' => '[0-9]+']);
-            Route::get('/destroy/{id}', [Webpanel\CalendarController::class, 'destroy'])->where(['id' => '[0-9]+']);
+            Route::get('/', [Webpanel\CalendarController::class, 'index'])->name('calendar.index');
+            Route::get('/add', [Webpanel\CalendarController::class, 'add'])->name('calendar.add');
+            Route::post('/add', [Webpanel\CalendarController::class, 'insert'])->name('calendar.insert');
+            Route::get('/edit/{id}', [Webpanel\CalendarController::class, 'edit'])->where(['id' => '[0-9]+'])->name('calendar.edit');
+            Route::post('/edit/{id}', [Webpanel\CalendarController::class, 'update'])->where(['id' => '[0-9]+'])->name('calendar.update');
+            Route::get('/destroy/{id}', [Webpanel\CalendarController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('calendar.destroy');
             Route::get('/status/{id}', [Webpanel\CalendarController::class, 'status'])->where(['id' => '[0-9]+']);
         });
 

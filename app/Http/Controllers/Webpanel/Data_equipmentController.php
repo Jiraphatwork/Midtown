@@ -56,6 +56,8 @@ class Data_equipmentController extends Controller
             'pic_equipment' => $picequipmentFilename, 
             'price' => $validated['price'],
             'quantity' => $validated['quantity'], 
+            'created_at' => now(), 
+            'updated_at' => now(), 
         ]);
 
         return redirect()->route('data_equipment.index')->with('success', 'เพิ่มข้อมูลสำเร็จ');
@@ -117,7 +119,7 @@ public function edit($id)
             $item->quantity == $validated['quantity']
         ) {
             // หากไม่มีการเปลี่ยนแปลงข้อมูล, กลับไปยังหน้า index
-            return redirect()->route('data_equipment.index');
+            return redirect()->route('data_equipment.index')->with('success', 'ข้อมูลอัปเดตสำเร็จ');
         }
         
 
@@ -127,6 +129,7 @@ public function edit($id)
             'pic_equipment' => $picequipmentFilename, 
             'price' => $validated['price'],
             'quantity' => $validated['quantity'], 
+            'updated_at' => now(), 
         ]);
 
         // ถ้าอัปเดตสำเร็จให้กลับไปที่หน้ารายการลูกค้า

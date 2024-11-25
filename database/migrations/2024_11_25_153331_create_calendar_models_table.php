@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSettingmembershipModelsTable extends Migration
+class CreateCalendarModelsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateSettingmembershipModelsTable extends Migration
      */
     public function up()
     {
-        Schema::create('settingmembership_models', function (Blueprint $table) {
+        Schema::create('calendar_models', function (Blueprint $table) {
             $table->id();
-            $table->string("name_condition");
-            $table->string("details",10000);
+            $table->string('title');
+            $table->date('start');
+            $table->date('end')->nullable();
+            $table->boolean('all_day')->default(false);
             $table->string("created_by",50)->nullable();
             $table->string("updated_by",50)->nullable();
             $table->datetime('created_at')->nullable();
@@ -31,6 +33,6 @@ class CreateSettingmembershipModelsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('settingmembership_models');
+        Schema::dropIfExists('calendar_models');
     }
 }

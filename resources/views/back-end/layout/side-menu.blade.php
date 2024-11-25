@@ -29,13 +29,13 @@
                 <div class="menu menu-column menu-rounded menu-sub-indention fw-semibold fs-6" id="#kt_app_sidebar_menu" data-kt-menu="true" data-kt-menu-expand="false">
                     
                     @php $menus = \Helper::mainMenu(); @endphp
-                    @if(@$menus)
-                        @foreach(@$menus as $key=>$menu)
+                    @if($menus)
+                        @foreach($menus as $key=>$menu)
                             @php $arraymenu = array(); @endphp
                             @if($menu->position == "topic")
                             <div class="menu-item pt-5">
                                 <div class="menu-content">
-                                    <span class="menu-heading fw-bold text-uppercase fs-7">{{@$menu->name}}</span>
+                                    <span class="menu-heading fw-bold text-uppercase fs-7">{{ $menu->name }}</span>
                                 </div>
                             </div>
                             @else
@@ -50,53 +50,41 @@
                                 <!-- Begin:Menu -->
                                 @if($subs->count() <= 0)
                                 <div class="menu-item">
-                                    <a class="menu-link @if(@$folder == $menu->url) active  @endif" href="{{"".$menu->url}}" style="text-decoration: none;">
+                                    <a class="menu-link @if(request()->is(trim($menu->url, '/'))) active @endif" href="{{ $menu->url }}" style="text-decoration: none;">
                                         <span class="menu-icon">
-                                            <i class="{{@$menu->icon}}"> </i>
+                                            <i class="{{ $menu->icon }}"> </i>
                                         </span>
-                                        <span class="menu-title" style="font-size: 15px; font-weight: 500;">{{@$menu->name}}</span>
+                                        <span class="menu-title" style="font-size: 15px; font-weight: 400;">{{ $menu->name }}</span>
                                     </a>
                                 </div>
                                 
                                 @else
-                                <div data-kt-menu-trigger="click" id="main_menu_{{@$menu->id}}" class="menu-item menu-accordion">
+                                <div data-kt-menu-trigger="click" id="main_menu_{{ $menu->id }}" class="menu-item menu-accordion" >
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
                                         <span class="menu-icon">
-                                            <i class="{{@$menu->icon}}"> </i>
+                                            <i class="{{ $menu->icon }}"> </i>
                                         </span>
-                                        <span class="menu-title">{{@$menu->name}}</span>
+                                        <span class="menu-title">{{ $menu->name }}</span>
                                         <span class="menu-arrow"></span>
                                     </span>
                                     <!--end:Menu link-->
                                     <!--begin:Menu sub-->
                                     <div class="menu-sub menu-sub-accordion">
-                                        @if($subs)
-                                            @foreach($subs as $sub)
+                                        @foreach($subs as $sub)
                                             @php 
-                                            try{
-                                                if(in_array(@$folder, $arraymenu)){
-                                                    echo "<script>
-                                                        var element = document.getElementById('main_menu_'+ $menu->id);
-                                                            element.classList.add('here');
-                                                            element.classList.add('show');
-                                                        </script>";
-                                                }
-                                            }catch (\Exception $e) {
-            
-                                            }
+                                                // เช็คว่า URL ของ sub menu ตรงกับหน้า URL ปัจจุบันหรือไม่
+                                                $isActive = request()->is(trim($sub->url, '/')) || in_array($folder, $arraymenu);
                                             @endphp
-                                            
                                             <div class="menu-item">
-                                                <a class="menu-link @if(@$folder == $sub->url) active @endif" href="{{"".$sub->url}}">
+                                                <a class="menu-link @if($isActive) active @endif" href="{{ $sub->url }}">
                                                     <span class="menu-bullet">
                                                         <span class="bullet bullet-dot"></span>
                                                     </span>
-                                                    <span class="menu-title">{{@$sub->name}}</span>
+                                                    <span class="menu-title">{{ $sub->name }}</span>
                                                 </a>
                                             </div>
-                                            @endforeach
-                                        @endif
+                                        @endforeach
                                     </div>
                                     <!--end:Menu sub-->
                                 </div>
@@ -105,7 +93,7 @@
                         @endforeach
                     @endif
 
-                    
+                    <!-- Help Section -->
                     <div class="menu-item pt-5">
                         <div class="menu-content">
                             <span class="menu-heading fw-bold text-uppercase fs-7">Help</span>
@@ -163,3 +151,13 @@
     </div>
     <!--end::Footer-->
 </div>
+
+<style>
+    a.menu-link.active {
+    background-color: #d94949 !important;
+}
+a.menu-link {
+    text-decoration: none !important;
+    
+}
+</style>

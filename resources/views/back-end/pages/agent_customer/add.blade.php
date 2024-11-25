@@ -85,6 +85,9 @@
                                                 <label for="id_card" class="form-label">เลขบัตรประชาชน</label>
                                                 <input type="text" class="form-control" id="id_card" name="id_card"
                                                     placeholder="กรอกเลขบัตรประชาชน" required>
+                                                    @error('id_card')
+                                                    <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
                                             </div>
 
                                             <!-- ที่อยู่ -->
@@ -106,6 +109,9 @@
                                                 <label for="tel" class="form-label">เบอร์โทร</label>
                                                 <input type="text" class="form-control" id="tel"
                                                     name="tel" placeholder="กรอกเบอร์โทร" required>
+                                                    @error('tel')
+                                                    <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
                                             </div>
 
                                             <!-- เบอร์แฟกซ์ -->
@@ -128,6 +134,9 @@
                                                 <label for="tax_id" class="form-label">เลขผู้เสียภาษี</label>
                                                 <input type="text" class="form-control" id="tax_id"
                                                     name="tax_id" placeholder="กรอกเลขผู้เสียภาษี">
+                                                    @error('tax_id')
+                                                    <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
                                             </div>
 
                                             <!-- ใบ ณ ที่จ่าย -->
