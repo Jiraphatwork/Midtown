@@ -312,6 +312,6 @@
         setTimeout(() => {
             document.querySelector(".loading-spinner").style.display = "none";
             document.getElementById("main-content").style.visibility = "visible";
-        }, 500);
+        }, 200);
     });
 </script>

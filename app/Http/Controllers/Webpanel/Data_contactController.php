@@ -93,7 +93,7 @@ class Data_contactController extends Controller
         $validated = $request->validate([
             'map' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'address' => 'required|string',
-            'tel' => 'required|digits:10',
+            'tel' => 'required|string|digits:10',
         ], [
             'tel.digits' => 'หมายเลขเบอร์โทรศัพท์ต้องมีความยาว 10 หลักเท่านั้น', 
         ]);
@@ -145,13 +145,23 @@ class Data_contactController extends Controller
 
     public function destroy($id)
     {
+        // ค้นหาข้อมูลลูกค้าในฐานข้อมูล
         $item = DB::table('data_contact_models')->where('id', $id)->first();
-
-        if (!$item) {
+    
+        if (!$item ) {
             return redirect()->route('data_contact.index')->with('error', 'ไม่พบข้อมูลที่ต้องการลบ');
         }
+    
+        // ลบไฟล์จาก public
+        if (!empty($item ->map)) {
+            $cardSlipFilePath = public_path('maps/' . $item ->map);
+            if (is_file($cardSlipFilePath)) { // ตรวจสอบว่าเป็นไฟล์
+                unlink($cardSlipFilePath); // ลบไฟล์จากระบบ
+            }
+        }
+        // ลบข้อมูลจากฐานข้อมูล
         DB::table('data_contact_models')->where('id', $id)->delete();
-
+    
         return redirect()->route('data_contact.index')->with('success', 'ลบข้อมูลสำเร็จ');
     }
 }

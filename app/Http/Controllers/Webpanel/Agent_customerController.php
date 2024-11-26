@@ -208,7 +208,7 @@ if (
     $item->slip_card == $slipCardFilename
 ) {
     // หากไม่มีการเปลี่ยนแปลงข้อมูล, กลับไปยังหน้า index
-    return redirect()->route('agent_customer.index');
+    return redirect()->route('agent_customer.index')->with('success', 'ข้อมูลอัปเดตสำเร็จ');
 }
 
     // อัปเดตข้อมูลในฐานข้อมูล
@@ -235,16 +235,49 @@ if (
         : back()->with('error', 'ไม่สามารถอัปเดตข้อมูลได้');
 }
 
-    public function destroy($id)
-    {
-        $item = DB::table('agent_customer_models')->where('id', $id)->first();
+public function destroy($id)
+{
+    // ค้นหาข้อมูลลูกค้าในฐานข้อมูล
+    $item = DB::table('agent_customer_models')->where('id', $id)->first();
 
-        if (!$item) {
-            return redirect()->route('agent_customer.index')->with('error', 'ไม่พบข้อมูลที่ต้องการลบ');
-        }
-        DB::table('agent_customer_models')->where('id', $id)->delete();
-
-        return redirect()->route('agent_customer.index')->with('success', 'ลบข้อมูลสำเร็จ');
+    if (!$item ) {
+        return redirect()->route('agent_customer.index')->with('error', 'ไม่พบข้อมูลที่ต้องการลบ');
     }
+
+    // ลบไฟล์จาก public/card_slips หากมีไฟล์
+    if (!empty($item ->slip_card)) {
+        $cardSlipFilePath = public_path('slip_cards/' . $item ->slip_card);
+        if (is_file($cardSlipFilePath)) { // ตรวจสอบว่าเป็นไฟล์
+            unlink($cardSlipFilePath); // ลบไฟล์จากระบบ
+        }
+    }
+
+    // ลบไฟล์จาก public/bussiness_cards หากมีไฟล์
+    if (!empty($item ->business_card)) {
+        $businessCardFilePath = public_path('business_cards/' . $item ->business_card);
+        if (is_file($businessCardFilePath)) { // ตรวจสอบว่าเป็นไฟล์
+            unlink($businessCardFilePath); // ลบไฟล์จากระบบ
+        }
+    }
+
+    if (!empty($item ->pic_id_card)) {
+        $cardSlipFilePath = public_path('pic_id_cards/' . $item ->pic_id_card);
+        if (is_file($cardSlipFilePath)) { // ตรวจสอบว่าเป็นไฟล์
+            unlink($cardSlipFilePath); // ลบไฟล์จากระบบ
+        }
+    }
+
+    if (!empty($item ->tax_card)) {
+        $cardSlipFilePath = public_path('tax_cards/' . $item ->tax_card);
+        if (is_file($cardSlipFilePath)) { // ตรวจสอบว่าเป็นไฟล์
+            unlink($cardSlipFilePath); // ลบไฟล์จากระบบ
+        }
+    }
+    // ลบข้อมูลจากฐานข้อมูล
+    DB::table('agent_customer_models')->where('id', $id)->delete();
+
+    return redirect()->route('agent_customer.index')->with('success', 'ลบข้อมูลสำเร็จ');
+}
+
 
 }

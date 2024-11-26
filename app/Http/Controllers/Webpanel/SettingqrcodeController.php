@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Models\Backend\AdminModel;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+
 
 class SettingqrcodeController extends Controller
 {
@@ -111,18 +113,29 @@ class SettingqrcodeController extends Controller
 
 
     public function destroy($id)
-    {
-        try {
-            $item = SettingqrcodeModel::find($id);
+{
+    try {
+        $item = SettingqrcodeModel::find($id);
 
-            if ($item) {
-                $item->delete();
-                return response()->json(['success' => true]);
+        if ($item) {
+            // ตรวจสอบและลบไฟล์ภาพที่เกี่ยวข้อง
+            if (!empty($item->image_path)) {
+                Storage::disk('public')->delete($item->image_path); // ลบไฟล์
             }
 
-            return response()->json(['success' => false]);
-        } catch (\Exception $e) {
-            return response()->json(['success' => false]);
+            // ลบข้อมูลจากฐานข้อมูล
+            $item->delete();
+
+            return response()->json(['success' => true]);
         }
+
+        return response()->json(['success' => false]);
+    } catch (\Exception $e) {
+        Log::error("Error during deleting data", ['error' => $e->getMessage()]);
+        return response()->json(['success' => false, 'error' => $e->getMessage()]);
     }
+}
+
+    
+    
 }

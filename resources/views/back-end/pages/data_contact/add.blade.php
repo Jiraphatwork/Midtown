@@ -57,10 +57,10 @@
 
                                             <div class="mb-3">
                                                 <label for="tel" class="form-label">เบอร์โทร</label>
-                                                <input type="number" class="form-control" id="tel" name="tel"
-                                                    placeholder="กรอกเบอร์โทร" required>
-                                                    @error('tel')
-                                                    <div class="alert alert-danger">{{ $message }}</div>
+                                                <input type="text" class="form-control" id="tel" name="tel" placeholder="กรอกเบอร์โทร" maxlength="10" required oninput="validateTel()">
+                                                <div id="charCountTel" class="form-text text-muted mt-2">กรอกไปแล้ว 0/10 ตัวอักษร</div>
+                                                @error('tel')
+                                                    <div class="alert alert-danger mt-2">{{ $message }}</div>
                                                 @enderror
                                             </div>
 
@@ -114,3 +114,30 @@
 <!--end::Body-->
 
 </html>
+
+<script>
+     // ฟังก์ชันสำหรับแสดงจำนวนที่กรอกไปแล้ว
+     function updateLengthTel() {
+        var input = document.getElementById('tel');
+        var charCount = document.getElementById('charCountTel');
+        charCount.textContent = `กรอกไปแล้ว ${input.value.length}/10 ตัวอักษร`;
+    }
+
+    // ฟังก์ชันตรวจสอบเบอร์โทร
+    function validateTel() {
+        var tel = document.getElementById('tel');
+        var validTel = /^[0-9]{10}$/;  // ตรวจสอบว่าเบอร์โทรเป็นตัวเลข 10 หลัก
+        var charCount = document.getElementById('charCountTel');
+        
+        // แสดงจำนวนตัวอักษรที่กรอกไปแล้ว
+        updateLengthTel();
+        
+        // ตรวจสอบว่าเบอร์โทรเป็นไปตามรูปแบบที่กำหนดหรือไม่
+        if (!validTel.test(tel.value)) {
+            tel.setCustomValidity("กรุณากรอกเบอร์โทรที่ถูกต้อง (10 หลัก)");
+        } else {
+            tel.setCustomValidity("");  // รีเซ็ตข้อความ error
+        }
+    }
+
+</script>

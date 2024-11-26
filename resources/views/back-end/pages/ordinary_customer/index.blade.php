@@ -68,7 +68,7 @@
                                                         <td>{{ $item->email }}</td>
                                                         <td>
                                                             @if ($item->pic_id_card)
-                                                                <img src="{{ asset('id_cards/' . $item->pic_id_card) }}"
+                                                                <img src="{{ asset('pic_id_cards/' . $item->pic_id_card) }}"
                                                                     alt="ID Card" width="70"
                                                                     style="cursor: pointer;" data-bs-toggle="modal"
                                                                     data-bs-target="#imageModal-{{ $item->id }}">
@@ -133,7 +133,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-body text-center">
-                                                                    <img src="{{ asset('id_cards/' . $item->pic_id_card) }}"
+                                                                    <img src="{{ asset('pic_id_cards/' . $item->pic_id_card) }}"
                                                                         alt="ID Card" class="img-fluid">
                                                                 </div>
                                                             </div>

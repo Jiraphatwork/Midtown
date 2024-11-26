@@ -72,8 +72,11 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label for="tel" class="form-label">เบอร์โทร</label>
-                                                <input type="text" class="form-control" id="tel" name="tel" placeholder="กรอกเบอร์โทร" maxlength="10" required oninput="validateTel()">
-                                                <div id="charCountTel" class="form-text text-muted mt-2">กรอกไปแล้ว 0/10 ตัวอักษร</div>
+                                                <input type="text" class="form-control" id="tel" name="tel"
+                                                    placeholder="กรอกเบอร์โทร" maxlength="10" required
+                                                    oninput="validateTel()">
+                                                <div id="charCountTel" class="form-text text-muted mt-2">กรอกไปแล้ว 0/10
+                                                    ตัวอักษร</div>
                                                 @error('tel')
                                                     <div class="alert alert-danger mt-2">{{ $message }}</div>
                                                 @enderror
@@ -90,8 +93,11 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label for="tax_id" class="form-label">เลขผู้เสียภาษี</label>
-                                                <input type="text" class="form-control" id="tax_id" name="tax_id" placeholder="กรอกเลขผู้เสียภาษี" maxlength="13" required oninput="validateTaxId()">
-                                                <div id="charCountTaxId" class="form-text text-muted mt-2">กรอกไปแล้ว 0/13 ตัวอักษร</div>
+                                                <input type="text" class="form-control" id="tax_id"
+                                                    name="tax_id" placeholder="กรอกเลขผู้เสียภาษี" maxlength="13"
+                                                    required oninput="validateTaxId()">
+                                                <div id="charCountTaxId" class="form-text text-muted mt-2">กรอกไปแล้ว
+                                                    0/13 ตัวอักษร</div>
                                                 @error('tax_id')
                                                     <div class="alert alert-danger mt-2">{{ $message }}</div>
                                                 @enderror
@@ -154,8 +160,8 @@
 
 </html>
 <script>
-     // ฟังก์ชันสำหรับแสดงจำนวนที่กรอกไปแล้ว
-     function updateLengthTel() {
+    // ฟังก์ชันสำหรับแสดงจำนวนที่กรอกไปแล้ว
+    function updateLengthTel() {
         var input = document.getElementById('tel');
         var charCount = document.getElementById('charCountTel');
         charCount.textContent = `กรอกไปแล้ว ${input.value.length}/10 ตัวอักษร`;
@@ -164,17 +170,17 @@
     // ฟังก์ชันตรวจสอบเบอร์โทร
     function validateTel() {
         var tel = document.getElementById('tel');
-        var validTel = /^[0-9]{10}$/;  // ตรวจสอบว่าเบอร์โทรเป็นตัวเลข 10 หลัก
+        var validTel = /^[0-9]{10}$/; // ตรวจสอบว่าเบอร์โทรเป็นตัวเลข 10 หลัก
         var charCount = document.getElementById('charCountTel');
-        
+
         // แสดงจำนวนตัวอักษรที่กรอกไปแล้ว
         updateLengthTel();
-        
+
         // ตรวจสอบว่าเบอร์โทรเป็นไปตามรูปแบบที่กำหนดหรือไม่
         if (!validTel.test(tel.value)) {
             tel.setCustomValidity("กรุณากรอกเบอร์โทรที่ถูกต้อง (10 หลัก)");
         } else {
-            tel.setCustomValidity("");  // รีเซ็ตข้อความ error
+            tel.setCustomValidity(""); // รีเซ็ตข้อความ error
         }
     }
 
@@ -188,17 +194,17 @@
     // ฟังก์ชันตรวจสอบเลขผู้เสียภาษี
     function validateTaxId() {
         var taxId = document.getElementById('tax_id');
-        var validTaxId = /^[0-9]{13}$/;  // ตรวจสอบว่าเลขผู้เสียภาษีเป็นตัวเลข 13 หลัก
+        var validTaxId = /^[0-9]{13}$/; // ตรวจสอบว่าเลขผู้เสียภาษีเป็นตัวเลข 13 หลัก
         var charCount = document.getElementById('charCountTaxId');
-        
+
         // แสดงจำนวนตัวอักษรที่กรอกไปแล้ว
         updateLengthTaxId();
-        
+
         // ตรวจสอบว่าเลขผู้เสียภาษีเป็นไปตามรูปแบบที่กำหนดหรือไม่
         if (!validTaxId.test(taxId.value)) {
             taxId.setCustomValidity("กรุณากรอกเลขผู้เสียภาษีที่ถูกต้อง (13 หลัก)");
         } else {
-            taxId.setCustomValidity("");  // รีเซ็ตข้อความ error
+            taxId.setCustomValidity(""); // รีเซ็ตข้อความ error
         }
     }
 </script>

@@ -143,13 +143,23 @@ class promotionController extends Controller
 
     public function destroy($id)
     {
+        // ค้นหาข้อมูลลูกค้าในฐานข้อมูล
         $item = DB::table('promotion_models')->where('id', $id)->first();
-
-        if (!$item) {
+    
+        if (!$item ) {
             return redirect()->route('promotion.index')->with('error', 'ไม่พบข้อมูลที่ต้องการลบ');
         }
+    
+        // ลบไฟล์จาก public
+        if (!empty($item ->pic_promotion)) {
+            $cardSlipFilePath = public_path('pic_promotions/' . $item ->pic_promotion);
+            if (is_file($cardSlipFilePath)) { // ตรวจสอบว่าเป็นไฟล์
+                unlink($cardSlipFilePath); // ลบไฟล์จากระบบ
+            }
+        }
+        // ลบข้อมูลจากฐานข้อมูล
         DB::table('promotion_models')->where('id', $id)->delete();
-
+    
         return redirect()->route('promotion.index')->with('success', 'ลบข้อมูลสำเร็จ');
     }
 }

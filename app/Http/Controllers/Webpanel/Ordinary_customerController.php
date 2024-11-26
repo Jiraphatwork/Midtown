@@ -60,7 +60,7 @@ class Ordinary_customerController extends Controller
             // สร้างชื่อไฟล์ใหม่เพื่อไม่ให้ซ้ำกัน
             $filename = time() . '_' . $request->file('pic_id_card')->getClientOriginalName();
             // บันทึกไฟล์ไปยังโฟลเดอร์ public/id_cards
-            $request->file('pic_id_card')->move(public_path('id_cards'), $filename);
+            $request->file('pic_id_card')->move(public_path('pic_id_cards'), $filename);
         }
 
         // บันทึกข้อมูลลงฐานข้อมูล
@@ -132,11 +132,11 @@ class Ordinary_customerController extends Controller
         $filename = time() . '_' . $request->file('pic_id_card')->getClientOriginalName();
 
         // บันทึกไฟล์ไปยังโฟลเดอร์ public/id_cards
-        $request->file('pic_id_card')->move(public_path('id_cards'), $filename);
+        $request->file('pic_id_card')->move(public_path('pic_id_card'), $filename);
 
         // ลบไฟล์เก่าถ้ามี
-        if (!empty($item->pic_id_card) && file_exists(public_path('id_cards/' . $item->pic_id_card))) {
-            unlink(public_path('id_cards/' . $item->pic_id_card));
+        if (!empty($item->pic_id_card) && file_exists(public_path('pic_id_card/' . $item->pic_id_card))) {
+            unlink(public_path('pic_id_card/' . $item->pic_id_card));
         }
     }
 
@@ -174,16 +174,27 @@ class Ordinary_customerController extends Controller
 
     
 
-    public function destroy($id)
-    {
-        $history = DB::table('ordinary_customer_models')->where('id', $id)->first();
+public function destroy($id)
+{
+    // ค้นหาข้อมูลลูกค้าในฐานข้อมูล
+    $history = DB::table('ordinary_customer_models')->where('id', $id)->first();
 
-        if (!$history) {
-            return redirect()->route('ordinary_customer.index')->with('error', 'ไม่พบข้อมูลที่ต้องการลบ');
-        }
-        DB::table('ordinary_customer_models')->where('id', $id)->delete();
-
-        return redirect()->route('ordinary_customer.index')->with('success', 'ลบข้อมูลสำเร็จ');
+    if (!$history) {
+        return redirect()->route('ordinary_customer.index')->with('error', 'ไม่พบข้อมูลที่ต้องการลบ');
     }
+
+    // ลบไฟล์ที่อยู่ใน public/pic_id_card
+    $filePath = public_path('pic_id_cards/' . $history->pic_id_card); 
+    
+    if (file_exists($filePath)) {
+        unlink($filePath); // ลบไฟล์จากระบบ
+    }
+
+    // ลบข้อมูลจากฐานข้อมูล
+    DB::table('ordinary_customer_models')->where('id', $id)->delete();
+
+    return redirect()->route('ordinary_customer.index')->with('success', 'ลบข้อมูลสำเร็จ');
+}
+
 
 }

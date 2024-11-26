@@ -205,15 +205,35 @@ class Organization_customerController extends Controller
 
 
     public function destroy($id)
-    {
-        $history = DB::table('organization_customer_models')->where('id', $id)->first();
+{
+    // ค้นหาข้อมูลลูกค้าในฐานข้อมูล
+    $history = DB::table('organization_customer_models')->where('id', $id)->first();
 
-        if (!$history) {
-            return redirect()->route('organization_customer.index')->with('error', 'ไม่พบข้อมูลที่ต้องการลบ');
-        }
-        DB::table('organization_customer_models')->where('id', $id)->delete();
-
-        return redirect()->route('organization_customer.index')->with('success', 'ลบข้อมูลสำเร็จ');
+    if (!$history) {
+        return redirect()->route('organization_customer.index')->with('error', 'ไม่พบข้อมูลที่ต้องการลบ');
     }
 
+    // ลบไฟล์จาก public/card_slips หากมีไฟล์
+    if (!empty($history->card_slip)) {
+        $cardSlipFilePath = public_path('card_slips/' . $history->card_slip);
+        if (is_file($cardSlipFilePath)) { // ตรวจสอบว่าเป็นไฟล์
+            unlink($cardSlipFilePath); // ลบไฟล์จากระบบ
+        }
+    }
+
+    // ลบไฟล์จาก public/bussiness_cards หากมีไฟล์
+    if (!empty($history->business_card)) {
+        $businessCardFilePath = public_path('business_cards/' . $history->business_card);
+        if (is_file($businessCardFilePath)) { // ตรวจสอบว่าเป็นไฟล์
+            unlink($businessCardFilePath); // ลบไฟล์จากระบบ
+        }
+    }
+
+    // ลบข้อมูลจากฐานข้อมูล
+    DB::table('organization_customer_models')->where('id', $id)->delete();
+
+    return redirect()->route('organization_customer.index')->with('success', 'ลบข้อมูลสำเร็จ');
 }
+
+}
+

@@ -45,7 +45,8 @@
                                             class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
                                     <div class="table-responsive shadow-lg p-3 rounded">
-                                        <table class="table table-hover table-striped table-bordered text-center align-middle">
+                                        <table
+                                            class="table table-hover table-striped table-bordered text-center align-middle">
                                             <thead class="table-dark">
                                                 <tr>
                                                     <th scope="col">ลำดับ</th>
@@ -110,9 +111,12 @@
                                                                     <h5 class="modal-title"
                                                                         id="map{{ $item->id }}">
                                                                         รูปMap</h5>
-                                                                    <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal"
-                                                                        aria-label="Close"></button>
+                                                                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+                                                                        data-bs-dismiss="modal" aria-label="Close">
+                                                                        <i class="ki-duotone ki-cross fs-1"><span
+                                                                                class="path1"></span><span
+                                                                                class="path2"></span></i>
+                                                                    </div>
                                                                 </div>
                                                                 <div class="modal-body text-center">
                                                                     @if ($item->map)
@@ -137,9 +141,12 @@
                                                                     <h5 class="modal-title"
                                                                         id="detailsModalLabel{{ $item->id }}">
                                                                         ที่อยู่</h5>
-                                                                        <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
-                                                                            <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
-                                                                        </div>
+                                                                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+                                                                        data-bs-dismiss="modal" aria-label="Close">
+                                                                        <i class="ki-duotone ki-cross fs-1"><span
+                                                                                class="path1"></span><span
+                                                                                class="path2"></span></i>
+                                                                    </div>
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     {{ $text }}
