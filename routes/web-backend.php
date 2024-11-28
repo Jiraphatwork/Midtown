@@ -2,17 +2,17 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Webpanel as Webpanel;
 use App\Http\Controllers\Functions as Functions;
-
+use App\Http\Controllers\Webpanel\AuthController;
 
 Route::get('webpanel/login', [Webpanel\AuthController::class, 'getLogin']);
 Route::post('webpanel/login', [Webpanel\AuthController::class, 'postLogin']);
 Route::get('webpanel/logout', [Webpanel\AuthController::class, 'logOut']);
 
 
-
 Route::group(['middleware' => ['Webpanel']], function () {
     Route::prefix('webpanel')->group(function () {
         Route::get('/', [Webpanel\DashboardController::class, 'index']);
+
 
         Route::prefix('administrator')->group(function () {
             Route::prefix('user')->group(function () {
@@ -144,6 +144,16 @@ Route::group(['middleware' => ['Webpanel']], function () {
             Route::post('/edit/{id}', [Webpanel\SettingmembershipController::class, 'update'])->where(['id' => '[0-9]+']);
             Route::get('/destroy/{id}', [Webpanel\SettingmembershipController::class, 'destroy'])->where(['id' => '[0-9]+']);
             Route::get('/status/{id}', [Webpanel\SettingmembershipController::class, 'status'])->where(['id' => '[0-9]+']);
+        });
+
+        Route::prefix('signup')->group(function () {
+            Route::get('/', [Webpanel\SignupController::class, 'index']);
+            Route::get('/add', [Webpanel\SignupController::class, 'add']);
+            Route::post('/add', [Webpanel\SignupController::class, 'insert']);
+            Route::get('/edit/{id}', [Webpanel\SignupController::class, 'edit'])->where(['id' => '[0-9]+']);
+            Route::post('/edit/{id}', [Webpanel\SignupController::class, 'update'])->where(['id' => '[0-9]+']);
+            Route::get('/destroy/{id}', [Webpanel\SignupController::class, 'destroy'])->where(['id' => '[0-9]+']);
+            Route::get('/status/{id}', [Webpanel\SignupController::class, 'status'])->where(['id' => '[0-9]+']);
         });
     });
 });
