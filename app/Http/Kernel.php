@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
         'Admin' => \App\Http\Middleware\Admin::class,
         'User' => \App\Http\Middleware\User::class,
         'Language' => \App\Http\Middleware\Language::class,
+        'role' => \App\Http\Middleware\CheckRole::class, // <-- เพิ่มบรรทัดนี้
     ];
 }

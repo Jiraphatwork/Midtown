@@ -63,12 +63,9 @@
                                                     <tr class="text-center">
                                                         <td>{{ $index + 1 }}</td>
                                                         <td>{{ $history->name }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($history->now_date)->format('d/m/Y') }}
-                                                        </td>
-                                                        <td>{{ \Carbon\Carbon::parse($history->first_date)->format('d/m/Y') }}
-                                                        </td>
-                                                        <td>{{ \Carbon\Carbon::parse($history->last_date)->format('d/m/Y') }}
-                                                        </td>
+                                                        <td>{{ \Carbon\Carbon::parse($history->now_date)->format('d/m/Y') }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($history->first_date)->format('d/m/Y') }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($history->last_date)->format('d/m/Y') }}</td>
                                                         <td>
                                                             @if ($history->status == 'จ่ายแล้ว')
                                                                 <span class="badge bg-success">จ่ายแล้ว</span>
@@ -79,21 +76,19 @@
                                                         <td>{{ $history->product_type }}</td>
                                                         <td>{{ $history->area }}</td>
                                                         <td>
-                                                            <a href="{{ route('reserve_history.edit', $history->id) }}"
-                                                                class="btn btn-warning btn-sm">แก้ไข</a>
-
-                                                            </a>
-                                                            <!-- ฟอร์มลบ -->
-                                                            <form id="delete-form-{{ $history->id }}"
-                                                                action="{{ route('reserve_history.destroy', $history->id) }}"
-                                                                method="POST" style="display:none;">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                            </form>
-                                                            <button type="button" class="btn btn-danger btn-sm"
-                                                                onclick="confirmDelete('{{ $history->id }}')">
-                                                                ลบ
-                                                            </button>
+                                                            @if (Auth::guard('admin')->user()->role_name === 'Admin')
+                                                                <!-- ปุ่มแก้ไขและลบสำหรับ admin -->
+                                                                <a href="{{ route('reserve_history.edit', $history->id) }}" class="btn btn-warning btn-sm">แก้ไข</a>
+                                                                
+                                                                <form id="delete-form-{{ $history->id }}" action="{{ route('reserve_history.destroy', $history->id) }}" method="POST" style="display:none;">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                </form>
+                                                                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ $history->id }}')">ลบ</button>
+                                                            @else
+                                                                <!-- แสดงข้อความสำหรับ user -->
+                                                                <p>คุณไม่มีสิทธิ์ในการจัดการข้อมูลนี้</p>
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                 @empty
@@ -103,6 +98,7 @@
                                                 @endforelse
                                             </tbody>
                                         </table>
+                                    
                                     </div>
                                 </div>
                             </div>

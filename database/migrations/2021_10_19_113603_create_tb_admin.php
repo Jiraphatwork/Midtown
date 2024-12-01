@@ -25,7 +25,8 @@ class CreateTbAdmin extends Migration
             $table->string('remember_token',255)->nullable();
             $table->text('detail')->nullable();
             $table->enum('isActive',['Y','N'])->nullable()->default('Y');
-    
+            $table->enum('role_name', ['Admin', 'User'])->nullable()->default(null); 
+
             $table->datetime('last_login_at')->nullable();
             $table->string("created_by",50)->nullable();
             $table->string("updated_by",50)->nullable();

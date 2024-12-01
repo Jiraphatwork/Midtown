@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Webpanel;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+
 
 class Reserve_history_controller extends Controller
 {
@@ -13,6 +15,7 @@ class Reserve_history_controller extends Controller
     protected $controller = 'reserve_history';
     protected $folder = 'reserve_history';
 
+   
     public function index(Request $request)
     {
         // ดึงข้อมูลจาก table reserve_histories
@@ -28,6 +31,11 @@ class Reserve_history_controller extends Controller
 
     public function add()
     {
+        // ตรวจสอบสิทธิ์
+        if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+            return redirect()->route('reserve_history.index')->with('error', 'คุณไม่มีสิทธิ์ในการเพิ่มข้อมูล');
+        }
+
         // ส่งตัวแปรไปยัง View
         return view('back-end.pages.reserve_history.add', [
             'prefix' => $this->prefix,
@@ -38,7 +46,12 @@ class Reserve_history_controller extends Controller
 
     public function insert(Request $request)
     {
+        // ตรวจสอบสิทธิ์
+        if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+            return redirect()->route('reserve_history.index')->with('error', 'คุณไม่มีสิทธิ์ในการเพิ่มข้อมูล');
+        }
 
+        // Validate ข้อมูลจากฟอร์ม
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'now_date' => 'required|date',
@@ -49,7 +62,7 @@ class Reserve_history_controller extends Controller
             'area' => 'required|string|max:255',
         ]);
 
-
+        // เพิ่มข้อมูลลงในฐานข้อมูล
         DB::table('reserve_histories')->insert([
             'name' => $validated['name'],
             'now_date' => $validated['now_date'],
@@ -58,8 +71,8 @@ class Reserve_history_controller extends Controller
             'status' => $validated['status'],
             'product_type' => $validated['product_type'],
             'area' => $validated['area'],
-            'created_at' => now(), 
-            'updated_at' => now(), 
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         return redirect()->route('reserve_history.index')->with('success', 'เพิ่มข้อมูลสำเร็จ');
@@ -67,6 +80,11 @@ class Reserve_history_controller extends Controller
 
     public function edit($id)
     {
+        // ตรวจสอบสิทธิ์
+        if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+            return redirect()->route('reserve_history.index')->with('error', 'คุณไม่มีสิทธิ์ในการแก้ไขข้อมูล');
+        }
+
         // ดึงข้อมูลจากฐานข้อมูลตาม ID
         $history = DB::table('reserve_histories')->find($id);
 
@@ -77,15 +95,19 @@ class Reserve_history_controller extends Controller
         // ส่งข้อมูลไปยังหน้า View พร้อมตัวแปรอื่นๆ
         return view('back-end.pages.reserve_history.edit', [
             'history' => $history,
-            'prefix' => $this->prefix,  // ส่งตัวแปร $prefix
+            'prefix' => $this->prefix,
             'segment' => $this->segment,
             'folder' => $this->folder,
         ]);
     }
 
-
     public function update(Request $request, $id)
     {
+        // ตรวจสอบสิทธิ์
+        if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+            return redirect()->route('reserve_history.index')->with('error', 'คุณไม่มีสิทธิ์ในการอัปเดตข้อมูล');
+        }
+
         // ดึงข้อมูลเดิมจากฐานข้อมูล
         $existingData = DB::table('reserve_histories')->where('id', $id)->first();
 
@@ -109,10 +131,7 @@ class Reserve_history_controller extends Controller
             $existingData->status == $validated['status'] &&
             $existingData->product_type == $validated['product_type'] &&
             $existingData->area == $validated['area']
-            
         ) {
-
-            // หากข้อมูลไม่มีการเปลี่ยนแปลง, กลับไปยังหน้า index
             return redirect()->route('reserve_history.index')->with('success', 'ข้อมูลอัปเดตสำเร็จ');
         }
 
@@ -125,10 +144,9 @@ class Reserve_history_controller extends Controller
             'status' => $validated['status'],
             'product_type' => $validated['product_type'],
             'area' => $validated['area'],
-            'updated_at' => now(),  
+            'updated_at' => now(),
         ]);
 
-        // ตรวจสอบการอัปเดตข้อมูล
         if ($updated) {
             return redirect()->route('reserve_history.index')->with('success', 'ข้อมูลอัปเดตสำเร็จ');
         } else {
@@ -136,18 +154,24 @@ class Reserve_history_controller extends Controller
         }
     }
 
-
     public function destroy($id)
     {
+        // ตรวจสอบสิทธิ์
+        if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+            return redirect()->route('reserve_history.index')->with('error', 'คุณไม่มีสิทธิ์ในการลบข้อมูล');
+        }
+
+        // ดึงข้อมูลที่ต้องการลบ
         $history = DB::table('reserve_histories')->where('id', $id)->first();
 
         if (!$history) {
             return redirect()->route('reserve_history.index')->with('error', 'ไม่พบข้อมูลที่ต้องการลบ');
         }
+
+        // ลบข้อมูล
         DB::table('reserve_histories')->where('id', $id)->delete();
 
         return redirect()->route('reserve_history.index')->with('success', 'ลบข้อมูลสำเร็จ');
     }
-
 
 }
