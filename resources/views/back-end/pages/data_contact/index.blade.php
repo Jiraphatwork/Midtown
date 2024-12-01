@@ -86,6 +86,7 @@
                                                         <td>{{ $item->tel }}</td>
                                                         <td>
                                                             <!-- ปุ่มแก้ไข -->
+                                                            
                                                             <a href="{{ route('data_contact.edit', $item->id) }}"
                                                                 class="btn btn-warning btn-sm">แก้ไข</a>
 

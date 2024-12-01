@@ -45,4 +45,6 @@ class AdminModel extends Model
         return $this->hasOne(RoleModel::class, 'id', 'role');
     }
 
+
+
 }

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Models\Backend\AdminModel;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 
 class SettingmembershipController extends Controller
 {

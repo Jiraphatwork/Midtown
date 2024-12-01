@@ -146,14 +146,17 @@ Route::group(['middleware' => ['Webpanel']], function () {
             Route::get('/status/{id}', [Webpanel\SettingmembershipController::class, 'status'])->where(['id' => '[0-9]+']);
         });
 
-        Route::prefix('signup')->group(function () {
-            Route::get('/', [Webpanel\SignupController::class, 'index']);
-            Route::get('/add', [Webpanel\SignupController::class, 'add']);
-            Route::post('/add', [Webpanel\SignupController::class, 'insert']);
-            Route::get('/edit/{id}', [Webpanel\SignupController::class, 'edit'])->where(['id' => '[0-9]+']);
-            Route::post('/edit/{id}', [Webpanel\SignupController::class, 'update'])->where(['id' => '[0-9]+']);
-            Route::get('/destroy/{id}', [Webpanel\SignupController::class, 'destroy'])->where(['id' => '[0-9]+']);
-            Route::get('/status/{id}', [Webpanel\SignupController::class, 'status'])->where(['id' => '[0-9]+']);
+        Route::prefix('settingadmin')->group(function () {
+            Route::get('/', [Webpanel\SettingadminController::class, 'index'])->name('settingadmin.index');
+            Route::get('/add', [Webpanel\SettingadminController::class, 'add']);
+            Route::post('/add', [Webpanel\SettingadminController::class, 'insert']);
+            Route::get('/edit/{id}', [Webpanel\SettingadminController::class, 'edit'])->where(['id' => '[0-9]+']);
+            Route::post('/edit/{id}', [Webpanel\SettingadminController::class, 'update'])->where(['id' => '[0-9]+']);
+            Route::get('/destroy/{id}', [Webpanel\SettingadminController::class, 'destroy'])->where(['id' => '[0-9]+']);
+            Route::get('/status/{id}', [Webpanel\SettingadminController::class, 'status'])->where(['id' => '[0-9]+']);
+            Route::post('/settingadmin/update-permission/{id}', [Webpanel\SettingadminController::class, 'updatePermission']);
+
         });
+
     });
 });

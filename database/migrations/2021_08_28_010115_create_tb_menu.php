@@ -47,9 +47,7 @@ class CreateTbMenu extends Migration
             [ "id" => "13", "_id"=>null, "name"=>"ตั้งค่าข้อมูลเงื่อนไขการคืนเงินการยกเลิก", "url"=>"webpanel/settingrefund", "icon"=>"", "position"=>"main", "sort"=>"1", "created_at" => date('Y-m-d H:i:s'), "updated_at" => date('Y-m-d H:i:s') ],
             [ "id" => "14", "_id"=>null, "name"=>"ตั้งค่าข้อมูลการสแกนจ่าย qr code", "url"=>"webpanel/settingqrcode", "icon"=>"", "position"=>"main", "sort"=>"1", "created_at" => date('Y-m-d H:i:s'), "updated_at" => date('Y-m-d H:i:s') ],
             [ "id" => "15", "_id"=>null, "name"=>"ตั้งค่าข้อมูลเงื่อนการสมัครสมาชิกข้อตกลง", "url"=>"webpanel/settingmembership", "icon"=>"", "position"=>"main", "sort"=>"1", "created_at" => date('Y-m-d H:i:s'), "updated_at" => date('Y-m-d H:i:s') ],
-            [ "id" => "16", "_id"=>null, "name"=>"สมัครสมาชิก", "url"=>"webpanel/signup", "icon"=>"", "position"=>"main", "sort"=>"1", "created_at" => date('Y-m-d H:i:s'), "updated_at" => date('Y-m-d H:i:s') ],
-
-
+            [ "id" => "16", "_id"=>null, "name"=>"ตั้งค่าสิทธิ์ผู้ใช้งาน", "url"=>"webpanel/settingadmin", "icon"=>"", "position"=>"main", "sort"=>"1", "created_at" => date('Y-m-d H:i:s'), "updated_at" => date('Y-m-d H:i:s') ],
         ]);
     }
 
