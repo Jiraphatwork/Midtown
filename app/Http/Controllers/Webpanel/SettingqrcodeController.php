@@ -31,7 +31,11 @@ class SettingqrcodeController extends Controller
     }
 
     public function add(Request $request)
-    {
+    {  
+        // ตรวจสอบสิทธิ์
+        if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+            return redirect()->route('settingqrcode.index')->with('error', 'คุณไม่มีสิทธิ์ในการเพิ่มข้อมูล');
+        }
         return view("$this->prefix.pages.$this->folder.add", [
             'prefix' => $this->prefix,
             'folder' => $this->folder,
@@ -40,6 +44,10 @@ class SettingqrcodeController extends Controller
     }
     public function edit(Request $request, $id)
     {
+      // ตรวจสอบสิทธิ์
+      if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+        return redirect()->route('settingqrcode.index')->with('error', 'คุณไม่มีสิทธิ์ในการแก้ไขข้อมูล');
+    }
         $item = SettingqrcodeModel::find($id);
         return view("$this->prefix.pages.$this->folder.edit", [
             'prefix' => $this->prefix,
@@ -114,6 +122,10 @@ class SettingqrcodeController extends Controller
 
     public function destroy($id)
 {
+      // ตรวจสอบสิทธิ์
+      if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+        return redirect()->route('settingqrcode.index');
+    }
     try {
         $item = SettingqrcodeModel::find($id);
 

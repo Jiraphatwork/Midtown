@@ -29,15 +29,26 @@ class SettingrefundController extends Controller
     }
     public function add(Request $request)
     {
+        // ตรวจสอบสิทธิ์
+        if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+            return redirect()->route('settingrefund.index')->with('error', 'คุณไม่มีสิทธิ์ในการเพิ่มข้อมูล');
+        }
+    
+        // ถ้าผู้ใช้มีสิทธิ์, ให้เปิดหน้าเพิ่มข้อมูล
         return view("$this->prefix.pages.$this->folder.add", [
             'prefix' => $this->prefix,
             'folder' => $this->folder,
             'segment' => $this->segment,
         ]);
     }
+    
 
     public function edit(Request $request, $id)
     {
+         // ตรวจสอบสิทธิ์
+         if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+            return redirect()->route('settingrefund.index')->with('error', 'คุณไม่มีสิทธิ์ในการแก้ไขข้อมูล');
+        }
         $item = SettingrefundModel::find($id);
         return view("$this->prefix.pages.$this->folder.edit", [
             'prefix' => $this->prefix,
@@ -97,6 +108,10 @@ class SettingrefundController extends Controller
 
     public function destroy($id)
     {
+             // ตรวจสอบสิทธิ์
+             if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+                return redirect()->route('settingrefund.index');
+            }
         try {
             $item = SettingrefundModel::find($id);
 

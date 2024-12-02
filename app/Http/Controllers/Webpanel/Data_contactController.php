@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Webpanel;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 
 class Data_contactController extends Controller
@@ -28,6 +29,10 @@ class Data_contactController extends Controller
 
     public function add()
     {
+        // ตรวจสอบสิทธิ์
+        if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+            return redirect()->route('data_contact.index')->with('error', 'คุณไม่มีสิทธิ์ในการเพิ่มข้อมูล');
+        }
         // ส่งตัวแปรไปยัง View
         return view('back-end.pages.data_contact.add', [
             'prefix' => $this->prefix,
@@ -43,7 +48,7 @@ class Data_contactController extends Controller
             'address' => 'required|string',
             'tel' => 'required|digits:10',
         ], [
-            'tel.digits' => 'หมายเลขเบอร์โทรศัพท์ต้องมีความยาว 10 หลักเท่านั้น', 
+            'tel.digits' => 'หมายเลขเบอร์โทรศัพท์ต้องมีความยาว 10 หลักเท่านั้น',
         ]);
 
         $mapFilename = null;
@@ -56,14 +61,18 @@ class Data_contactController extends Controller
             'map' => $mapFilename,
             'address' => $validated['address'],
             'tel' => $validated['tel'],
-            'created_at' => now(), 
-            'updated_at' => now(), 
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         return redirect()->route('data_contact.index')->with('success', 'เพิ่มข้อมูลสำเร็จ');
     }
 
     public function edit($id)
     {
+        // ตรวจสอบสิทธิ์
+        if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+            return redirect()->route('data_contact.index')->with('error', 'คุณไม่มีสิทธิ์ในการแก้ไขข้อมูล');
+        }
         // ดึงข้อมูลจากฐานข้อมูลตาม ID
         $item = DB::table('data_contact_models')->find($id);
 
@@ -95,7 +104,7 @@ class Data_contactController extends Controller
             'address' => 'required|string',
             'tel' => 'required|string|digits:10',
         ], [
-            'tel.digits' => 'หมายเลขเบอร์โทรศัพท์ต้องมีความยาว 10 หลักเท่านั้น', 
+            'tel.digits' => 'หมายเลขเบอร์โทรศัพท์ต้องมีความยาว 10 หลักเท่านั้น',
         ]);
 
         // เริ่มต้นการจัดการไฟล์แผนที่
@@ -124,17 +133,17 @@ class Data_contactController extends Controller
         if (
             $item->map == $mapFilename &&
             $item->address == $validated['address'] &&
-            $item->tel == $validated['tel'] 
-            
+            $item->tel == $validated['tel']
+
         ) {
-         
+
         }
         // อัปเดตข้อมูลในฐานข้อมูล
         $updated = DB::table('data_contact_models')->where('id', $id)->update([
             'map' => $mapFilename,
             'address' => $validated['address'],
             'tel' => $validated['tel'],
-            'updated_at' => now(), 
+            'updated_at' => now(),
         ]);
 
         // ตรวจสอบผลการอัปเดตข้อมูล
@@ -145,23 +154,31 @@ class Data_contactController extends Controller
 
     public function destroy($id)
     {
+        // ตรวจสอบสิทธิ์
+        if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+            return redirect()->route('data_contact.index');
+        }
+        // ตรวจสอบสิทธิ์
+        if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+            return redirect()->route('data_contact.index');
+        }
         // ค้นหาข้อมูลลูกค้าในฐานข้อมูล
         $item = DB::table('data_contact_models')->where('id', $id)->first();
-    
-        if (!$item ) {
+
+        if (!$item) {
             return redirect()->route('data_contact.index')->with('error', 'ไม่พบข้อมูลที่ต้องการลบ');
         }
-    
+
         // ลบไฟล์จาก public
-        if (!empty($item ->map)) {
-            $cardSlipFilePath = public_path('maps/' . $item ->map);
+        if (!empty($item->map)) {
+            $cardSlipFilePath = public_path('maps/' . $item->map);
             if (is_file($cardSlipFilePath)) { // ตรวจสอบว่าเป็นไฟล์
                 unlink($cardSlipFilePath); // ลบไฟล์จากระบบ
             }
         }
         // ลบข้อมูลจากฐานข้อมูล
         DB::table('data_contact_models')->where('id', $id)->delete();
-    
+
         return redirect()->route('data_contact.index')->with('success', 'ลบข้อมูลสำเร็จ');
     }
 }

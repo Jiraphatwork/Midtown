@@ -15,7 +15,7 @@ class Reserve_history_controller extends Controller
     protected $controller = 'reserve_history';
     protected $folder = 'reserve_history';
 
-   
+
     public function index(Request $request)
     {
         // ดึงข้อมูลจาก table reserve_histories
@@ -46,11 +46,6 @@ class Reserve_history_controller extends Controller
 
     public function insert(Request $request)
     {
-        // ตรวจสอบสิทธิ์
-        if (Auth::guard('admin')->user()->role_name !== 'Admin') {
-            return redirect()->route('reserve_history.index')->with('error', 'คุณไม่มีสิทธิ์ในการเพิ่มข้อมูล');
-        }
-
         // Validate ข้อมูลจากฟอร์ม
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -103,11 +98,6 @@ class Reserve_history_controller extends Controller
 
     public function update(Request $request, $id)
     {
-        // ตรวจสอบสิทธิ์
-        if (Auth::guard('admin')->user()->role_name !== 'Admin') {
-            return redirect()->route('reserve_history.index')->with('error', 'คุณไม่มีสิทธิ์ในการอัปเดตข้อมูล');
-        }
-
         // ดึงข้อมูลเดิมจากฐานข้อมูล
         $existingData = DB::table('reserve_histories')->where('id', $id)->first();
 
@@ -158,7 +148,7 @@ class Reserve_history_controller extends Controller
     {
         // ตรวจสอบสิทธิ์
         if (Auth::guard('admin')->user()->role_name !== 'Admin') {
-            return redirect()->route('reserve_history.index')->with('error', 'คุณไม่มีสิทธิ์ในการลบข้อมูล');
+            return redirect()->route('reserve_history.index');
         }
 
         // ดึงข้อมูลที่ต้องการลบ
@@ -171,7 +161,8 @@ class Reserve_history_controller extends Controller
         // ลบข้อมูล
         DB::table('reserve_histories')->where('id', $id)->delete();
 
-        return redirect()->route('reserve_history.index')->with('success', 'ลบข้อมูลสำเร็จ');
+        return redirect()->route('reserve_history.index');
     }
+
 
 }

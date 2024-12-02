@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Webpanel;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class Data_equipmentController extends Controller
 {
@@ -27,6 +28,10 @@ class Data_equipmentController extends Controller
 
     public function add()
     {
+         // ตรวจสอบสิทธิ์
+         if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+            return redirect()->route('data_equipment.index')->with('error', 'คุณไม่มีสิทธิ์ในการเพิ่มข้อมูล');
+        }
         // ส่งตัวแปรไปยัง View
         return view('back-end.pages.data_equipment.add', [
             'prefix' => $this->prefix,
@@ -37,6 +42,7 @@ class Data_equipmentController extends Controller
 
     public function insert(Request $request)
     {
+        
         $validated = $request->validate([
             'name_equipment' => 'required|string|max:255',
             'pic_equipment' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -65,6 +71,10 @@ class Data_equipmentController extends Controller
 
     public function edit($id)
     {
+          // ตรวจสอบสิทธิ์
+          if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+            return redirect()->route('data_equipment.index')->with('error', 'คุณไม่มีสิทธิ์ในการแก้ไขข้มูลข้อมูล');
+        }
         // ดึงข้อมูลจากฐานข้อมูลตาม ID
         $item = DB::table('equipment_models')->find($id);
 
@@ -141,6 +151,10 @@ class Data_equipmentController extends Controller
 
     public function destroy($id)
     {
+         // ตรวจสอบสิทธิ์
+         if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+            return redirect()->route('data_equipment.index');
+        }
         // ค้นหาข้อมูลลูกค้าในฐานข้อมูล
         $item = DB::table('equipment_models')->where('id', $id)->first();
     
@@ -160,6 +174,6 @@ class Data_equipmentController extends Controller
         // ลบข้อมูลจากฐานข้อมูล
         DB::table('equipment_models')->where('id', $id)->delete();
     
-        return redirect()->route('agent_customer.index')->with('success', 'ลบข้อมูลสำเร็จ');
+        return redirect()->route('data_equipment.index');
     }
 }

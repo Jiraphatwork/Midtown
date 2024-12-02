@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Webpanel;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 
 class promotionController extends Controller
@@ -28,6 +29,10 @@ class promotionController extends Controller
 
     public function add()
     {
+        // ตรวจสอบสิทธิ์
+        if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+            return redirect()->route('promotion.index')->with('error', 'คุณไม่มีสิทธิ์ในการเพิ่มข้อมูล');
+        }
         // ส่งตัวแปรไปยัง View
         return view('back-end.pages.promotion.add', [
             'prefix' => $this->prefix,
@@ -57,8 +62,8 @@ class promotionController extends Controller
             'detail' => $validated['detail'],
             'first_date' => $validated['first_date'],
             'last_date' => $validated['last_date'],
-            'created_at' => now(), 
-            'updated_at' => now(), 
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         return redirect()->route('promotion.index')->with('success', 'เพิ่มข้อมูลสำเร็จ');
@@ -66,6 +71,10 @@ class promotionController extends Controller
 
     public function edit($id)
     {
+        // ตรวจสอบสิทธิ์
+        if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+            return redirect()->route('promotion.index')->with('error', 'คุณไม่มีสิทธิ์ในการแก้ไขข้อมูล');
+        }
         // ดึงข้อมูลจากฐานข้อมูลตาม ID
         $item = DB::table('promotion_models')->find($id);
 
@@ -132,34 +141,37 @@ class promotionController extends Controller
             'detail' => $validated['detail'],
             'first_date' => $validated['first_date'],
             'last_date' => $validated['last_date'],
-            'updated_at' => now(), 
+            'updated_at' => now(),
         ]);
 
         return $updated
             ? redirect()->route('promotion.index')->with('success', 'ข้อมูลอัปเดตสำเร็จ')
             : back()->with('error', 'ไม่สามารถอัปเดตข้อมูลได้');
-
     }
 
     public function destroy($id)
     {
+        // ตรวจสอบสิทธิ์
+        if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+            return redirect()->route('promotion.index');
+        }
         // ค้นหาข้อมูลลูกค้าในฐานข้อมูล
         $item = DB::table('promotion_models')->where('id', $id)->first();
-    
-        if (!$item ) {
+
+        if (!$item) {
             return redirect()->route('promotion.index')->with('error', 'ไม่พบข้อมูลที่ต้องการลบ');
         }
-    
+
         // ลบไฟล์จาก public
-        if (!empty($item ->pic_promotion)) {
-            $cardSlipFilePath = public_path('pic_promotions/' . $item ->pic_promotion);
+        if (!empty($item->pic_promotion)) {
+            $cardSlipFilePath = public_path('pic_promotions/' . $item->pic_promotion);
             if (is_file($cardSlipFilePath)) { // ตรวจสอบว่าเป็นไฟล์
                 unlink($cardSlipFilePath); // ลบไฟล์จากระบบ
             }
         }
         // ลบข้อมูลจากฐานข้อมูล
         DB::table('promotion_models')->where('id', $id)->delete();
-    
+
         return redirect()->route('promotion.index')->with('success', 'ลบข้อมูลสำเร็จ');
     }
 }

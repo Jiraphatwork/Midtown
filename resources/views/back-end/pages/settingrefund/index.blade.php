@@ -23,7 +23,6 @@
                 data-kt-sticky-offset="{default: '200px', lg: '0'}" data-kt-sticky-animation="false">
                 @include("$prefix.layout.head-menu")
             </div>
-            <div class="loading-spinner"></div>
 
             <!--end::Header-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
@@ -43,9 +42,11 @@
                                     </h2>
                                     <div class="d-flex justify-content-end mb-3">
                                         <a href="webpanel/settingrefund/add" class="btn btn-success">+เพิ่มข้อมูล</a>
+                                        
                                     </div>
                                     <div class="table-responsive shadow-lg p-3 rounded">
-                                        <table class="table table-hover table-striped table-bordered text-center align-middle">
+                                        <table
+                                            class="table table-hover table-striped table-bordered text-center align-middle">
                                             <thead class="table-dark">
                                                 <tr>
                                                     <th scope="col">ลำดับ</th>
@@ -74,11 +75,10 @@
                                                                 </button>
                                                             @endif
                                                         <td class="text-center">
-                                                            <a href="{{ url('webpanel/settingrefund/edit/' . $item->id) }}"
+                                                            <a href="{{ route('settingrefund.edit', $item->id) }}"
                                                                 class="btn btn-warning btn-sm">แก้ไข</a>
                                                             <a href="javascript:void(0);" class="btn btn-danger btn-sm"
-                                                                onclick="check_destroy({{ $item->id }})">ลบ</a>
-
+                                                                onclick="check_destroy({{ $item->id }}, '{{ Auth::guard('admin')->user()->role_name }}')">ลบ</a>
                                                         </td>
                                                     </tr>
                                                     <!-- Modal -->
@@ -104,7 +104,7 @@
                                                                     {{ $text }}
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                 
+
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -154,7 +154,18 @@
 </html>
 
 <script>
-    function check_destroy(id) {
+    function check_destroy(id, roleName) {
+        if (roleName !== 'Admin') {
+            // แสดงข้อความแจ้งเตือนหากไม่มีสิทธิ์
+            Swal.fire({
+                icon: 'error',
+                title: 'ข้อผิดพลาด',
+                text: 'คุณไม่มีสิทธิ์ในการลบข้อมูล',
+                confirmButtonText: 'ตกลง',
+            });
+            return;
+        }
+
         Swal.fire({
             icon: 'warning',
             title: 'การลบข้อมูลนี้ไม่สามารถกู้คืนได้!',
@@ -175,58 +186,51 @@
                                 text: "ข้อมูลได้ถูกลบเรียบร้อยแล้ว.",
                                 showCancelButton: false,
                                 confirmButtonText: 'Close',
-                            }).then((result) => {
+                            }).then(() => {
                                 location.reload(); // รีโหลดหน้าเพื่อให้ข้อมูลอัพเดต
                             });
                         } else {
                             Swal.fire({
                                 icon: 'error',
                                 title: "ข้อผิดพลาด!",
-                                text: "ข้อผิดพลาด!",
-                                showCancelButton: false,
+                                text: data.message || "เกิดข้อผิดพลาดในการลบข้อมูล",
                                 confirmButtonText: 'ตกลง',
                             });
                         }
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: "ข้อผิดพลาด!",
+                            text: "เกิดข้อผิดพลาดในการลบข้อมูล",
+                            confirmButtonText: 'ตกลง',
+                        });
                     }
                 });
-            } else {
-                return false;
             }
         });
     }
 </script>
-<style>
-    .loading-spinner {
-        position: fixed;
-        top: 50%;
-        left: 58%;
-        transform: translate(-50%, -50%);
-        width: 40px;
-        height: 40px;
-        border: 4px solid #ccc;
-        border-top-color: #3498db;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        z-index: 9999;
-    }
-    }
 
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
+@if (session('success'))
+    <script>
+        Swal.fire({
+            title: 'สำเร็จ!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            confirmButtonText: 'ตกลง'
+        });
+    </script>
+@endif
 
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-</style>
-<script>
-    // Simulate loading delay
-    window.addEventListener("load", () => {
-        setTimeout(() => {
-            document.querySelector(".loading-spinner").style.display = "none";
-            document.getElementById("main-content").style.visibility = "visible";
-        }, 500);
-    });
-</script>
+@if (session('error'))
+    <script>
+        Swal.fire({
+            title: 'ข้อผิดพลาด!',
+            text: "{{ session('error') }}",
+            icon: 'error',
+            confirmButtonText: 'ตกลง'
+        });
+    </script>
+@endif
+

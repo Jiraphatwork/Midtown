@@ -23,7 +23,7 @@
                 data-kt-sticky-offset="{default: '200px', lg: '0'}" data-kt-sticky-animation="false">
                 @include("$prefix.layout.head-menu")
             </div>
-            <div class="loading-spinner"></div>
+            
             <!--end::Header-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
 
@@ -44,7 +44,8 @@
                                             class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
                                     <div class="table-responsive shadow-lg p-3 rounded">
-                                        <table class="table table-hover table-striped table-bordered text-center align-middle">
+                                        <table
+                                            class="table table-hover table-striped table-bordered text-center align-middle">
                                             <thead class="table-dark">
                                                 <tr>
                                                     <th scope="col">ลำดับ</th>
@@ -63,9 +64,12 @@
                                                     <tr class="text-center">
                                                         <td>{{ $index + 1 }}</td>
                                                         <td>{{ $history->name }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($history->now_date)->format('d/m/Y') }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($history->first_date)->format('d/m/Y') }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($history->last_date)->format('d/m/Y') }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($history->now_date)->format('d/m/Y') }}
+                                                        </td>
+                                                        <td>{{ \Carbon\Carbon::parse($history->first_date)->format('d/m/Y') }}
+                                                        </td>
+                                                        <td>{{ \Carbon\Carbon::parse($history->last_date)->format('d/m/Y') }}
+                                                        </td>
                                                         <td>
                                                             @if ($history->status == 'จ่ายแล้ว')
                                                                 <span class="badge bg-success">จ่ายแล้ว</span>
@@ -76,20 +80,24 @@
                                                         <td>{{ $history->product_type }}</td>
                                                         <td>{{ $history->area }}</td>
                                                         <td>
-                                                            @if (Auth::guard('admin')->user()->role_name === 'Admin')
-                                                                <!-- ปุ่มแก้ไขและลบสำหรับ admin -->
-                                                                <a href="{{ route('reserve_history.edit', $history->id) }}" class="btn btn-warning btn-sm">แก้ไข</a>
-                                                                
-                                                                <form id="delete-form-{{ $history->id }}" action="{{ route('reserve_history.destroy', $history->id) }}" method="POST" style="display:none;">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                </form>
-                                                                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ $history->id }}')">ลบ</button>
-                                                            @else
-                                                                <!-- แสดงข้อความสำหรับ user -->
-                                                                <p>คุณไม่มีสิทธิ์ในการจัดการข้อมูลนี้</p>
-                                                            @endif
+                                                            <a href="{{ route('reserve_history.edit', $history->id) }}"
+                                                                class="btn btn-warning btn-sm">แก้ไข</a>
+
+                                                            <!-- ฟอร์มสำหรับส่งคำขอการลบ -->
+                                                            <form id="delete-form-{{ $history->id }}" method="POST"
+                                                                action="{{ route('reserve_history.destroy', $history->id) }}"
+                                                                style="display: none;">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                            </form>
+
+                                                            <!-- ปุ่มลบ -->
+                                                            <button type="button" class="btn btn-danger btn-sm"
+                                                                onclick="confirmDelete('{{ $history->id }}', '{{ Auth::guard('admin')->user()->role_name }}')">
+                                                                ลบ
+                                                            </button>
                                                         </td>
+
                                                     </tr>
                                                 @empty
                                                     <tr>
@@ -98,7 +106,7 @@
                                                 @endforelse
                                             </tbody>
                                         </table>
-                                    
+
                                     </div>
                                 </div>
                             </div>
@@ -144,7 +152,19 @@
 </html>
 <script>
     // แจ้งเตือนการลบ
-    function confirmDelete(historyId) {
+    function confirmDelete(historyId, roleName) {
+        if (roleName !== 'Admin') {
+            // แสดงข้อความแจ้งเตือนหากไม่มีสิทธิ์
+            Swal.fire({
+                title: 'คุณไม่มีสิทธิ์ในการลบข้อมูล',
+                text: 'โปรดติดต่อผู้ดูแลระบบหากคุณต้องการสิทธิ์เพิ่มเติม',
+                icon: 'error',
+                confirmButtonText: 'ตกลง',
+            });
+            return;
+        }
+
+        // หากมีสิทธิ์ (roleName เป็น Admin)
         Swal.fire({
             title: 'คุณแน่ใจหรือไม่?',
             text: "การลบข้อมูลนี้ไม่สามารถกู้คืนได้!",
@@ -153,7 +173,7 @@
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'ใช่, ลบเลย!',
-            cancelButtonText: 'ยกเลิก'
+            cancelButtonText: 'ยกเลิก',
         }).then((result) => {
             if (result.isConfirmed) {
                 // ส่งฟอร์มลบ
@@ -162,15 +182,16 @@
                 // แจ้งเตือนหลังลบ
                 Swal.fire({
                     title: 'ลบสำเร็จ!',
-                    text: "ข้อมูลได้ถูกลบเรียบร้อยแล้ว.",
+                    text: 'ข้อมูลได้ถูกลบเรียบร้อยแล้ว.',
                     icon: 'success',
                     timer: 2000,
-                    showConfirmButton: false
+                    showConfirmButton: false,
                 });
             }
         });
     }
 </script>
+
 <!--เมื่อเพิ่มข้อมูลสำเร็จ-->
 @if (session('success'))
     <script>
@@ -216,48 +237,3 @@
     </script>
 @endif
 
-<style>
-    .loading-spinner {
-        position: fixed;
-        top: 50%;
-        left: 58%;
-        transform: translate(-50%, -50%);
-        width: 40px;
-        height: 40px;
-        border: 4px solid #ccc;
-        border-top-color: #3498db;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        z-index: 9999;
-    }
-    }
-
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
-
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-
-    span.badge.bg-danger {
-        font-size: 11px;
-    }
-
-    span.badge.bg-success {
-        font-size: 11px;
-    }
-</style>
-
-
-<script>
-    // Simulate loading delay
-    window.addEventListener("load", () => {
-        setTimeout(() => {
-            document.querySelector(".loading-spinner").style.display = "none";
-            document.getElementById("main-content").style.visibility = "visible";
-        }, 500);
-    });
-</script>

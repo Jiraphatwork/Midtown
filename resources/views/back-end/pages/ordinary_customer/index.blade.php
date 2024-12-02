@@ -23,7 +23,6 @@
                 data-kt-sticky-offset="{default: '200px', lg: '0'}" data-kt-sticky-animation="false">
                 @include("$prefix.layout.head-menu")
             </div>
-            <div class="loading-spinner"></div>
 
             <!--end::Header-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
@@ -45,7 +44,8 @@
                                             class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
                                     <div class="table-responsive shadow-lg p-3 rounded">
-                                        <table class="table table-hover table-striped table-bordered text-center align-middle">
+                                        <table
+                                            class="table table-hover table-striped table-bordered text-center align-middle">
                                             <thead class="table-dark">
                                                 <tr>
                                                     <th scope="col">ลำดับ</th>
@@ -80,11 +80,11 @@
                                                         <td>
                                                             @php
                                                                 $text = $item->address;
-                                                                $shortText = Str::limit($text, 20); // ตัดข้อความ
+                                                                $shortText = Str::limit($text, 10); // ตัดข้อความ
                                                             @endphp
 
                                                             <span>{{ $shortText }}</span>
-                                                            @if (strlen($text) > 40)
+                                                            @if (strlen($text) > 10)
                                                                 <button class="btn btn-link p-0" data-bs-toggle="modal"
                                                                     data-bs-target="#detailsModal{{ $item->id }}">
                                                                     อ่านเพิ่มเติม
@@ -94,23 +94,22 @@
                                                         <td>{{ $item->tel2 ?? 'ไม่มีข้อมูล' }}</td>
                                                         <td>{{ $item->tax_id ?? 'ไม่มีข้อมูล' }}</td>
                                                         <td>
-                                                            <!-- ปุ่มแก้ไข -->
                                                             <a href="{{ route('ordinary_customer.edit', $item->id) }}"
                                                                 class="btn btn-warning btn-sm">แก้ไข</a>
-                                                            </a>
 
-                                                            <!-- ฟอร์มลบ -->
-                                                            <form id="delete-form-{{ $item->id }}"
+                                                            <!-- ฟอร์มสำหรับส่งคำขอการลบ -->
+                                                            <form id="delete-form-{{ $item->id }}" method="POST"
                                                                 action="{{ route('ordinary_customer.destroy', $item->id) }}"
-                                                                method="POST" style="display:none;">
+                                                                style="display: none;">
                                                                 @csrf
                                                                 @method('DELETE')
                                                             </form>
+
+                                                            <!-- ปุ่มลบ -->
                                                             <button type="button" class="btn btn-danger btn-sm"
-                                                                onclick="confirmDelete('{{ $item->id }}')">
+                                                                onclick="confirmDelete('{{ $item->id }}', '{{ Auth::guard('admin')->user()->role_name }}')">
                                                                 ลบ
                                                             </button>
-
                                                         </td>
                                                     </tr>
                                                     <!-- Modal สำหรับรายการนี้ -->
@@ -220,7 +219,19 @@
 </html>
 <script>
     // แจ้งเตือนการลบ
-    function confirmDelete(ordinaryID) {
+    function confirmDelete(ordinaryID, roleName) {
+        if (roleName !== 'Admin') {
+            // แสดงข้อความแจ้งเตือนหากไม่มีสิทธิ์
+            Swal.fire({
+                title: 'ข้อผิดพลาด',
+                text: 'คุณไม่มีสิทธิ์ในการลบข้อมูล',
+                icon: 'error',
+                confirmButtonText: 'ตกลง',
+            });
+            return;
+        }
+
+        // หากมีสิทธิ์ (roleName เป็น Admin)
         Swal.fire({
             title: 'คุณแน่ใจหรือไม่?',
             text: "การลบข้อมูลนี้ไม่สามารถกู้คืนได้!",
@@ -229,7 +240,7 @@
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'ใช่, ลบเลย!',
-            cancelButtonText: 'ยกเลิก'
+            cancelButtonText: 'ยกเลิก',
         }).then((result) => {
             if (result.isConfirmed) {
                 // ส่งฟอร์มลบ
@@ -238,15 +249,16 @@
                 // แจ้งเตือนหลังลบ
                 Swal.fire({
                     title: 'ลบสำเร็จ!',
-                    text: "ข้อมูลได้ถูกลบเรียบร้อยแล้ว.",
+                    text: 'ข้อมูลได้ถูกลบเรียบร้อยแล้ว.',
                     icon: 'success',
                     timer: 2000,
-                    showConfirmButton: false
+                    showConfirmButton: false,
                 });
             }
         });
     }
 </script>
+
 
 <!--แจ้งเตือนการลบ-->
 @if (session('success'))
@@ -270,39 +282,3 @@
         });
     </script>
 @endif
-<style>
-    .loading-spinner {
-        position: fixed;
-        top: 50%;
-        left: 58%;
-        transform: translate(-50%, -50%);
-        width: 40px;
-        height: 40px;
-        border: 4px solid #ccc;
-        border-top-color: #3498db;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        z-index: 9999;
-    }
-    }
-
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
-
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-</style>
-
-<script>
-    // Simulate loading delay
-    window.addEventListener("load", () => {
-        setTimeout(() => {
-            document.querySelector(".loading-spinner").style.display = "none";
-            document.getElementById("main-content").style.visibility = "visible";
-        }, 500);
-    });
-</script>

@@ -37,39 +37,78 @@
                     <div class="d-flex flex-column flex-column-fluid">
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
-                                <h1>จัดการสิทธิ์ผู้ใช้งาน</h1>
-                            </div>
-                        </div>
-                        <!--end::Toolbar-->
+                                <div class="container mt-5">
+                                    <h2 class="text-center mb-4 text-dark">ตั้งค่าสิทธิ์ผู้ใช้งาน</h2>
+                                    <div class="table-responsive shadow-lg rounded">
+                                        <table class="table table-hover table-striped align-middle text-center">
+                                            <thead class="table-dark">
+                                                <tr>
+                                                    <th>ลำดับ</th>
+                                                    <th>ชื่อ</th>
+                                                    <th>Username</th>
+                                                    <th>Password</th>
+                                                    <th>Role</th>
+                                                    <th>จัดการ</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($tb_admin as $index => $item)
+                                                    <tr>
+                                                        <td class="text-muted">{{ $index + 1 }}</td>
+                                                        <td class="fw-bold">{{ $item->name }}</td>
+                                                        <td>{{ $item->email }}</td>
+                                                        <td class="text-truncate" style="max-width: 150px;">
+                                                            {{ $item->password }}
+                                                        </td>
 
-                        <!--begin::Content-->
-                        <div id="kt_app_content" class="app-content flex-column-fluid">
-                            <div id="kt_app_content_container" class="app-container container-xxl">
-
-                                <!-- Table to display permissions -->
-                                <div class="card">
-                               
-                                  
+                                                        <td>
+                                                            @if ($item->role_name == 'Admin')
+                                                                <span class="badge bg-success" style="font-size: 11px">Admin</span>
+                                                            @else
+                                                                <span class="badge bg-primary" style="font-size: 11px">User</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-warning btn-sm"
+                                                                onclick="confirmEdit('{{ $item->id }}', '{{ Auth::guard('admin')->user()->role_name }}')">
+                                                                <i class="bi bi-pencil-square"></i> แก้ไข
+                                                            </button>
+                                                        </td>
+                                                        
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
-                                <!--end::Table-->
-
                             </div>
                         </div>
-                        <!--end::Content-->
+                    </div>
+                    <!--end::Toolbar-->
+
+                    <!--begin::Content-->
+                    <div id="kt_app_content" class="app-content flex-column-fluid">
+                        <div id="kt_app_content_container" class="app-container container-xxl">
+
+                        </div>
+                        <!--end::Table-->
 
                     </div>
-                    <!--end::Content wrapper-->
-
-                    <!--begin::Footer-->
-                    <div id="kt_app_footer" class="app-footer">
-                        @include("$prefix.layout.footer")
-                    </div>
-                    <!--End::Footer-->
                 </div>
-                <!--end::Main-->
+                <!--end::Content-->
+
             </div>
+            <!--end::Content wrapper-->
+
+            <!--begin::Footer-->
+            <div id="kt_app_footer" class="app-footer">
+                @include("$prefix.layout.footer")
+            </div>
+            <!--End::Footer-->
         </div>
+        <!--end::Main-->
+    </div>
+    </div>
     </div>
 
     <!--begin::Scrolltop-->
@@ -87,5 +126,40 @@
 
 </body>
 <!--end::Body-->
+<script>
+    function confirmEdit(id, roleName) {
+        // ถ้า role_name เป็น User จะไม่สามารถแก้ไขได้
+        if (roleName === 'User') {
+            Swal.fire({
+                icon: 'error',
+                title: 'ข้อผิดพลาด',
+                text: 'คุณไม่มีสิทธิ์ในการแก้ไขข้อมูล',
+                confirmButtonText: 'ตกลง'
+            });
+        } else {
+            // ถ้า role_name เป็น Admin ก็จะให้ไปที่หน้าการแก้ไข
+            window.location.href = "{{ url('webpanel/settingadmin/edit') }}/" + id;
+        }
+    }
+</script>
+@if (session('success'))
+    <script>
+        Swal.fire({
+            title: 'สำเร็จ!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            confirmButtonText: 'ตกลง'
+        });
+    </script>
+@endif
 
-
+@if (session('error'))
+    <script>
+        Swal.fire({
+            title: 'ข้อผิดพลาด!',
+            text: "{{ session('error') }}",
+            icon: 'error',
+            confirmButtonText: 'ตกลง'
+        });
+    </script>
+@endif

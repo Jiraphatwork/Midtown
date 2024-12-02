@@ -23,7 +23,6 @@
                 data-kt-sticky-offset="{default: '200px', lg: '0'}" data-kt-sticky-animation="false">
                 @include("$prefix.layout.head-menu")
             </div>
-            <div class="loading-spinner"></div>
 
             <!--end::Header-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
@@ -44,7 +43,8 @@
                                         <a href="webpanel/settingqrcode/add" class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
                                     <div class="table-responsive shadow-lg p-3 rounded">
-                                        <table class="table table-hover table-striped table-bordered text-center align-middle">
+                                        <table
+                                            class="table table-hover table-striped table-bordered text-center align-middle">
                                             <thead class="table-dark">
                                                 <tr>
                                                     <th scope="col">ลำดับ</th>
@@ -70,11 +70,10 @@
                                                         </td>
                                                         <td>{{ $item->name_account }}</td>
                                                         <td class="text-center">
-                                                            <a href="{{ url('webpanel/settingqrcode/edit/' . $item->id) }}"
+                                                            <a href="{{ route('settingqrcode.edit', $item->id) }}"
                                                                 class="btn btn-warning btn-sm">แก้ไข</a>
                                                             <a href="javascript:void(0);" class="btn btn-danger btn-sm"
-                                                                onclick="check_destroy({{ $item->id }})">ลบ</a>
-
+                                                                onclick="check_destroy({{ $item->id }}, '{{ Auth::guard('admin')->user()->role_name }}')">ลบ</a>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -90,9 +89,9 @@
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title"
-                                                        id="exampleModalLabel{{ $item->id }}">
-                                                        ชื่อบัญชี: {{ $item->name_account  }}
-                                                    </h5>
+                                                            id="exampleModalLabel{{ $item->id }}">
+                                                            ชื่อบัญชี: {{ $item->name_account }}
+                                                        </h5>
                                                         <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
                                                             data-bs-dismiss="modal" aria-label="Close">
                                                             <i class="ki-duotone ki-cross fs-1"><span
@@ -152,6 +151,21 @@
 </html>
 <script>
     function check_destroy(id) {
+        // ตรวจสอบสิทธิ์ของผู้ใช้
+        const roleName = "{{ Auth::guard('admin')->user()->role_name }}"; // ดึง role ของผู้ใช้จาก Laravel
+
+        // หากไม่ใช่ Admin ให้แสดงแจ้งเตือน
+        if (roleName !== 'Admin') {
+            Swal.fire({
+                icon: 'error',
+                title: 'ข้อผิดพลาด',
+                text: 'คุณไม่มีสิทธิ์ในการลบข้อมูล',
+                confirmButtonText: 'ตกลง',
+            });
+            return; // หยุดการทำงานหากไม่ใช่ Admin
+        }
+
+        // ถ้าเป็น Admin ให้ดำเนินการลบข้อมูล
         Swal.fire({
             icon: 'warning',
             title: 'การลบข้อมูลนี้ไม่สามารถกู้คืนได้!',
@@ -172,59 +186,53 @@
                                 text: "ข้อมูลได้ถูกลบเรียบร้อยแล้ว.",
                                 showCancelButton: false,
                                 confirmButtonText: 'Close',
-                            }).then((result) => {
+                            }).then(() => {
                                 location.reload(); // รีโหลดหน้าเพื่อให้ข้อมูลอัพเดต
                             });
                         } else {
                             Swal.fire({
                                 icon: 'error',
                                 title: "ข้อผิดพลาด!",
-                                text: "ข้อผิดพลาด!",
+                                text: "ข้อผิดพลาดในการลบข้อมูล",
                                 showCancelButton: false,
                                 confirmButtonText: 'ตกลง',
                             });
                         }
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: "ข้อผิดพลาด!",
+                            text: "เกิดข้อผิดพลาดในการลบข้อมูล",
+                            confirmButtonText: 'ตกลง',
+                        });
                     }
                 });
-            } else {
-                return false;
             }
         });
     }
 </script>
-<style>
-    .loading-spinner {
-        position: fixed;
-        top: 50%;
-        left: 58%;
-        transform: translate(-50%, -50%);
-        width: 40px;
-        height: 40px;
-        border: 4px solid #ccc;
-        border-top-color: #3498db;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        z-index: 9999;
-    }
-    }
 
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
+@if (session('success'))
+    <script>
+        Swal.fire({
+            title: 'สำเร็จ!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            confirmButtonText: 'ตกลง'
+        });
+    </script>
+@endif
 
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-</style>
+@if (session('error'))
+    <script>
+        Swal.fire({
+            title: 'ข้อผิดพลาด!',
+            text: "{{ session('error') }}",
+            icon: 'error',
+            confirmButtonText: 'ตกลง'
+        });
+    </script>
+@endif
 
-<script>
-    // Simulate loading delay
-    window.addEventListener("load", () => {
-        setTimeout(() => {
-            document.querySelector(".loading-spinner").style.display = "none";
-            document.getElementById("main-content").style.visibility = "visible";
-        }, 500);
-    });
-</script>
+

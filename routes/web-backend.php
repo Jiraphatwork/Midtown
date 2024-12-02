@@ -117,30 +117,30 @@ Route::group(['middleware' => ['Webpanel']], function () {
         });
 
         Route::prefix('settingrefund')->group(function () {
-            Route::get('/', [Webpanel\SettingrefundController::class, 'index']);
-            Route::get('/add', [Webpanel\SettingrefundController::class, 'add']);
-            Route::post('/add', [Webpanel\SettingrefundController::class, 'insert']);
-            Route::get('/edit/{id}', [Webpanel\SettingrefundController::class, 'edit'])->where(['id' => '[0-9]+']);
+            Route::get('/', [Webpanel\SettingrefundController::class, 'index'])->name('settingrefund.index');
+            Route::get('/add', [Webpanel\SettingrefundController::class, 'add'])->name('settingrefund.add');
+            Route::post('/add', [Webpanel\SettingrefundController::class, 'insert'])->name('settingrefund.insert');
+            Route::get('/edit/{id}', [Webpanel\SettingrefundController::class, 'edit'])->where(['id' => '[0-9]+'])->name('settingrefund.edit');
             Route::post('/edit/{id}', [Webpanel\SettingrefundController::class, 'update'])->where(['id' => '[0-9]+']);
             Route::get('/destroy/{id}', [Webpanel\SettingrefundController::class, 'destroy'])->where(['id' => '[0-9]+']);
             Route::get('/status/{id}', [Webpanel\SettingrefundController::class, 'status'])->where(['id' => '[0-9]+']);
         });
 
         Route::prefix('settingqrcode')->group(function () {
-            Route::get('/', [Webpanel\SettingqrcodeController::class, 'index']);
-            Route::get('/add', [Webpanel\SettingqrcodeController::class, 'add']);
-            Route::post('/add', [Webpanel\SettingqrcodeController::class, 'insert']);
-            Route::get('/edit/{id}', [Webpanel\SettingqrcodeController::class, 'edit'])->where(['id' => '[0-9]+']);
+            Route::get('/', [Webpanel\SettingqrcodeController::class, 'index'])->name('settingqrcode.index');
+            Route::get('/add', [Webpanel\SettingqrcodeController::class, 'add'])->name('settingqrcode.add');
+            Route::post('/add', [Webpanel\SettingqrcodeController::class, 'insert'])->name('settingqrcode.insert');
+            Route::get('/edit/{id}', [Webpanel\SettingqrcodeController::class, 'edit'])->where(['id' => '[0-9]+'])->name('settingqrcode.edit');
             Route::post('/edit/{id}', [Webpanel\SettingqrcodeController::class, 'update'])->where(['id' => '[0-9]+']);
             Route::get('/destroy/{id}', [Webpanel\SettingqrcodeController::class, 'destroy'])->where(['id' => '[0-9]+']);
             Route::get('/status/{id}', [Webpanel\SettingqrcodeController::class, 'status'])->where(['id' => '[0-9]+']);
         });
 
         Route::prefix('settingmembership')->group(function () {
-            Route::get('/', [Webpanel\SettingmembershipController::class, 'index']);
-            Route::get('/add', [Webpanel\SettingmembershipController::class, 'add']);
-            Route::post('/add', [Webpanel\SettingmembershipController::class, 'insert']);
-            Route::get('/edit/{id}', [Webpanel\SettingmembershipController::class, 'edit'])->where(['id' => '[0-9]+']);
+            Route::get('/', [Webpanel\SettingmembershipController::class, 'index'])->name('settingmembership.index');
+            Route::get('/add', [Webpanel\SettingmembershipController::class, 'add'])->name('settingmembership.add');
+            Route::post('/add', [Webpanel\SettingmembershipController::class, 'insert'])->name('settingmembership.insert');
+            Route::get('/edit/{id}', [Webpanel\SettingmembershipController::class, 'edit'])->where(['id' => '[0-9]+'])->name('settingmembership.edit');
             Route::post('/edit/{id}', [Webpanel\SettingmembershipController::class, 'update'])->where(['id' => '[0-9]+']);
             Route::get('/destroy/{id}', [Webpanel\SettingmembershipController::class, 'destroy'])->where(['id' => '[0-9]+']);
             Route::get('/status/{id}', [Webpanel\SettingmembershipController::class, 'status'])->where(['id' => '[0-9]+']);
@@ -148,13 +148,12 @@ Route::group(['middleware' => ['Webpanel']], function () {
 
         Route::prefix('settingadmin')->group(function () {
             Route::get('/', [Webpanel\SettingadminController::class, 'index'])->name('settingadmin.index');
-            Route::get('/add', [Webpanel\SettingadminController::class, 'add']);
-            Route::post('/add', [Webpanel\SettingadminController::class, 'insert']);
-            Route::get('/edit/{id}', [Webpanel\SettingadminController::class, 'edit'])->where(['id' => '[0-9]+']);
-            Route::post('/edit/{id}', [Webpanel\SettingadminController::class, 'update'])->where(['id' => '[0-9]+']);
+            Route::get('/add', [Webpanel\SettingadminController::class, 'add'])->name('settingadmin.add');
+            Route::post('/add', [Webpanel\SettingadminController::class, 'insert'])->name('settingadmin.insert');
+            Route::get('/edit/{id}', [Webpanel\SettingadminController::class, 'edit'])->where(['id' => '[0-9]+'])->name('settingadmin.edit');
+            Route::post('/edit/{id}', [Webpanel\SettingadminController::class, 'update'])->where(['id' => '[0-9]+'])->name('settingadmin.update');
             Route::get('/destroy/{id}', [Webpanel\SettingadminController::class, 'destroy'])->where(['id' => '[0-9]+']);
             Route::get('/status/{id}', [Webpanel\SettingadminController::class, 'status'])->where(['id' => '[0-9]+']);
-            Route::post('/settingadmin/update-permission/{id}', [Webpanel\SettingadminController::class, 'updatePermission']);
 
         });
 
