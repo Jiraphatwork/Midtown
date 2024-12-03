@@ -84,13 +84,11 @@
                                                 <textarea class="form-control" id="address" name="address" rows="3" placeholder="กรอกที่อยู่">{{ old('address', $item->address) }}</textarea>
                                             </div>
 
-                                            <input type="text" class="form-control" id="tel" name="tel" 
-                                            value="{{ old('tel', $item->tel) }}" 
-                                            placeholder="กรอกเบอร์โทร" 
-                                            oninput="updateLengthTel()" 
-                                            onblur="validateTel()">
-                                        <span id="charCountTel" class="text-muted"></span>
-                                        
+                                            <input type="text" class="form-control" id="tel" name="tel"
+                                                value="{{ old('tel', $item->tel) }}" placeholder="กรอกเบอร์โทร"
+                                                oninput="updateLengthTel()" onblur="validateTel()">
+                                            <span id="charCountTel" class="text-muted"></span>
+
 
                                             <div class="mb-3">
                                                 <label for="tel2" class="form-label">ตัวแทนติดต่อ</label>

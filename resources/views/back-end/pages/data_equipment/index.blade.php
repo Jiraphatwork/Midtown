@@ -45,8 +45,9 @@
                                         <a href="{{ route('data_equipment.add') }}"
                                             class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
-                                    <div class="table-responsive shadow-lg p-3 rounded">
-                                        <table class="table table-hover table-striped table-bordered text-center align-middle">
+                                    <div class="table-responsive shadow-lg rounded">
+                                        <table
+                                            class="table table-hover table-striped  text-center align-middle">
                                             <thead class="table-dark">
                                                 <tr>
                                                     <th scope="col">ลำดับ</th>
@@ -95,7 +96,7 @@
                                                         </td>
                                                     </tr>
 
-                                                    <!-- Modal สำหรับแต่ละแถว -->
+                                                    <!-- Modal สำหรับรูป -->
                                                     <div class="modal fade" id="imageModal{{ $item->id }}"
                                                         tabindex="-1"
                                                         aria-labelledby="businessCardModalLabel{{ $item->id }}"

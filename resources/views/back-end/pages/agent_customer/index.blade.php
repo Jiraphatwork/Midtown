@@ -37,13 +37,13 @@
                     <div class="d-flex flex-column flex-column-fluid">
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
-                                <div class="container-fluid mt-3">
+                                <div class="container mt-5">
                                     <h2 class="text-center mb-4 text-dark">ข้อมูลลูกค้า(Agent)</h2>
                                     <div class="d-flex justify-content-end mb-3">
                                         <a href="{{ route('agent_customer.add') }}"
                                             class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
-                                    <div class="table-responsive shadow-lg p-3 rounded">
+                                    <div class="table-responsive shadow-lg rounded">
                                         <table class="table table-hover table-striped table-bordered text-center align-middle">
                                             <thead class="table-dark">
                                                     <tr>

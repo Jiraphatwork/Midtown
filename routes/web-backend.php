@@ -42,7 +42,7 @@ Route::group(['middleware' => ['Webpanel']], function () {
             Route::post('/add', [Webpanel\Reserve_history_controller::class, 'insert'])->name('reserve_history.insert');
             Route::get('reserve_history/edit/{id}', [Webpanel\Reserve_history_controller::class, 'edit'])->name('reserve_history.edit');
             Route::post('reserve_history/edit/{id}', [Webpanel\Reserve_history_controller::class, 'update'])->name('reserve_history.update');
-            Route::delete('/reserve_history/destroy/{id}', [Webpanel\Reserve_history_controller::class, 'destroy']) ->name('reserve_history.destroy')->where(['id' => '[0-9]+']); 
+            Route::delete('/reserve_history/destroy/{id}', [Webpanel\Reserve_history_controller::class, 'destroy'])->name('reserve_history.destroy')->where(['id' => '[0-9]+']);
             Route::get('/status/{id}', [Webpanel\Reserve_history_controller::class, 'status'])->where(['id' => '[0-9]+']);
         });
 
@@ -63,7 +63,7 @@ Route::group(['middleware' => ['Webpanel']], function () {
             Route::post('/add', [Webpanel\Ordinary_customerController::class, 'insert'])->name('ordinary_customer.insert');
             Route::get('/edit/{id}', [Webpanel\Ordinary_customerController::class, 'edit'])->where(['id' => '[0-9]+'])->name('ordinary_customer.edit');
             Route::post('/edit/{id}', [Webpanel\Ordinary_customerController::class, 'update'])->where(['id' => '[0-9]+'])->name('ordinary_customer.update');
-            Route::delete   ('/destroy/{id}', [Webpanel\Ordinary_customerController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('ordinary_customer.destroy');
+            Route::delete('/destroy/{id}', [Webpanel\Ordinary_customerController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('ordinary_customer.destroy');
             Route::get('/status/{id}', [Webpanel\Ordinary_customerController::class, 'status'])->where(['id' => '[0-9]+']);
         });
 
@@ -73,7 +73,7 @@ Route::group(['middleware' => ['Webpanel']], function () {
             Route::post('/add', [Webpanel\organization_customerController::class, 'insert'])->name('organization_customer.insert');
             Route::get('/edit/{id}', [Webpanel\organization_customerController::class, 'edit'])->where(['id' => '[0-9]+'])->name('organization_customer.edit');
             Route::post('/edit/{id}', [Webpanel\Organization_customerController::class, 'update'])->where(['id' => '[0-9]+'])->name('organization_customer.update');
-            Route::delete   ('/destroy/{id}', [Webpanel\Organization_customerController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('organization_customer.destroy');
+            Route::delete('/destroy/{id}', [Webpanel\Organization_customerController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('organization_customer.destroy');
             Route::get('/status/{id}', [Webpanel\organization_customerController::class, 'status'])->where(['id' => '[0-9]+']);
         });
 
@@ -152,10 +152,18 @@ Route::group(['middleware' => ['Webpanel']], function () {
             Route::post('/add', [Webpanel\SettingadminController::class, 'insert'])->name('settingadmin.insert');
             Route::get('/edit/{id}', [Webpanel\SettingadminController::class, 'edit'])->where(['id' => '[0-9]+'])->name('settingadmin.edit');
             Route::post('/edit/{id}', [Webpanel\SettingadminController::class, 'update'])->where(['id' => '[0-9]+'])->name('settingadmin.update');
-            Route::get('/destroy/{id}', [Webpanel\SettingadminController::class, 'destroy'])->where(['id' => '[0-9]+']);
+            Route::delete('/destroy/{id}', [Webpanel\SettingadminController::class, 'destroy'])->where(['id' => '[0-9]+']);
             Route::get('/status/{id}', [Webpanel\SettingadminController::class, 'status'])->where(['id' => '[0-9]+']);
-
         });
 
+        Route::prefix('settingarea')->group(function () {
+            Route::get('/', [Webpanel\DataAreaController::class, 'index'])->name('dataarea.index');
+            Route::get('/add', [Webpanel\DataAreaController::class, 'add'])->name('dataarea.add');
+            Route::post('/add', [Webpanel\DataAreaController::class, 'insert'])->name('dataarea.insert');
+            Route::get('/edit/{id}', [Webpanel\DataAreaController::class, 'edit'])->where(['id' => '[0-9]+'])->name('dataarea.edit');
+            Route::post('/edit/{id}', [Webpanel\DataAreaController::class, 'update'])->where(['id' => '[0-9]+'])->name('dataarea.update');
+            Route::delete('/destroy/{id}', [Webpanel\DataAreaController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('dataarea.destroy');
+            Route::get('/status/{id}', [Webpanel\DataAreaController::class, 'status'])->where(['id' => '[0-9]+']);
+        });
     });
 });

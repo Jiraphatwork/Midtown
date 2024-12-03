@@ -43,7 +43,7 @@
                                         <a href="{{ route('organization_customer.add') }}"
                                             class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
-                                    <div class="table-responsive shadow-lg p-3 rounded">
+                                    <div class="table-responsive shadow-lg rounded">
                                         <table class="table table-hover table-striped table-bordered text-center align-middle">
                                             <thead class="table-dark">
                                                 <tr>

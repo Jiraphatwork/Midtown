@@ -23,7 +23,7 @@
                 data-kt-sticky-offset="{default: '200px', lg: '0'}" data-kt-sticky-animation="false">
                 @include("$prefix.layout.head-menu")
             </div>
-            
+
             <!--end::Header-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
 
@@ -43,16 +43,13 @@
                                         <a href="{{ route('reserve_history.add') }}"
                                             class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
-                                    <div class="table-responsive shadow-lg p-3 rounded">
-                                        <table
-                                            class="table table-hover table-striped table-bordered text-center align-middle">
+                                    <div class="table-responsive shadow-lg rounded">
+                                        <table class="table table-hover table-striped align-middle text-center">
                                             <thead class="table-dark">
                                                 <tr>
                                                     <th scope="col">ลำดับ</th>
                                                     <th scope="col">ชื่อ-นามสกุล</th>
-                                                    <th scope="col">วันที่จ่ายเงิน</th>
-                                                    <th scope="col">วันแรกของการจอง</th>
-                                                    <th scope="col">วันสุดท้ายของการจอง</th>
+                                                    <th scope="col">รวมวันที่</th>
                                                     <th scope="col">สถานะ</th>
                                                     <th scope="col">ประเภทสินค้า</th>
                                                     <th scope="col">พื้นที่</th>
@@ -64,11 +61,13 @@
                                                     <tr class="text-center">
                                                         <td>{{ $index + 1 }}</td>
                                                         <td>{{ $history->name }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($history->now_date)->format('d/m/Y') }}
-                                                        </td>
-                                                        <td>{{ \Carbon\Carbon::parse($history->first_date)->format('d/m/Y') }}
-                                                        </td>
-                                                        <td>{{ \Carbon\Carbon::parse($history->last_date)->format('d/m/Y') }}
+                                                        <td>
+                                                            <!-- ปุ่มสำหรับเปิด Modal -->
+                                                            <button type="button" class="btn btn-primary btn-sm"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#dateModal{{ $history->id }}">
+                                                                ดูข้อมูล
+                                                            </button>
                                                         </td>
                                                         <td>
                                                             @if ($history->status == 'จ่ายแล้ว')
@@ -83,7 +82,6 @@
                                                             <a href="{{ route('reserve_history.edit', $history->id) }}"
                                                                 class="btn btn-warning btn-sm">แก้ไข</a>
 
-                                                            <!-- ฟอร์มสำหรับส่งคำขอการลบ -->
                                                             <form id="delete-form-{{ $history->id }}" method="POST"
                                                                 action="{{ route('reserve_history.destroy', $history->id) }}"
                                                                 style="display: none;">
@@ -91,21 +89,54 @@
                                                                 @method('DELETE')
                                                             </form>
 
-                                                            <!-- ปุ่มลบ -->
                                                             <button type="button" class="btn btn-danger btn-sm"
                                                                 onclick="confirmDelete('{{ $history->id }}', '{{ Auth::guard('admin')->user()->role_name }}')">
                                                                 ลบ
                                                             </button>
                                                         </td>
-
                                                     </tr>
+
+                                                    <!-- Modal สำหรับแสดงข้อมูลวันที่ -->
+                                                    <div class="modal fade" id="dateModal{{ $history->id }}"
+                                                        tabindex="-1" aria-labelledby="dateModalLabel"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title"
+                                                                    id="detailsModalLabel{{ $history->id }}">
+                                                                    ชื่อ-นามสกุล: {{ $history->name }}
+                                                                </h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body text-start">
+                                                                    <p><strong>วันที่จ่ายเงิน:</strong>
+                                                                        {{ \Carbon\Carbon::parse($history->now_date)->format('d/m/Y') }}
+                                                                    </p>
+                                                                    <p><strong>วันแรกของการจอง:</strong>
+                                                                        {{ \Carbon\Carbon::parse($history->first_date)->format('d/m/Y') }}
+                                                                    </p>
+                                                                    <p><strong>วันสุดท้ายของการจอง:</strong>
+                                                                        {{ \Carbon\Carbon::parse($history->last_date)->format('d/m/Y') }}
+                                                                    </p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">ปิด</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 @empty
                                                     <tr>
-                                                        <td colspan="10" class="text-center">ไม่มีข้อมูล</td>
+                                                        <td colspan="7" class="text-center">ไม่มีข้อมูล</td>
                                                     </tr>
                                                 @endforelse
                                             </tbody>
                                         </table>
+
 
                                     </div>
                                 </div>
@@ -236,4 +267,3 @@
         });
     </script>
 @endif
-

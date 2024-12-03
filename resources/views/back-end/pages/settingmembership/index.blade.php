@@ -40,12 +40,11 @@
                                 <div class="container mt-5">
                                     <h2 class="text-center mb-4 text-dark">ตั้งค่าข้อมูลเงื่อนการสมัครสมาชิกข้อตกลง</h2>
                                     <div class="d-flex justify-content-end mb-3">
-                                        <a href="webpanel/settingmembership/add"
+                                         <a href="webpanel/settingmembership/add"
                                             class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
-                                    <div class="table-responsive shadow-lg p-3 rounded">
-                                        <table
-                                            class="table table-hover table-striped table-bordered text-center align-middle">
+                                    <div class="table-responsive shadow-lg rounded">
+                                        <table class="table table-hover table-striped  text-center align-middle">
                                             <thead class="table-dark">
                                                 <tr>
                                                     <th scope="col">ลำดับ</th>

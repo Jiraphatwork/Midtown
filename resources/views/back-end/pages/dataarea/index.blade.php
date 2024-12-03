@@ -23,10 +23,10 @@
                 data-kt-sticky-offset="{default: '200px', lg: '0'}" data-kt-sticky-animation="false">
                 @include("$prefix.layout.head-menu")
             </div>
-
+            <div class="loading-spinner"></div>
             <!--end::Header-->
-            <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
 
+            <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
                 <!--begin::Sidebar-->
                 @include("$prefix.layout.side-menu")
                 <!--end::Sidebar-->
@@ -38,62 +38,62 @@
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                                 <div class="container mt-5">
-                                    <h2 class="text-center mb-4 text-dark">ข้อมูลโปรโมชั่น</h2>
-                                    <div class="d-flex justify-content-end mb-3">
-                                        <a href="{{ route('promotion.add') }}"
-                                            class="btn btn-success">+เพิ่มข้อมูล</a>
+                                    <h2 class="text-center mb-4 text-dark">ตั้งค่าข้อมูลพื้นที่</h2>
+                                    <!-- ฟิลเตอร์ -->
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <form action="{{ route('dataarea.index') }}" method="GET" class="d-flex">
+                                            <select name="type" class="form-select me-2"
+                                                onchange="this.form.submit()">
+                                                <option value="">-- เลือกรูปแบบพื้นที่ --</option>
+                                                <option value="รูปแบบที่1"
+                                                    {{ request('type') == 'รูปแบบที่1' ? 'selected' : '' }}>รูปแบบที่1
+                                                </option>
+                                                <option value="รูปแบบที่2"
+                                                    {{ request('type') == 'รูปแบบที่2' ? 'selected' : '' }}>รูปแบบที่2
+                                                </option>
+                                                <option value="รูปแบบที่3"
+                                                    {{ request('type') == 'รูปแบบที่3' ? 'selected' : '' }}>รูปแบบที่3
+                                                </option>
+                                            </select>
+                                        </form>
+                                        <a href="{{ route('dataarea.add') }}" class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
                                     <div class="table-responsive shadow-lg rounded">
-                                        <table class="table table-hover table-striped  text-center align-middle">
+                                        <table class="table table-hover table-striped align-middle text-center">
                                             <thead class="table-dark">
                                                 <tr>
-                                                    <th scope="col">ลำดับ</th>
-                                                    <th scope="col">ชื่อโปรโมชั่น</th>
-                                                    <th scope="col">รูปภาพ</th>
-                                                    <th scope="col">รายละเอียด</th>
-                                                    <th scope="col">วันเริ่มต้นโปรโมชั่น</th>
-                                                    <th scope="col">วันสิ้นสุดโปรโมชั่น</th>
-                                                    <th scope="col">จัดการ</th>
+                                                    <th>ลำดับ</th>
+                                                    <th>รูปแบบพื้นที่</th>
+                                                    <th>รูปภาพ</th>
+                                                    <th>พื้นที่</th>
+                                                    <th>ราคา</th>
+                                                    <th>จัดการ</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($promotion_models as $index => $item)
-                                                    <tr class="text-center">
-                                                        <td>{{ $index + 1 }}</td>
-                                                        <td>{{ $item->name_promotion }}</td>
+                                                @foreach ($data_area_models as $index => $item)
+                                                    <tr>
+                                                        <td class="text-muted">{{ $index + 1 }}</td>
+                                                        <td class="fw-bold">{{ $item->type }}</td>
                                                         <td>
-                                                            @if ($item->pic_promotion)
-                                                                <img src="{{ asset('pic_promotions/' . $item->pic_promotion) }}"
-                                                                    alt="error" width="60px"
+                                                            @if ($item->pic_area)
+                                                                <img src="{{ asset('pic_areas/' . $item->pic_area) }}"
+                                                                    alt="error" width="100px"
                                                                     style="cursor: pointer;" data-bs-toggle="modal"
                                                                     data-bs-target="#imageModal{{ $item->id }}">
                                                             @else
                                                                 ไม่มีรูปภาพ
                                                             @endif
                                                         </td>
+                                                        <td>{{ $item->area }}</td>
+                                                        <td>{{ $item->price }}</td>
                                                         <td>
-                                                            @php
-                                                                $text = $item->detail;
-                                                                $shortText = Str::limit($text, 30); // ตัดข้อความให้เหลือ 100 ตัว
-                                                            @endphp
-
-                                                            <span>{{ $shortText }}</span>
-                                                            @if (strlen($text) > 30)
-                                                                <button class="btn btn-link p-0" data-bs-toggle="modal"
-                                                                    data-bs-target="#detailsModal{{ $item->id }}">
-                                                                    อ่านเพิ่มเติม
-                                                                </button>
-                                                            @endif
-                                                        </td>
-                                                        <td>{{ $item->first_date }}</td>
-                                                        <td>{{ $item->last_date }}</td>
-                                                        <td>
-                                                            <a href="{{ route('promotion.edit', $item->id) }}"
+                                                            <a href="{{ route('dataarea.edit', $item->id) }}"
                                                                 class="btn btn-warning btn-sm">แก้ไข</a>
 
                                                             <!-- ฟอร์มสำหรับส่งคำขอการลบ -->
                                                             <form id="delete-form-{{ $item->id }}" method="POST"
-                                                                action="{{ route('promotion.destroy', $item->id) }}"
+                                                                action="{{ route('dataarea.destroy', $item->id) }}"
                                                                 style="display: none;">
                                                                 @csrf
                                                                 @method('DELETE')
@@ -106,18 +106,18 @@
                                                             </button>
                                                         </td>
                                                     </tr>
-                                                    <!-- Modal สำหรับแต่ละแถว -->
+                                                    <!-- Modal สำหรับรูป -->
                                                     <div class="modal fade" id="imageModal{{ $item->id }}"
                                                         tabindex="-1"
-                                                        aria-labelledby="pic_promotion{{ $item->id }}"
+                                                        aria-labelledby="PicareaModalLabel{{ $item->id }}"
                                                         aria-hidden="true">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <!-- แสดงชื่อโปรโมชั่นในหัวข้อของ Modal -->
                                                                     <h5 class="modal-title"
-                                                                        id="pic_promotion{{ $item->id }}">
-                                                                        รูปโปรโมชั่น: {{ $item->name_promotion }}</h5>
+                                                                        id="PicareaModalLabel{{ $item->id }}">
+                                                                        รูปภาพพื้นที่: {{ $item->type }}
+                                                                    </h5>
                                                                     <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
                                                                         data-bs-dismiss="modal" aria-label="Close">
                                                                         <i class="ki-duotone ki-cross fs-1"><span
@@ -126,37 +126,12 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-body text-center">
-                                                                    @if ($item->pic_promotion)
-                                                                        <img src="{{ asset('pic_promotions/' . $item->pic_promotion) }}"
-                                                                            alt="promotion" class="img-fluid">
+                                                                    @if ($item->pic_area)
+                                                                        <img src="{{ asset('pic_areas/' . $item->pic_area) }}"
+                                                                            alt="Business Card" class="img-fluid">
                                                                     @else
                                                                         <p>ไม่มีรูปภาพ</p>
                                                                     @endif
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Modal สำหรับแสดงรายละเอียด -->
-                                                    <div class="modal fade" id="detailsModal{{ $item->id }}"
-                                                        tabindex="-1"
-                                                        aria-labelledby="detailsModalLabel{{ $item->id }}"
-                                                        aria-hidden="true">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title"
-                                                                        id="detailsModalLabel{{ $item->id }}">
-                                                                        รายละเอียดโปรโมชั่น:
-                                                                        {{ $item->name_promotion }}</h5>
-                                                                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
-                                                                        data-bs-dismiss="modal" aria-label="Close">
-                                                                        <i class="ki-duotone ki-cross fs-1"><span
-                                                                                class="path1"></span><span
-                                                                                class="path2"></span></i>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-body text-center">
-                                                                    <p>{{ $item->detail }}</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -168,35 +143,42 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <!--end::Toolbar-->
 
-                        <div id="kt_app_content" class="app-content flex-column-fluid">
-                            <!--begin::Content container-->
-                            <div id="kt_app_content_container" class="app-container container-xxl">
+                    <!--begin::Content-->
+                    <div id="kt_app_content" class="app-content flex-column-fluid">
+                        <div id="kt_app_content_container" class="app-container container-xxl">
 
-                            </div>
-                            <!--end::Content container-->
                         </div>
+                        <!--end::Table-->
 
                     </div>
-                    <!--end::Content wrapper-->
-
-                    <!--begin::Footer-->
-                    <div id="kt_app_footer" class="app-footer">
-                        @include("$prefix.layout.footer")
-                    </div>
-                    <!--End::Footer-->
                 </div>
-                <!--End::Main-->
+                <!--end::Content-->
+
             </div>
+            <!--end::Content wrapper-->
+
+            <!--begin::Footer-->
+            <div id="kt_app_footer" class="app-footer">
+                @include("$prefix.layout.footer")
+            </div>
+            <!--End::Footer-->
         </div>
+        <!--end::Main-->
+    </div>
+    </div>
     </div>
 
+    <!--begin::Scrolltop-->
     <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
         <i class="ki-duotone ki-arrow-up">
             <span class="path1"></span>
             <span class="path2"></span>
         </i>
     </div>
+    <!--end::Scrolltop-->
 
     <!--begin::Javascript-->
     @include("$prefix.layout.script")
@@ -204,11 +186,9 @@
 
 </body>
 <!--end::Body-->
-
-</html>
 <script>
     // แจ้งเตือนการลบ
-    function confirmDelete(promotionID, roleName) {
+    function confirmDelete(dataareaID, roleName) {
         if (roleName !== 'Admin') {
             // แสดงข้อความแจ้งเตือนหากไม่มีสิทธิ์
             Swal.fire({
@@ -233,7 +213,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 // ส่งฟอร์มลบ
-                document.getElementById(`delete-form-${promotionID}`).submit();
+                document.getElementById(`delete-form-${dataareaID}`).submit();
 
                 // แจ้งเตือนหลังลบ
                 Swal.fire({
@@ -269,4 +249,3 @@
         });
     </script>
 @endif
-

@@ -38,47 +38,48 @@
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                                 <div class="container mt-5">
-                                    <h2 class="text-center mb-4 text-dark">ตั้งค่าข้อมูลการสแกนจ่าย Qr Code</h2>
+                                    <h2 class="text-center mb-4 text-dark">ตั้งค่าข้อมูลการสแกนจ่าย Qr Code
+                                    </h2>
                                     <div class="d-flex justify-content-end mb-3">
                                         <a href="webpanel/settingqrcode/add" class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
-                                    <div class="table-responsive shadow-lg p-3 rounded">
-                                        <table
-                                            class="table table-hover table-striped table-bordered text-center align-middle">
-                                            <thead class="table-dark">
-                                                <tr>
-                                                    <th scope="col">ลำดับ</th>
-                                                    <th scope="col">Qrcode</th>
-                                                    <th scope="col">ชื่อบัญชี</th>
-                                                    <th scope="col">จัดการ</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($items as $index => $item)
-                                                    <tr class="text-center">
-                                                        <td>{{ $index + 1 }}</td>
-                                                        <td>
-                                                            @if ($item->image_path)
-                                                                <!-- รูปภาพที่สามารถคลิกเพื่อดูใน Modal -->
-                                                                <img src="{{ asset($item->image_path) }}" alt="error"
-                                                                    width="60px" style="cursor: pointer;"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#imageModal-{{ $item->id }}">
-                                                            @else
-                                                                ไม่มีรูปภาพ
-                                                            @endif
-                                                        </td>
-                                                        <td>{{ $item->name_account }}</td>
-                                                        <td class="text-center">
-                                                            <a href="{{ route('settingqrcode.edit', $item->id) }}"
-                                                                class="btn btn-warning btn-sm">แก้ไข</a>
-                                                            <a href="javascript:void(0);" class="btn btn-danger btn-sm"
-                                                                onclick="check_destroy({{ $item->id }}, '{{ Auth::guard('admin')->user()->role_name }}')">ลบ</a>
-                                                        </td>
+                                    <div class="table-responsive shadow-lg rounded">
+                                        <table class="table table-hover table-striped  text-center align-middle">
+                                                <thead class="table-dark">
+                                                    <tr>
+                                                        <th scope="col">ลำดับ</th>
+                                                        <th scope="col">Qrcode</th>
+                                                        <th scope="col">ชื่อบัญชี</th>
+                                                        <th scope="col">จัดการ</th>
                                                     </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($items as $index => $item)
+                                                        <tr class="text-center">
+                                                            <td>{{ $index + 1 }}</td>
+                                                            <td>
+                                                                @if ($item->image_path)
+                                                                    <!-- รูปภาพที่สามารถคลิกเพื่อดูใน Modal -->
+                                                                    <img src="{{ asset($item->image_path) }}"
+                                                                        alt="error" width="60px"
+                                                                        style="cursor: pointer;" data-bs-toggle="modal"
+                                                                        data-bs-target="#imageModal-{{ $item->id }}">
+                                                                @else
+                                                                    ไม่มีรูปภาพ
+                                                                @endif
+                                                            </td>
+                                                            <td>{{ $item->name_account }}</td>
+                                                            <td class="text-center">
+                                                                <a href="{{ route('settingqrcode.edit', $item->id) }}"
+                                                                    class="btn btn-warning btn-sm">แก้ไข</a>
+                                                                <a href="javascript:void(0);"
+                                                                    class="btn btn-danger btn-sm"
+                                                                    onclick="check_destroy({{ $item->id }}, '{{ Auth::guard('admin')->user()->role_name }}')">ลบ</a>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
                                     </div>
 
                                     <!-- Modal สำหรับแสดงรูปภาพ -->
@@ -234,5 +235,3 @@
         });
     </script>
 @endif
-
-

@@ -51,10 +51,10 @@
                                             </div>
                                         
                                             <div class="mb-3">
-                                                <label for="pic_equipment" class="form-label">ใบประกอบกิจการ</label>
+                                                <label for="pic_equipment" class="form-label">รูปภาพอุปกรณ์</label>
                                                 @if ($item->pic_equipment)
                                                     <div class="mb-2">
-                                                        <img src="{{ asset('pic_equipments/' . $item->pic_equipment) }}" alt="Business Card" width="150">
+                                                        <img src="{{ asset('pic_equipments/' . $item->pic_equipment) }}" alt="picequipment" width="150">
                                                     </div>
                                                 @endif
                                                 <input type="file" class="form-control" id="pic_equipment" name="pic_equipment" accept="image/*">

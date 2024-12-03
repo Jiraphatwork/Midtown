@@ -40,30 +40,52 @@
                                 <div class="container mt-5">
                                     <h2 class="text-center mb-4 text-dark">เพิ่มข้อมูลอุปกรณ์</h2>
                                     <div class="shadow-lg p-4 bg-body-tertiary rounded">
-                                        <form action="{{ route('data_equipment.insert') }}" method="POST" enctype="multipart/form-data">
+                                        <form action="{{ route('dataarea.insert') }}" method="POST"
+                                            enctype="multipart/form-data">
                                             @csrf
+                                            <!-- รูปแบบพื้นที่ -->
                                             <div class="mb-3">
-                                                <label for="name_equipment" class="form-label">ชื่ออุปกรณ์</label>
-                                                <input type="text" class="form-control" id="name_equipment" name="name_equipment" placeholder="กรอกชื่ออุปกรณ์" required>
+                                                <label for="type" class="form-label">รูปแบบพื้นที่</label>
+                                                <select class="form-select" id="type" name="type" required>
+                                                    <option value="" disabled selected>-- เลือกรูปแบบพื้นที่ --
+                                                    </option>
+                                                    <option value="รูปแบบที่1">รูปแบบที่1</option>
+                                                    <option value="รูปแบบที่2">รูปแบบที่2</option>
+                                                    <option value="รูปแบบที่3">รูปแบบที่3</option>
+                                                </select>
                                             </div>
+                                            <!-- รูปอุปกรณ์ -->
                                             <div class="mb-3">
-                                                <label for="pic_equipment" class="form-label">รูปอุปกรณ์</label>
-                                                <input type="file" class="form-control" id="pic_equipment" name="pic_equipment" accept="image/*" required>
+                                                <label for="pic_area" class="form-label">รูปอุปกรณ์</label>
+                                                <input type="file" class="form-control" id="pic_area"
+                                                    name="pic_area" accept="image/*" required>
+                                                <small class="form-text text-muted">กรุณาอัปโหลดไฟล์ภาพ (JPG, PNG,
+                                                    GIF)</small>
                                             </div>
+                                            <!-- พื้นที่ -->
                                             <div class="mb-3">
-                                                <label for="price" class="form-label">ราคา</label>
-                                                <input type="number" class="form-control" id="price" name="price" placeholder="กรอกราคา" required>
+                                                <label for="area" class="form-label">พื้นที่</label>
+                                                <input type="text" class="form-control" id="area" name="area"
+                                                    placeholder="กรอกพื้นที่" required>
+                                                @if ($errors->has('area'))
+                                                    <div class="text-danger">{{ $errors->first('area') }}</div>
+                                                @endif
                                             </div>
+
+                                            <!-- ราคา -->
                                             <div class="mb-3">
-                                                <label for="quantity" class="form-label">จำนวน</label>
-                                                <input type="number" class="form-control" id="quantity" name="quantity" placeholder="กรอกจำนวน" required>
+                                                <label for="price" class="form-label">ราคา (บาท)</label>
+                                                <input type="number" class="form-control" id="price" name="price"
+                                                    placeholder="กรอกราคา" min="0" step="0.01" required>
                                             </div>
+                                            <!-- ปุ่ม -->
                                             <div class="text-center">
                                                 <button type="submit" class="btn btn-primary">บันทึก</button>
-                                                <a href="{{ route('data_equipment.index') }}" class="btn btn-secondary">ยกเลิก</a>
+                                                <a href="{{ route('dataarea.index') }}"
+                                                    class="btn btn-secondary">ยกเลิก</a>
                                             </div>
                                         </form>
-                                        
+
                                     </div>
                                 </div>
                             </div>
