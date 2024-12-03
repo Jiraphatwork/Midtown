@@ -52,7 +52,10 @@
                                                     <th scope="col">รวมวันที่</th>
                                                     <th scope="col">สถานะ</th>
                                                     <th scope="col">ประเภทสินค้า</th>
+                                                    <th scope="col">รูปแบบพื้นที่</th>
+                                                    <th scope="col">รูปภาพ</th>
                                                     <th scope="col">พื้นที่</th>
+                                                    <th scope="col">ราคา</th>
                                                     <th scope="col">จัดการ</th>
                                                 </tr>
                                             </thead>
@@ -77,7 +80,20 @@
                                                             @endif
                                                         </td>
                                                         <td>{{ $history->product_type }}</td>
+                                                        <td>{{ $history->type }}</td>
+                                                        <td>
+                                                            @if ($history->pic_area)
+                                                                <img src="{{ asset('pic_areas_reserve/' . $history->pic_area) }}"
+                                                                    alt="error" width="60px"
+                                                                    style="cursor: pointer;" data-bs-toggle="modal"
+                                                                    data-bs-target="#imageModal{{ $history->id }}">
+                                                            @else
+                                                                ไม่มีรูปภาพ
+                                                            @endif
+                                                        </td>
                                                         <td>{{ $history->area }}</td>
+                                                        <td>{{ $history->price }}</td>
+
                                                         <td>
                                                             <a href="{{ route('reserve_history.edit', $history->id) }}"
                                                                 class="btn btn-warning btn-sm">แก้ไข</a>
@@ -104,9 +120,9 @@
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title"
-                                                                    id="detailsModalLabel{{ $history->id }}">
-                                                                    ชื่อ-นามสกุล: {{ $history->name }}
-                                                                </h5>
+                                                                        id="detailsModalLabel{{ $history->id }}">
+                                                                        ชื่อ-นามสกุล: {{ $history->name }}
+                                                                    </h5>
                                                                     <button type="button" class="btn-close"
                                                                         data-bs-dismiss="modal"
                                                                         aria-label="Close"></button>
@@ -125,6 +141,34 @@
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary"
                                                                         data-bs-dismiss="modal">ปิด</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Modal สำหรับรูป -->
+                                                    <div class="modal fade" id="imageModal{{ $history->id }}"
+                                                        tabindex="-1"
+                                                        aria-labelledby="PicareaModalLabel{{ $history->id }}"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title"
+                                                                        id="PicareaModalLabel{{ $history->id }}">
+                                                                        รูปภาพพื้นที่: {{ $history->type }}
+                                                                    </h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body text-center">
+                                                                    @if ($history->pic_area)
+                                                                        <img src="{{ asset('pic_areas_reserve/' . $history->pic_area) }}"
+                                                                            alt="picarea" class="img-fluid">
+                                                                    @else
+                                                                        <p>ไม่มีรูปภาพ</p>
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                         </div>

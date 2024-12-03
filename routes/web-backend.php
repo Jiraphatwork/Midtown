@@ -44,6 +44,15 @@ Route::group(['middleware' => ['Webpanel']], function () {
             Route::post('reserve_history/edit/{id}', [Webpanel\Reserve_history_controller::class, 'update'])->name('reserve_history.update');
             Route::delete('/reserve_history/destroy/{id}', [Webpanel\Reserve_history_controller::class, 'destroy'])->name('reserve_history.destroy')->where(['id' => '[0-9]+']);
             Route::get('/status/{id}', [Webpanel\Reserve_history_controller::class, 'status'])->where(['id' => '[0-9]+']);
+            Route::get('/reserve_history/getAreaData', [Webpanel\Reserve_history_controller::class, 'getAreaData'])->name('reserve_history.getAreaData');
+            Route::get('/get-areas-by-type/{type}', function ($type) {
+                // ดึงข้อมูล areas ตาม type จากฐานข้อมูล
+                $areas = DB::table('data_area_models')
+                    ->where('type', $type)
+                    ->get(['area', 'price']); // ดึงชื่อ area และ price
+
+                return response()->json(['areas' => $areas]);
+            });
         });
 
 

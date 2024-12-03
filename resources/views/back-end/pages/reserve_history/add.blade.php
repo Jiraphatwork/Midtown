@@ -74,11 +74,41 @@
                                                 <input type="text" class="form-control" id="product_type"
                                                     name="product_type" placeholder="กรอกประเภทสินค้า" required>
                                             </div>
+                                            <!-- รูปแบบพื้นที่ -->
+                                            <div class="mb-3">
+                                                <label for="type" class="form-label">รูปแบบพื้นที่</label>
+                                                <select class="form-select" id="type" name="type" required>
+                                                    <option value="" disabled selected>-- เลือกรูปแบบพื้นที่ --
+                                                    </option>
+                                                    <option value="รูปแบบที่1">รูปแบบที่1</option>
+                                                    <option value="รูปแบบที่2">รูปแบบที่2</option>
+                                                    <option value="รูปแบบที่3">รูปแบบที่3</option>
+                                                </select>
+                                            </div>
+
+                                            <!-- พื้นที่ (ตาม type) -->
                                             <div class="mb-3">
                                                 <label for="area" class="form-label">พื้นที่</label>
-                                                <input type="text" class="form-control" id="area" name="area"
-                                                    placeholder="กรอกพื้นที่" required>
+                                                <select class="form-select" id="area" name="area" required>
+                                                    <option value="" disabled selected>-- เลือกพื้นที่ --</option>
+                                                    <!-- Dynamic area options will be populated here based on type selection -->
+                                                </select>
                                             </div>
+
+                                            <!-- รูปภาพพื้นที่ -->
+                                            <div class="mb-3">
+                                                <label for="pic_area" class="form-label">รูปพื้นที่</label>
+                                                <img id="pic_area_display" src="" alt="รูปภาพพื้นที่"
+                                                    class="img-fluid" style="width: 40%";">
+                                            </div>
+
+                                            <!-- ราคา -->
+                                            <div class="mb-3">
+                                                <label for="price" class="form-label">ราคา</label>
+                                                <input type="text" class="form-control" id="price"
+                                                    name="price" readonly>
+                                            </div>
+
                                             <div class="text-center">
                                                 <button type="submit" class="btn btn-primary">บันทึก</button>
                                                 <a href="{{ route('reserve_history.index') }}"
@@ -130,6 +160,47 @@
 <!--end::Body-->
 
 </html>
+<script>
+    $(document).ready(function() {
+        // เมื่อเลือก type
+        $('#type').change(function() {
+            var type = $(this).val();
+            if (type) {
+                // ส่งค่า type ไปยัง Controller เพื่อดึงข้อมูล
+                $.ajax({
+                    url: "{{ route('reserve_history.getAreaData') }}",  // route ของคุณ
+                    type: "GET",
+                    data: {
+                        type: type
+                    },
+                    success: function(data) {
+                        // แสดงข้อมูลพื้นที่ (area)
+                        $('#area').html(
+                            '<option value="" disabled selected>-- เลือกพื้นที่ --</option>'
+                        );
+                        $.each(data.areas, function(key, area) {
+                            $('#area').append('<option value="' + area.area + '" data-price="' + area.price + '">' +
+                                area.area + '</option>');
+                        });
 
+                        // แสดงรูปภาพของพื้นที่
+                        $('#pic_area_display').attr('src', data.pic_area);
+                        $('#pic_area_display').show();
+                    }
+                });
+            } else {
+                // ถ้าไม่มีการเลือก type ก็ให้ล้างข้อมูลที่แสดง
+                $('#area').html('<option value="" disabled selected>-- เลือกพื้นที่ --</option>');
+                $('#pic_area_display').hide();
+                $('#price').val('');
+            }
+        });
 
-
+        // เมื่อเลือก area
+        $('#area').change(function() {
+            var selectedArea = $(this).find('option:selected');
+            var price = selectedArea.data('price'); // ดึงราคาใน attribute data-price
+            $('#price').val(price);  // เปลี่ยนค่าในฟอร์ม price
+        });
+    });
+</script>

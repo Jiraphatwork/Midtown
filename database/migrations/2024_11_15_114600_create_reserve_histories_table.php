@@ -21,7 +21,10 @@ class CreateReserveHistoriesTable extends Migration
             $table->date("last_date"); // วันที่สิ้นสุด
             $table->enum("status", ["จ่ายแล้ว", "ยังไม่จ่าย"]); 
             $table->string("product_type"); 
-            $table->string("area"); 
+            $table->enum('type', ['รูปแบบที่1', 'รูปแบบที่2', 'รูปแบบที่3']);
+            $table->string('pic_area');
+            $table->string('area');
+            $table->string('price');
 
             $table->string("created_by",50)->nullable();
             $table->string("updated_by",50)->nullable();

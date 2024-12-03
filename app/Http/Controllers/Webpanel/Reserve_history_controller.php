@@ -28,7 +28,6 @@ class Reserve_history_controller extends Controller
             'reserveHistories' => $reserveHistories, // ส่งข้อมูลไปยัง view
         ]);
     }
-
     public function add()
     {
         // ตรวจสอบสิทธิ์
@@ -36,14 +35,17 @@ class Reserve_history_controller extends Controller
             return redirect()->route('reserve_history.index')->with('error', 'คุณไม่มีสิทธิ์ในการเพิ่มข้อมูล');
         }
 
-        // ส่งตัวแปรไปยัง View
+        // ดึงข้อมูลประเภทพื้นที่ (type) จาก data_area_models
+        $areaTypes = DB::table('data_area_models')->select('type')->distinct()->get();
+
+        // ส่งข้อมูลไปยัง View
         return view('back-end.pages.reserve_history.add', [
             'prefix' => $this->prefix,
             'segment' => $this->segment,
             'folder' => $this->folder,
+            'areaTypes' => $areaTypes, // ส่งข้อมูลประเภทพื้นที่ไปที่ view
         ]);
     }
-
     public function insert(Request $request)
     {
         // Validate ข้อมูลจากฟอร์ม
@@ -55,9 +57,38 @@ class Reserve_history_controller extends Controller
             'status' => 'required|in:จ่ายแล้ว,ยังไม่จ่าย',
             'product_type' => 'required|string|max:255',
             'area' => 'required|string|max:255',
+            'type' => 'required|string|max:255', // ตรวจสอบ type
+            'pic_area' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048' // เพิ่มการ validate สำหรับรูปภาพ
         ]);
+    
+        // ค่าจากฟอร์ม
+        $area = $validated['area']; // รับค่า area จากฟอร์ม
+    
+        // ดึงราคา (price) จาก data_area_models โดยใช้ area ที่เลือก
+        $areaData = DB::table('data_area_models')->where('area', $area)->first();
+    
+        if (!$areaData) {
+            return redirect()->back()->with('error', 'ไม่พบข้อมูลพื้นที่ที่เลือก');
+        }
+    
+        $price = $areaData->price; // รับราคา (price) จากข้อมูลของพื้นที่ที่เลือก
+    
+        // ค่าจากฟอร์ม
+        $type = $validated['type'];
+    
 
-        // เพิ่มข้อมูลลงในฐานข้อมูล
+     if ($areaData) {
+        // คัดลอกไฟล์รูปภาพ
+        $picareaFilename = null;
+        if ($areaData->pic_area) {
+            $picareaFilename = time() . '_' . $areaData->pic_area;
+            $sourcePath = public_path('pic_areas/' . $areaData->pic_area);
+            $destinationPath = public_path('pic_areas_reserve/' . $picareaFilename);
+            if (file_exists($sourcePath)) {
+                copy($sourcePath, $destinationPath);
+            }
+        }
+        // บันทึกข้อมูลลงในฐานข้อมูล
         DB::table('reserve_histories')->insert([
             'name' => $validated['name'],
             'now_date' => $validated['now_date'],
@@ -66,11 +97,37 @@ class Reserve_history_controller extends Controller
             'status' => $validated['status'],
             'product_type' => $validated['product_type'],
             'area' => $validated['area'],
+            'type' => $type,  // บันทึก type ลงในฐานข้อมูล
+            'price' => $price,  // บันทึกราคา (price) ลงในฐานข้อมูล
+            'pic_area' => $picareaFilename,  // บันทึกชื่อไฟล์รูปภาพลงในฐานข้อมูล
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-
+    
         return redirect()->route('reserve_history.index')->with('success', 'เพิ่มข้อมูลสำเร็จ');
+    }
+    
+}
+    
+    public function getAreaData(Request $request)
+    {
+        $type = $request->input('type');
+
+        // ดึงข้อมูลจาก data_area_models ตาม type ที่เลือก
+        $areaData = DB::table('data_area_models')->where('type', $type)->first();
+
+        if ($areaData) {
+            // ส่งข้อมูลกลับในรูปแบบ JSON
+            return response()->json([
+                'areas' => DB::table('data_area_models')->where('type', $type)->get(),
+                // ใช้ asset() สำหรับเส้นทางรูปภาพ
+                'pic_area' => asset('pic_areas/' . $areaData->pic_area), // แก้ไขให้ถูกต้อง
+                'price' => $areaData->price
+            ]);
+        }
+
+        // ถ้าไม่พบข้อมูล
+        return response()->json([], 404);
     }
 
     public function edit($id)

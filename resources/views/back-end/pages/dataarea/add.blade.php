@@ -54,9 +54,9 @@
                                                     <option value="รูปแบบที่3">รูปแบบที่3</option>
                                                 </select>
                                             </div>
-                                            <!-- รูปอุปกรณ์ -->
+                                            <!-- รูปพื้นที่ -->
                                             <div class="mb-3">
-                                                <label for="pic_area" class="form-label">รูปอุปกรณ์</label>
+                                                <label for="pic_area" class="form-label">รูปพื้นที่</label>
                                                 <input type="file" class="form-control" id="pic_area"
                                                     name="pic_area" accept="image/*" required>
                                                 <small class="form-text text-muted">กรุณาอัปโหลดไฟล์ภาพ (JPG, PNG,
