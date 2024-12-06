@@ -43,120 +43,106 @@
                                         <form action="{{ route('agent_customer.insert') }}" method="POST"
                                             enctype="multipart/form-data">
                                             @csrf
-                                            <!-- ชื่อ-นามสกุล -->
-                                            <div class="mb-3">
-                                                <label for="name" class="form-label">ชื่อ-นามสกุล</label>
-                                                <input type="text" class="form-control" id="name" name="name"
-                                                    placeholder="กรอกชื่อ" required>
+                                            <!-- ชื่อ-นามสกุล และ อีเมล -->
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="name" class="form-label">ชื่อ-นามสกุล</label>
+                                                    <input type="text" class="form-control" id="name"
+                                                        name="name" placeholder="กรอกชื่อ" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="email" class="form-label">อีเมล</label>
+                                                    <input type="email" class="form-control" id="email"
+                                                        name="email" placeholder="กรอกอีเมล" required>
+                                                </div>
                                             </div>
 
-                                            <!-- อีเมล -->
-                                            <div class="mb-3">
-                                                <label for="email" class="form-label">อีเมล</label>
-                                                <input type="email" class="form-control" id="email" name="email"
-                                                    placeholder="กรอกอีเมล" required>
+                                            <!-- ใบประกอบกิจการ และ ใบทะเบียนภาษีมูลค่าเพิ่ม -->
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="business_card" class="form-label">ใบประกอบกิจการ</label>
+                                                    <input type="file" class="form-control" id="business_card"
+                                                        name="business_card">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="tax_card"
+                                                        class="form-label">ใบทะเบียนภาษีมูลค่าเพิ่ม</label>
+                                                    <input type="file" class="form-control" id="tax_card"
+                                                        name="tax_card">
+                                                </div>
                                             </div>
 
-                                            <!-- ใบประกอบกิจการ -->
-                                            <div class="mb-3">
-                                                <label for="business_card" class="form-label">ใบประกอบกิจการ</label>
-                                                <input type="file" class="form-control" id="business_card"
-                                                    name="business_card">
-                                            </div>
-
-                                            <!-- ใบทะเบียนภาษีมูลค่าเพิ่ม -->
-                                            <div class="mb-3">
-                                                <label for="tax_card"
-                                                    class="form-label">ใบทะเบียนภาษีมูลค่าเพิ่ม</label>
-                                                <input type="file" class="form-control" id="tax_card"
-                                                    name="tax_card">
-                                            </div>
-
-                                            <!-- รูปบัตรประชาชน -->
-                                            <div class="mb-3">
-                                                <label for="pic_id_card" class="form-label">รูปบัตรประชาชน</label>
-                                                <input type="file" class="form-control" id="pic_id_card"
-                                                    name="pic_id_card" accept="image/*" required>
-                                            </div>
-
-                                            <!-- เลขบัตรประชาชน -->
-                                            <div class="mb-3">
-                                                <label for="id_card" class="form-label">เลขบัตรประชาชน</label>
-                                                <input type="text" class="form-control" id="id_card" name="id_card"
-                                                    placeholder="กรอกเลขบัตรประชาชน" maxlength="13" required
-                                                    oninput="updateLength()">
-                                                <small id="charCount" class="form-text text-muted">กรอกไปแล้ว 0/13
-                                                    ตัวอักษร</small>
-                                                @error('id_card')
-                                                    <div class="alert alert-danger">{{ $message }}</div>
-                                                @enderror
+                                            <!-- รูปบัตรประชาชน และ เลขบัตรประชาชน -->
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="pic_id_card" class="form-label">รูปบัตรประชาชน</label>
+                                                    <input type="file" class="form-control" id="pic_id_card"
+                                                        name="pic_id_card" accept="image/*" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="id_card" class="form-label">เลขบัตรประชาชน</label>
+                                                    <input type="text" class="form-control" id="id_card"
+                                                        name="id_card" placeholder="กรอกเลขบัตรประชาชน" maxlength="13"
+                                                        required oninput="updateLength()">
+                                                    <small id="charCount" class="form-text text-muted">กรอกไปแล้ว 0/13
+                                                        ตัวอักษร</small>
+                                                </div>
                                             </div>
 
                                             <!-- ที่อยู่ -->
-                                            <div class="mb-3">
-                                                <label for="address" class="form-label">ที่อยู่ 1</label>
-                                                <textarea class="form-control" id="address" name="address" rows="2" placeholder="กรอกที่อยู่ 1" required></textarea>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="address2" class="form-label">ที่อยู่ 2</label>
-                                                <textarea class="form-control" id="address2" name="address2" rows="2" placeholder="กรอกที่อยู่ 2"></textarea>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="address3" class="form-label">ที่อยู่ 3</label>
-                                                <textarea class="form-control" id="address3" name="address3" rows="2" placeholder="กรอกที่อยู่ 3"></textarea>
-                                            </div>
-
-                                            <!-- เบอร์โทร -->
-                                            <div class="mb-3">
-                                                <label for="tel" class="form-label">เบอร์โทร</label>
-                                                <input type="text" class="form-control" id="tel"
-                                                    name="tel" placeholder="กรอกเบอร์โทร" maxlength="10" required
-                                                    oninput="validateTel()">
-                                                <div id="charCountTel" class="form-text text-muted mt-2">กรอกไปแล้ว
-                                                    0/10 ตัวอักษร</div>
-                                                @error('tel')
-                                                    <div class="alert alert-danger mt-2">{{ $message }}</div>
-                                                @enderror
+                                            <div class="row mb-3">
+                                                <div class="col-md-4">
+                                                    <label for="address" class="form-label">ที่อยู่ 1</label>
+                                                    <textarea class="form-control" id="address" name="address" rows="2" placeholder="กรอกที่อยู่ 1" required></textarea>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="address2" class="form-label">ที่อยู่ 2</label>
+                                                    <textarea class="form-control" id="address2" name="address2" rows="2" placeholder="กรอกที่อยู่ 2"></textarea>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="address3" class="form-label">ที่อยู่ 3</label>
+                                                    <textarea class="form-control" id="address3" name="address3" rows="2" placeholder="กรอกที่อยู่ 3"></textarea>
+                                                </div>
                                             </div>
 
-                                            <!-- เบอร์แฟกซ์ -->
-                                            <div class="mb-3">
-                                                <label for="fax" class="form-label">เบอร์แฟกซ์</label>
-                                                <input type="text" class="form-control" id="fax"
-                                                    name="fax" placeholder="กรอกเบอร์เบอร์แฟกซ์" maxlength="10"
-                                                    required oninput="validateFaxId()">
-                                                <div id="charCountfax" class="form-text text-muted mt-2">กรอกไปแล้ว
-                                                    0/10 ตัวอักษร</div>
-                                                @error('fax')
-                                                    <div class="alert alert-danger mt-2">{{ $message }}</div>
-                                                @enderror
+                                            <!-- เบอร์โทร และ เบอร์แฟกซ์ -->
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="tel" class="form-label">เบอร์โทร</label>
+                                                    <input type="text" class="form-control" id="tel"
+                                                        name="tel" placeholder="กรอกเบอร์โทร" maxlength="10"
+                                                        required oninput="validateTel()">
+                                                    <div id="charCountTel" class="form-text text-muted mt-2">
+                                                        กรอกไปแล้ว 0/10 ตัวอักษร</div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="fax" class="form-label">เบอร์แฟกซ์</label>
+                                                    <input type="text" class="form-control" id="fax"
+                                                        name="fax" placeholder="กรอกเบอร์แฟกซ์" maxlength="10"
+                                                        required oninput="validateFaxId()">
+                                                    <div id="charCountfax" class="form-text text-muted mt-2">
+                                                        กรอกไปแล้ว 0/10 ตัวอักษร</div>
+                                                </div>
                                             </div>
 
-                                            <!-- ตัวแทนติดต่อ -->
-                                            <div class="mb-3">
-                                                <label for="tel2" class="form-label">ตัวแทนติดต่อ</label>
-                                                <input type="text" class="form-control" id="tel2"
-                                                    name="tel2" placeholder="กรอกเบอร์โทรตัวแทนติดต่อ"
-                                                    maxlength="10" required oninput="validateTel2()">
-                                                <div id="charCountTel2" class="form-text text-muted mt-2">กรอกไปแล้ว
-                                                    0/10
-                                                    ตัวอักษร</div>
-                                                @error('tel')
-                                                    <div class="alert alert-danger mt-2">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-
-                                            <!-- เลขผู้เสียภาษี -->
-                                            <div class="mb-3">
-                                                <label for="tax_id" class="form-label">เลขผู้เสียภาษี</label>
-                                                <input type="text" class="form-control" id="tax_id"
-                                                    name="tax_id" placeholder="กรอกเลขผู้เสียภาษี" maxlength="13"
-                                                    required oninput="validateTaxId()">
-                                                <div id="charCountTaxId" class="form-text text-muted mt-2">กรอกไปแล้ว
-                                                    0/13 ตัวอักษร</div>
-                                                @error('tax_id')
-                                                    <div class="alert alert-danger mt-2">{{ $message }}</div>
-                                                @enderror
+                                            <!-- ตัวแทนติดต่อ และ เลขผู้เสียภาษี -->
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="tel2" class="form-label">ตัวแทนติดต่อ</label>
+                                                    <input type="text" class="form-control" id="tel2"
+                                                        name="tel2" placeholder="กรอกเบอร์โทรตัวแทนติดต่อ"
+                                                        maxlength="10" required oninput="validateTel2()">
+                                                    <div id="charCountTel2" class="form-text text-muted mt-2">
+                                                        กรอกไปแล้ว 0/10 ตัวอักษร</div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="tax_id" class="form-label">เลขผู้เสียภาษี</label>
+                                                    <input type="text" class="form-control" id="tax_id"
+                                                        name="tax_id" placeholder="กรอกเลขผู้เสียภาษี"
+                                                        maxlength="13" required oninput="validateTaxId()">
+                                                    <div id="charCountTaxId" class="form-text text-muted mt-2">
+                                                        กรอกไปแล้ว 0/13 ตัวอักษร</div>
+                                                </div>
                                             </div>
 
                                             <!-- ใบ ณ ที่จ่าย -->
@@ -175,6 +161,7 @@
                                         </form>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>

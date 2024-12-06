@@ -45,66 +45,84 @@
                                             @csrf
                                             @method('POST')
 
-                                            <div class="mb-3">
-                                                <label for="name" class="form-label">ชื่อ-นามสกุล</label>
-                                                <input type="text" class="form-control" id="name" name="name"
-                                                    value="{{ old('name', $item->name) }}"
-                                                    placeholder="กรอกชื่อ-นามสกุล" required>
+                                            <!-- ชื่อ-นามสกุล และ อีเมล -->
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="name" class="form-label">ชื่อ-นามสกุล</label>
+                                                    <input type="text" class="form-control" id="name"
+                                                        name="name" value="{{ old('name', $item->name) }}"
+                                                        placeholder="กรอกชื่อ-นามสกุล" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="email" class="form-label">อีเมล</label>
+                                                    <input type="email" class="form-control" id="email"
+                                                        name="email" value="{{ old('email', $item->email) }}"
+                                                        placeholder="กรอกอีเมล" required>
+                                                </div>
                                             </div>
 
-                                            <div class="mb-3">
-                                                <label for="email" class="form-label">อีเมล</label>
-                                                <input type="email" class="form-control" id="email" name="email"
-                                                    value="{{ old('email', $item->email) }}" placeholder="กรอกอีเมล"
-                                                    required>
+                                            <!-- รูปบัตรประชาชน และ เลขบัตรประชาชน -->
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="pic_id_card" class="form-label">รูปบัตรประชาชน</label>
+                                                    @if ($item->pic_id_card)
+                                                        <div class="mb-2">
+                                                            <img src="{{ asset('id_cards/' . $item->pic_id_card) }}"
+                                                                alt="ID Card" width="150">
+                                                        </div>
+                                                    @endif
+                                                    <input type="file" class="form-control" id="pic_id_card"
+                                                        name="pic_id_card" accept="image/*">
+                                                    <small class="text-muted">* หากไม่ต้องการเปลี่ยนรูปภาพ
+                                                        ไม่ต้องเลือกไฟล์</small>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="id_card" class="form-label">เลขบัตรประชาชน</label>
+                                                    <input type="text" class="form-control" id="id_card"
+                                                        name="id_card" value="{{ old('id_card', $item->id_card) }}"
+                                                        placeholder="กรอกเลขบัตรประชาชน" maxlength="13" required
+                                                        oninput="updateLength()" onblur="validateTaxId()">
+                                                    <span id="charCount" class="text-muted"></span>
+                                                </div>
                                             </div>
 
-                                            <div class="mb-3">
-                                                <label for="pic_id_card" class="form-label">รูปบัตรประชาชน</label>
-                                                @if ($item->pic_id_card)
-                                                    <div class="mb-2">
-                                                        <img src="{{ asset('id_cards/' . $item->pic_id_card) }}"
-                                                            alt="ID Card" width="150">
-                                                    </div>
-                                                @endif
-                                                <input type="file" class="form-control" id="pic_id_card"
-                                                    name="pic_id_card" accept="image/*">
-                                                <small class="text-muted">* หากไม่ต้องการเปลี่ยนรูปภาพ
-                                                    ไม่ต้องเลือกไฟล์</small>
+                                            <!-- ที่อยู่ และ เบอร์โทร -->
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="address" class="form-label">ที่อยู่</label>
+                                                    <textarea class="form-control" id="address" name="address" rows="3" placeholder="กรอกที่อยู่">{{ old('address', $item->address) }}</textarea>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="tel" class="form-label">เบอร์โทร</label>
+                                                    <input type="text" class="form-control" id="tel"
+                                                        name="tel" value="{{ old('tel', $item->tel) }}"
+                                                        placeholder="กรอกเบอร์โทร" maxlength="10"
+                                                        oninput="updateLengthTel()" onblur="validateTel()">
+                                                    <span id="charCountTel" class="text-muted"></span>
+                                                </div>
                                             </div>
 
-                                            <input type="text" class="form-control" id="id_card" name="id_card"
-                                                value="{{ old('id_card', $item->id_card) }}"
-                                                placeholder="กรอกเลขบัตรประชาชน" required oninput="updateLength()"
-                                                onblur="validateTaxId()">
-                                            <span id="charCount" class="text-muted"></span>
-
-                                            <div class="mb-3">
-                                                <label for="address" class="form-label">ที่อยู่</label>
-                                                <textarea class="form-control" id="address" name="address" rows="3" placeholder="กรอกที่อยู่">{{ old('address', $item->address) }}</textarea>
-                                            </div>
-
-                                            <input type="text" class="form-control" id="tel" name="tel"
-                                                value="{{ old('tel', $item->tel) }}" placeholder="กรอกเบอร์โทร"
-                                                oninput="updateLengthTel()" onblur="validateTel()">
-                                            <span id="charCountTel" class="text-muted"></span>
-
-
-                                            <div class="mb-3">
-                                                <label for="tel2" class="form-label">ตัวแทนติดต่อ</label>
-                                                <input type="text" class="form-control" id="tel2"
-                                                    name="tel2" value="{{ old('tel2', $item->tel2) }}"
-                                                    placeholder="กรอกตัวแทนติดต่อ">
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label for="tax_id" class="form-label">เลขผู้เสียภาษี</label>
-                                                <input type="text" class="form-control" id="tax_id"
-                                                    name="tax_id" value="{{ old('tax_id', $item->tax_id) }}"
-                                                    placeholder="กรอกเลขผู้เสียภาษี">
-                                                @error('tax_id')
-                                                    <div class="alert alert-danger">{{ $message }}</div>
-                                                @enderror
+                                            <!-- ตัวแทนติดต่อ และ เลขผู้เสียภาษี -->
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="tel2" class="form-label">ตัวแทนติดต่อ</label>
+                                                    <input type="text" class="form-control" id="tel2"
+                                                        name="tel2" value="{{ old('tel2', $item->tel2) }}"
+                                                        placeholder="กรอกตัวแทนติดต่อ" maxlength="10"
+                                                        oninput="updateLengthTel2()" onblur="validateTel2()">
+                                                    <span id="charCountTel2" class="text-muted"></span>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="tax_id" class="form-label">เลขผู้เสียภาษี</label>
+                                                    <input type="text" class="form-control" id="tax_id"
+                                                        name="tax_id" value="{{ old('tax_id', $item->tax_id) }}"
+                                                        placeholder="กรอกเลขผู้เสียภาษี" maxlength="13"
+                                                        oninput="updateLengthTaxId()" onblur="validateTaxId()">
+                                                    <span id="charCountTaxId" class="text-muted"></span>
+                                                    @error('tax_id')
+                                                        <div class="alert alert-danger">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
                                             </div>
 
                                             <div class="text-center">
@@ -113,12 +131,8 @@
                                                     class="btn btn-secondary">ยกเลิก</a>
                                             </div>
                                         </form>
-
-
                                     </div>
                                 </div>
-
-
                             </div>
                         </div>
                     </div>
@@ -192,7 +206,31 @@
         }
     }
 
-    // ฟังก์ชันสำหรับแสดงจำนวนที่กรอกไปแล้ว
+    // ฟังก์ชันสำหรับแสดงจำนวนตัวอักษรที่กรอกไปแล้ว (tel2)
+    function updateLengthTel2() {
+        var input = document.getElementById('tel2');
+        var charCount = document.getElementById('charCountTel2');
+        charCount.textContent = `กรอกไปแล้ว ${input.value.length}/10 ตัวอักษร`;
+    }
+
+    // ฟังก์ชันตรวจสอบเบอร์โทรตัวแทนติดต่อ
+    function validateTel2() {
+        var tel2 = document.getElementById('tel2');
+        var validTel = /^[0-9]{10}$/; // ตรวจสอบว่าเบอร์โทรตัวแทนติดต่อเป็นตัวเลข 10 หลัก
+        var charCount = document.getElementById('charCountTel2');
+
+        // แสดงจำนวนตัวอักษรที่กรอกไปแล้ว
+        updateLengthTel2();
+
+        // ตรวจสอบว่าเบอร์โทรตัวแทนติดต่อเป็นไปตามรูปแบบที่กำหนดหรือไม่
+        if (!validTel.test(tel2.value)) {
+            tel2.setCustomValidity("กรุณากรอกเบอร์โทรตัวแทนติดต่อที่ถูกต้อง (10 หลัก)");
+        } else {
+            tel2.setCustomValidity(""); // รีเซ็ตข้อความ error
+        }
+    }
+
+    // ฟังก์ชันสำหรับแสดงจำนวนตัวอักษรที่กรอกไปแล้ว (tax_id)
     function updateLengthTaxId() {
         var input = document.getElementById('tax_id');
         var charCount = document.getElementById('charCountTaxId');

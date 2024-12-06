@@ -71,10 +71,10 @@
                                                         <td>
                                                             @php
                                                                 $text = $item->address;
-                                                                $shortText = Str::limit($text, 60);
+                                                                $shortText = Str::limit($text, 30);
                                                             @endphp
                                                             <span>{{ $shortText }}</span>
-                                                            @if (strlen($text) > 100)
+                                                            @if (strlen($text) > 30)
                                                                 <button class="btn btn-link p-0" data-bs-toggle="modal"
                                                                     data-bs-target="#detailsModal{{ $item->id }}">
                                                                     อ่านเพิ่มเติม
@@ -251,7 +251,8 @@
             title: 'สำเร็จ!',
             text: "{{ session('success') }}",
             icon: 'success',
-            confirmButtonText: 'ตกลง'
+            timer: 2000,
+            showConfirmButton: false,
         });
     </script>
 @endif

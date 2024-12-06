@@ -40,8 +40,7 @@
                                 <div class="container mt-5">
                                     <h2 class="text-center mb-4 text-dark">ข้อมูลโปรโมชั่น</h2>
                                     <div class="d-flex justify-content-end mb-3">
-                                        <a href="{{ route('promotion.add') }}"
-                                            class="btn btn-success">+เพิ่มข้อมูล</a>
+                                        <a href="{{ route('promotion.add') }}" class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
                                     <div class="table-responsive shadow-lg rounded">
                                         <table class="table table-hover table-striped  text-center align-middle">
@@ -254,7 +253,8 @@
             title: 'สำเร็จ!',
             text: "{{ session('success') }}",
             icon: 'success',
-            confirmButtonText: 'ตกลง'
+            timer: 2000,
+            showConfirmButton: false,
         });
     </script>
 @endif
@@ -269,4 +269,3 @@
         });
     </script>
 @endif
-

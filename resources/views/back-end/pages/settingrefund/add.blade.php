@@ -145,7 +145,7 @@
                                 confirmButtonText: 'ตกลง',
                             }).then((result) => {
                                 location.href =
-                                    "{{ url('webpanel/settingmembership') }}";
+                                    "{{ url('webpanel/settingrefund') }}";
                             });
                         } else {
                             Swal.fire({

@@ -234,7 +234,8 @@
             title: 'สำเร็จ!',
             text: "{{ session('success') }}",
             icon: 'success',
-            confirmButtonText: 'ตกลง'
+            timer: 2000,
+            showConfirmButton: false,
         });
     </script>
 @endif

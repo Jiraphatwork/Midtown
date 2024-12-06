@@ -40,44 +40,52 @@
                                 <div class="container mt-5">
                                     <h2 class="text-center mb-4">แก้ไขข้อมูลติดต่อเรา</h2>
                                     <div class="shadow-lg p-4 bg-body-tertiary rounded">
-                                        <form action="{{ route('data_contact.update', $item->id) }}" method="POST" enctype="multipart/form-data">
+                                        <form action="{{ route('data_contact.update', $item->id) }}" method="POST"
+                                            enctype="multipart/form-data">
                                             @csrf
-                                            @method('POST') 
+                                            @method('POST')
                                             <div class="mb-3">
                                                 <label for="map" class="form-label">รูปMap</label>
                                                 @if ($item->map)
                                                     <div class="mb-2">
-                                                        <img src="{{ asset('maps/' . $item->map) }}" alt="Business Card" width="150">
+                                                        <img src="{{ asset('maps/' . $item->map) }}" alt="Business Card"
+                                                            width="150">
                                                     </div>
                                                 @endif
-                                                <input type="file" class="form-control" id="map" name="map" accept="image/*">
-                                                <small class="text-muted">* หากไม่ต้องการเปลี่ยนไฟล์ ไม่ต้องเลือกไฟล์</small>
+                                                <input type="file" class="form-control" id="map" name="map"
+                                                    accept="image/*">
+                                                <small class="text-muted">* หากไม่ต้องการเปลี่ยนไฟล์
+                                                    ไม่ต้องเลือกไฟล์</small>
                                             </div>
 
-                                            
+
                                             <div class="mb-3">
                                                 <label for="address" class="form-label">ที่อยู่</label>
-                                                <input type="text" class="form-control" id="address" name="address" 
-                                                    value="{{ old('address', $item->address) }}" placeholder="กรอกที่อยู่" >
+                                                <input type="text" class="form-control" id="address" name="address"
+                                                    value="{{ old('address', $item->address) }}"
+                                                    placeholder="กรอกที่อยู่">
                                             </div>
-                                        
+
+
                                             <div class="mb-3">
                                                 <label for="tel" class="form-label">เบอร์โทร</label>
-                                                <input type="number" class="form-control" id="tel" name="tel" 
-                                                    value="{{ old('tel', $item->tel) }}" placeholder="กรอกเบอร์โทร" >
-                                                    @error('tel')
-                                                    <div class="alert alert-danger">{{ $message }}</div>
-                                                @enderror
+                                                <input type="text" class="form-control" id="tel" name="tel"
+                                                    value="{{ old('tel', $item->tel) }}"
+                                                    placeholder="กรอกเบอร์โทร"maxlength="10" oninput="updateLengthTel()"
+                                                    onblur="validateTel()">
+                                                <span id="charCountTel" class="text-muted"></span>
                                             </div>
-                                     
+
+
                                             <div class="text-center">
                                                 <button type="submit" class="btn btn-primary">บันทึก</button>
-                                                <a href="{{ route('data_contact.index') }}" class="btn btn-secondary">ยกเลิก</a>
+                                                <a href="{{ route('data_contact.index') }}"
+                                                    class="btn btn-secondary">ยกเลิก</a>
                                             </div>
                                         </form>
-                                        
+
                                     </div>
-                                </div>                                
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -120,3 +128,28 @@
 <!--end::Body-->
 
 </html>
+<script>
+    // ฟังก์ชันสำหรับแสดงจำนวนที่กรอกไปแล้ว
+    function updateLengthTel() {
+        var input = document.getElementById('tel');
+        var charCount = document.getElementById('charCountTel');
+        charCount.textContent = `กรอกไปแล้ว ${input.value.length}/10 ตัวอักษร`;
+    }
+
+    // ฟังก์ชันตรวจสอบเบอร์โทร
+    function validateTel() {
+        var tel = document.getElementById('tel');
+        var validTel = /^[0-9]{10}$/; // ตรวจสอบว่าเบอร์โทรเป็นตัวเลข 10 หลัก
+        var charCount = document.getElementById('charCountTel');
+
+        // แสดงจำนวนตัวอักษรที่กรอกไปแล้ว
+        updateLengthTel();
+
+        // ตรวจสอบว่าเบอร์โทรเป็นไปตามรูปแบบที่กำหนดหรือไม่
+        if (!validTel.test(tel.value)) {
+            tel.setCustomValidity("กรุณากรอกเบอร์โทรที่ถูกต้อง (10 หลัก)");
+        } else {
+            tel.setCustomValidity(""); // รีเซ็ตข้อความ error
+        }
+    }
+    </script>

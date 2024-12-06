@@ -169,8 +169,6 @@ class Data_equipmentController extends Controller
                 unlink($cardSlipFilePath); // ลบไฟล์จากระบบ
             }
         }
-    
-     
         // ลบข้อมูลจากฐานข้อมูล
         DB::table('equipment_models')->where('id', $id)->delete();
     

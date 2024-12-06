@@ -39,7 +39,26 @@
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                                 <div class="container mt-5">
                                     <h2 class="text-center mb-4 text-dark">ประวัติการจอง</h2>
-                                    <div class="d-flex justify-content-end mb-3">
+
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <form action="{{ route('reserve_history.index') }}" method="GET" class="d-flex align-items-center">
+                                            <div class="input-group">
+                                                <select name="type" class="form-select me-3"
+                                                    onchange="this.form.submit()">
+                                                    <option value="">-- เลือกรูปแบบพื้นที่ --</option>
+                                                    <option value="รูปแบบที่1"
+                                                        {{ request('type') == 'รูปแบบที่1' ? 'selected' : '' }}>
+                                                        รูปแบบที่1</option>
+                                                    <option value="รูปแบบที่2"
+                                                        {{ request('type') == 'รูปแบบที่2' ? 'selected' : '' }}>
+                                                        รูปแบบที่2</option>
+                                                    <option value="รูปแบบที่3"
+                                                        {{ request('type') == 'รูปแบบที่3' ? 'selected' : '' }}>
+                                                        รูปแบบที่3</option>
+                                                </select>
+                                            </div>
+                                        </form>
+
                                         <a href="{{ route('reserve_history.add') }}"
                                             class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
@@ -123,9 +142,12 @@
                                                                         id="detailsModalLabel{{ $history->id }}">
                                                                         ชื่อ-นามสกุล: {{ $history->name }}
                                                                     </h5>
-                                                                    <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal"
-                                                                        aria-label="Close"></button>
+                                                                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+                                                                        data-bs-dismiss="modal" aria-label="Close">
+                                                                        <i class="ki-duotone ki-cross fs-1"><span
+                                                                                class="path1"></span><span
+                                                                                class="path2"></span></i>
+                                                                    </div>
                                                                 </div>
                                                                 <div class="modal-body text-start">
                                                                     <p><strong>วันที่จ่ายเงิน:</strong>
@@ -138,10 +160,7 @@
                                                                         {{ \Carbon\Carbon::parse($history->last_date)->format('d/m/Y') }}
                                                                     </p>
                                                                 </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">ปิด</button>
-                                                                </div>
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -158,9 +177,12 @@
                                                                         id="PicareaModalLabel{{ $history->id }}">
                                                                         รูปภาพพื้นที่: {{ $history->type }}
                                                                     </h5>
-                                                                    <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal"
-                                                                        aria-label="Close"></button>
+                                                                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+                                                                        data-bs-dismiss="modal" aria-label="Close">
+                                                                        <i class="ki-duotone ki-cross fs-1"><span
+                                                                                class="path1"></span><span
+                                                                                class="path2"></span></i>
+                                                                    </div>
                                                                 </div>
                                                                 <div class="modal-body text-center">
                                                                     @if ($history->pic_area)
@@ -175,7 +197,7 @@
                                                     </div>
                                                 @empty
                                                     <tr>
-                                                        <td colspan="7" class="text-center">ไม่มีข้อมูล</td>
+                                                        <td colspan="10" class="text-center">ไม่มีข้อมูล</td>
                                                     </tr>
                                                 @endforelse
                                             </tbody>
@@ -259,7 +281,7 @@
                     title: 'ลบสำเร็จ!',
                     text: 'ข้อมูลได้ถูกลบเรียบร้อยแล้ว.',
                     icon: 'success',
-                    timer: 2000,
+                    timer: 3000,
                     showConfirmButton: false,
                 });
             }
@@ -267,36 +289,15 @@
     }
 </script>
 
-<!--เมื่อเพิ่มข้อมูลสำเร็จ-->
+<!--แจ้งเตือนการแก้ไข-->
 @if (session('success'))
     <script>
         Swal.fire({
             title: 'สำเร็จ!',
             text: "{{ session('success') }}",
             icon: 'success',
-            confirmButtonText: 'ตกลง'
-        });
-    </script>
-@endif
-
-@if ($errors->any())
-    <script>
-        Swal.fire({
-            title: 'เกิดข้อผิดพลาด!',
-            text: "{{ $errors->first() }}",
-            icon: 'error',
-            confirmButtonText: 'ตกลง'
-        });
-    </script>
-@endif
-<!--แจ้งเตือนการลบ-->
-@if (session('success'))
-    <script>
-        Swal.fire({
-            title: 'สำเร็จ!',
-            text: "{{ session('success') }}",
-            icon: 'success',
-            confirmButtonText: 'ตกลง'
+            timer: 2000,
+            showConfirmButton: false,
         });
     </script>
 @endif

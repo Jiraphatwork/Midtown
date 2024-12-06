@@ -72,7 +72,7 @@
                                                 <i class="{{ $menu->icon }}"> </i>
                                             </span>
                                             <span class="menu-title"
-                                                style="font-size: 15px; font-weight: 400;">{{ $menu->name }}</span>
+                                                style="font-size: 15px; font-weight: 300;">{{ $menu->name }}</span>
                                         </a>
                                     </div>
                                 @else

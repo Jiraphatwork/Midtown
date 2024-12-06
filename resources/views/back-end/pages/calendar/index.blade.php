@@ -93,13 +93,16 @@
             // Define variables
             var calendarEl = document.getElementById('kt_docs_fullcalendar_selectable');
 
+            // Get current date in 'YYYY-MM-DD' format
+            var currentDate = new Date().toISOString().split('T')[0];
+
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                initialDate: '2024-11-01',
+                initialDate: currentDate, // Set initial date to current date
                 navLinks: true, 
                 selectable: true,
                 selectMirror: true,
@@ -132,10 +135,10 @@
                             calendar.unselect()
                         } else if (result.dismiss === 'cancel') {
                             Swal.fire({
-                                text: "Event creation was declined!.",
+                                text: "กิจกรรมถูกยกเลิก!.",
                                 icon: "error",
                                 buttonsStyling: false,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "ยืนยัน",
                                 customClass: {
                                     confirmButton: "btn btn-primary",
                                 }
@@ -162,10 +165,10 @@
                             arg.event.remove()
                         } else if (result.dismiss === 'cancel') {
                             Swal.fire({
-                                text: "Event was not deleted!.",
+                                text: "กิจกรรมไม่ถูกลบ!.",
                                 icon: "error",
                                 buttonsStyling: false,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "ยืนยัน",
                                 customClass: {
                                     confirmButton: "btn btn-primary",
                                 }
