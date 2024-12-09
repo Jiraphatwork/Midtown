@@ -44,7 +44,7 @@
                                             class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
                                     <div class="table-responsive shadow-lg rounded">
-                                        <table class="table table-hover table-striped table-bordered text-center align-middle">
+                                        <table class="table table-hover table-striped  text-center align-middle">
                                             <thead class="table-dark">
                                                     <tr>
                                                         <th scope="col" style="width: 5%;">ลำดับ</th>
@@ -114,10 +114,7 @@
                                                         <div class="modal-body">
                                                             <table class="table table-bordered">
                                                                 <tbody>
-                                                                    <tr>
-                                                                        <th class="text-end">อีเมล</th>
-                                                                        <td>{{ $item->email ?? 'ไม่มีข้อมูล' }}</td>
-                                                                    </tr>
+                                                                    
                                                                     <tr>
                                                                         <th class="text-end" style="width: 30%;">
                                                                             ใบประกอบกิจการ</th>

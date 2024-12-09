@@ -161,7 +161,7 @@ Route::group(['middleware' => ['Webpanel']], function () {
             Route::post('/add', [Webpanel\SettingadminController::class, 'insert'])->name('settingadmin.insert');
             Route::get('/edit/{id}', [Webpanel\SettingadminController::class, 'edit'])->where(['id' => '[0-9]+'])->name('settingadmin.edit');
             Route::post('/edit/{id}', [Webpanel\SettingadminController::class, 'update'])->where(['id' => '[0-9]+'])->name('settingadmin.update');
-            Route::delete('/destroy/{id}', [Webpanel\SettingadminController::class, 'destroy'])->where(['id' => '[0-9]+']);
+            Route::delete('/destroy/{id}', [Webpanel\SettingadminController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('settingadmin.destroy');
             Route::get('/status/{id}', [Webpanel\SettingadminController::class, 'status'])->where(['id' => '[0-9]+']);
         });
 

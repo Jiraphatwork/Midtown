@@ -129,7 +129,6 @@
                                                                 onclick="confirmDelete('{{ $history->id }}', '{{ Auth::guard('admin')->user()->role_name }}', '{{ Auth::guard('admin')->user()->email }}', '{{ $history->created_by }}')">
                                                                 ลบ
                                                             </button>
-
                                                         </td>
                                                     </tr>
 

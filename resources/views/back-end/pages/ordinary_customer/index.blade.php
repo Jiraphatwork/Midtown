@@ -44,54 +44,31 @@
                                             class="btn btn-success">+เพิ่มข้อมูล</a>
                                     </div>
                                     <div class="table-responsive shadow-lg rounded">
-                                        <table class="table table-hover table-striped table-bordered text-center align-middle">
+                                        <table class="table table-hover table-striped  text-center align-middle">
                                             <thead class="table-dark">
                                                 <tr>
                                                     <th scope="col">ลำดับ</th>
                                                     <th scope="col">ชื่อ-นามสกุล</th>
                                                     <th scope="col">อีเมล</th>
-                                                    <th scope="col">รูปบัตรประชาชน</th>
-                                                    <th scope="col">เลขบัตรประชาชน</th>
-                                                    <th scope="col">ที่อยู่</th>
-                                                    <th scope="col">เบอร์โทร</th>
-                                                    <th scope="col">ตัวแทนติดต่อ</th>
-                                                    <th scope="col">เลขผู้เสียภาษี</th>
+                                                    <th scope="col">ดูข้อมูล</th>
                                                     <th scope="col">จัดการ</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach ($ordinary_customer as $index => $item)
+                                                    <!-- แก้ไขให้ตรงกับตัวแปร $ordinary_customer -->
                                                     <tr class="text-center">
                                                         <td>{{ $index + 1 }}</td>
                                                         <td>{{ $item->name }}</td>
                                                         <td>{{ $item->email }}</td>
                                                         <td>
-                                                            @if ($item->pic_id_card)
-                                                                <img src="{{ asset('pic_id_cards/' . $item->pic_id_card) }}"
-                                                                    alt="ID Card" width="70"
-                                                                    style="cursor: pointer;" data-bs-toggle="modal"
-                                                                    data-bs-target="#imageModal-{{ $item->id }}">
-                                                            @else
-                                                                ไม่มีรูปภาพ
-                                                            @endif
+                                                            <!-- ปุ่มเปิด Modal -->
+                                                            <button type="button" class="btn btn-primary btn-sm"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#detailModal-{{ $item->id }}">
+                                                                ดูข้อมูล
+                                                            </button>
                                                         </td>
-                                                        <td>{{ $item->id_card }}</td>
-                                                        <td>
-                                                            @php
-                                                                $text = $item->address;
-                                                                $shortText = Str::limit($text, 20); // ตัดข้อความ
-                                                            @endphp
-
-                                                            <span>{{ $shortText }}</span>
-                                                            @if (strlen($text) > 20)
-                                                                <button class="btn btn-link p-0" data-bs-toggle="modal"
-                                                                    data-bs-target="#detailsModal{{ $item->id }}">
-                                                                    อ่านเพิ่มเติม
-                                                                </button>
-                                                            @endif
-                                                        <td>{{ $item->tel }}</td>
-                                                        <td>{{ $item->tel2 ?? 'ไม่มีข้อมูล' }}</td>
-                                                        <td>{{ $item->tax_id ?? 'ไม่มีข้อมูล' }}</td>
                                                         <td>
                                                             <a href="{{ route('ordinary_customer.edit', $item->id) }}"
                                                                 class="btn btn-warning btn-sm">แก้ไข</a>
@@ -111,71 +88,75 @@
                                                             </button>
                                                         </td>
                                                     </tr>
-                                                    <!-- Modal สำหรับรายการนี้ -->
-                                                    <div class="modal fade" id="imageModal-{{ $item->id }}"
-                                                        tabindex="-1"
-                                                        aria-labelledby="exampleModalLabel-{{ $item->id }}"
-                                                        aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-centered">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title"
-                                                                        id="detailsModalLabel{{ $item->id }}">
-                                                                        รูปภาพบัตรประชาชน: {{ $item->name }}
-                                                                    </h5>
-                                                                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
-                                                                        data-bs-dismiss="modal" aria-label="Close">
-                                                                        <i class="ki-duotone ki-cross fs-1"><span
-                                                                                class="path1"></span><span
-                                                                                class="path2"></span></i>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-body text-center">
-                                                                    <img src="{{ asset('pic_id_cards/' . $item->pic_id_card) }}"
-                                                                        alt="ID Card" class="img-fluid">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
- 
-                                                    <!-- Modal -->
-                                                    <div class="modal fade" id="detailsModal{{ $item->id }}"
-                                                        tabindex="-1"
-                                                        aria-labelledby="detailsModalLabel{{ $item->id }}"
-                                                        aria-hidden="true">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title"
-                                                                        id="detailsModalLabel{{ $item->id }}">
-                                                                        ที่อยู่: {{ $item->name }}
-                                                                    </h5>
-                                                                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
-                                                                        data-bs-dismiss="modal" aria-label="Close">
-                                                                        <i class="ki-duotone ki-cross fs-1"><span
-                                                                                class="path1"></span><span
-                                                                                class="path2"></span></i>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="modal-body">
-                                                                    {{ $text }}
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                 @endforeach
-                                                @if ($ordinary_customer->isEmpty())
-                                                    <tr>
-                                                        <td colspan="11" class="text-center">ไม่มีข้อมูล</td>
-                                                    </tr>
-                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
+
+                                    <!-- Modal -->
+                                    @foreach ($ordinary_customer as $item)
+                                        <!-- ใช้ $ordinary_customer แทน $organization_customer -->
+                                        <div class="modal fade" id="detailModal-{{ $item->id }}" tabindex="-1"
+                                            aria-labelledby="detailModalLabel-{{ $item->id }}" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title"
+                                                            id="detailsModalLabel{{ $item->id }}">
+                                                            รายละเอียดลูกค้า: {{ $item->name }}
+                                                        </h5>
+                                                        <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+                                                            data-bs-dismiss="modal" aria-label="Close">
+                                                            <i class="ki-duotone ki-cross fs-1"><span
+                                                                    class="path1"></span><span
+                                                                    class="path2"></span></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <table
+                                                            class="table table-hover table-striped table-bordered align-middle">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th class="text-end">บัตรประชาชน</th>
+                                                                    <td class="text-center">
+                                                                        @if ($item->pic_id_card)
+                                                                            <img src="{{ asset('pic_id_cards/' . $item->pic_id_card) }}"
+                                                                                style="width: 50%" alt="Pic_id_card"
+                                                                                class="img-fluid">
+                                                                        @else
+                                                                            <p>ไม่มีข้อมูล</p>
+                                                                        @endif
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-end">เลขบัตรประชาชน</th>
+                                                                    <td>{{ $item->id_card }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-end">ที่อยู่</th>
+                                                                    <td>{{ $item->address ?? 'ไม่มีข้อมูล' }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-end">เบอร์โทร</th>
+                                                                    <td>{{ $item->tel }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-end">เบอร์โทรตัวแทนติดต่อ</th>
+                                                                    <td>{{ $item->tel2 ?? 'ไม่มีข้อมูล' }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="text-end">เลขผู้เสียภาษี</th>
+                                                                    <td>{{ $item->tax_id ?? 'ไม่มีข้อมูล' }}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
+
                             </div>
                         </div>
 

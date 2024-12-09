@@ -58,29 +58,99 @@ class SettingadminController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'role_name' => 'required|in:Admin,User',
+
         ]);
-    
+        // ดึงข้อมูลผู้ใช้งานปัจจุบัน
+        $user = Auth::guard('admin')->user();
+        if (!$user) {
+            return redirect()->route('reserve_history.index')->with('error', 'ไม่พบผู้ใช้งานที่ล็อกอิน');
+        }
+
+
         // ตรวจสอบว่าไม่มีการเปลี่ยนแปลงข้อมูล
         if (
-            $tb_admin->name == $validated['name'] &&   
-            $tb_admin->role_name == $validated['role_name'] 
-            
-        )
-         {
+            $tb_admin->name == $validated['name'] &&
+            $tb_admin->role_name == $validated['role_name']
+
+        ) {
             return redirect()->route('settingadmin.index')->with('success', 'ข้อมูลอัปเดตสำเร็จ');
         }
         // อัปเดตข้อมูลในฐานข้อมูล
         $updated = DB::table('tb_admin')->where('id', $id)->update([
             'name' => $validated['name'],
             'role_name' => $validated['role_name'],
+            'updated_by' => $user->email, // บันทึกชื่อผู้แก้ไข
+            'updated_at' => now(),
         ]);
-    
+
         if ($updated) {
             return redirect()->route('settingadmin.index')->with('success', 'ข้อมูลอัปเดตสำเร็จ');
         } else {
             return back()->with('error', 'ไม่สามารถอัปเดตข้อมูลได้');
         }
-    } 
+    }
 
-}  
+    public function add()
+    {
 
+        // ตรวจสอบสิทธิ์
+        if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+            return redirect()->route('settingadmin.index')->with('error', 'คุณไม่มีสิทธิ์ในการเพิ่มข้อมูล');
+        }
+        // ส่งตัวแปรไปยัง View
+        return view('back-end.pages.settingadmin.add', [
+            'prefix' => $this->prefix,
+            'segment' => $this->segment,
+            'folder' => $this->folder,
+        ]);
+    }
+
+    public function insert(Request $request)
+    {
+        // Validate ข้อมูลที่ได้รับ
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|unique:tb_admin,email',
+            'password' => 'required|string|min:4|confirmed',
+            'role_name' => 'required|in:Admin,User',
+        ]);
+
+        // ดึงข้อมูลผู้ใช้งานที่ล็อกอิน
+        $user = Auth::guard('admin')->user() ?? Auth::user();
+        if (!$user) {
+            return redirect()->back()->with('error', 'ไม่พบผู้ใช้งานที่ล็อกอิน');
+        }
+
+        // บันทึกข้อมูลลงฐานข้อมูล
+        DB::table('tb_admin')->insert([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'role_name' => $validated['role_name'],
+            'created_by' => $user->email,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        return redirect()->route('settingadmin.index')->with('success', 'เพิ่มข้อมูลสำเร็จ');
+    }
+
+    public function destroy($id)
+    {
+        // ค้นหาข้อมูลลูกค้าในฐานข้อมูล
+        $item = DB::table('tb_admin')->where('id', $id)->first();
+
+        if (!$item) {
+            return redirect()->route('settingadmin.index')->with('error', 'ไม่พบข้อมูลที่ต้องการลบ');
+        }
+
+        // ตรวจสอบสิทธิ์การลบ (Admin หรือผู้สร้างข้อมูล)
+        if (Auth::guard('admin')->user()->role_name !== 'Admin' && Auth::guard('admin')->user()->email !== $item->created_by) {
+            return redirect()->route('settingadmin.index')->with('error', 'คุณไม่มีสิทธิ์ในการลบข้อมูล');
+        }
+
+        // ลบข้อมูลจากฐานข้อมูล
+        DB::table('tb_admin')->where('id', $id)->delete();
+
+        return redirect()->route('settingadmin.index')->with('success', 'ลบข้อมูลสำเร็จ');
+    }
+}

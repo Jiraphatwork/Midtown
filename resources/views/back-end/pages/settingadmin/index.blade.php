@@ -39,6 +39,10 @@
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                                 <div class="container mt-5">
                                     <h2 class="text-center mb-4 text-dark">ตั้งค่าสิทธิ์ผู้ใช้งาน</h2>
+                                    <div class="d-flex justify-content-end mb-3">
+                                        <a href="{{ route('settingadmin.add') }}"
+                                            class="btn btn-success">+เพิ่มข้อมูล</a>
+                                    </div>
                                     <div class="table-responsive shadow-lg rounded">
                                         <table class="table table-hover table-striped align-middle text-center">
                                             <thead class="table-dark">
@@ -57,24 +61,36 @@
                                                         <td class="text-muted">{{ $index + 1 }}</td>
                                                         <td class="fw-bold">{{ $item->name }}</td>
                                                         <td>{{ $item->email }}</td>
-                                                        <td class="text-truncate" style="max-width: 150px;">
+                                                        <td class="text-truncate" style="width:100;">
                                                             {{ $item->password }}
                                                         </td>
 
                                                         <td>
                                                             @if ($item->role_name == 'Admin')
-                                                                <span class="badge bg-success" style="font-size: 11px">Admin</span>
+                                                                <span class="badge bg-success"
+                                                                    style="font-size: 11px">Admin</span>
                                                             @else
-                                                                <span class="badge bg-primary" style="font-size: 11px">User</span>
+                                                                <span class="badge bg-primary"
+                                                                    style="font-size: 11px">User</span>
                                                             @endif
                                                         </td>
                                                         <td>
-                                                            <button type="button" class="btn btn-warning btn-sm"
-                                                                onclick="confirmEdit('{{ $item->id }}', '{{ Auth::guard('admin')->user()->role_name }}')">
-                                                                <i class="bi bi-pencil-square"></i> แก้ไข
+                                                            <a href="{{ route('settingadmin.edit', $item->id) }}"
+                                                                class="btn btn-warning btn-sm">แก้ไข</a>
+
+                                                            <form id="delete-form-{{ $item->id }}" method="POST"
+                                                                action="{{ route('settingadmin.destroy', $item->id) }}"
+                                                                style="display: none;">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                            </form>
+
+                                                            <button type="button" class="btn btn-danger btn-sm"
+                                                                onclick="confirmDelete('{{ $item->id }}', '{{ Auth::guard('admin')->user()->role_name }}', '{{ Auth::guard('admin')->user()->email }}', '{{ $item->created_by }}')">
+                                                                ลบ
                                                             </button>
                                                         </td>
-                                                        
+
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -142,13 +158,58 @@
         }
     }
 </script>
+<script>
+    // แจ้งเตือนการลบ
+    function confirmDelete(historyId, roleName, currentUserEmail, createdBy) {
+        // ตรวจสอบสิทธิ์: ให้ Admin ลบได้ทั้งหมด, หรือ email ต้องตรงกับ created_by
+        if (roleName !== 'Admin' && currentUserEmail !== createdBy) {
+            // แสดงข้อความแจ้งเตือนหากไม่มีสิทธิ์
+            Swal.fire({
+                title: 'คุณไม่มีสิทธิ์ในการลบข้อมูลของผู้อื่น',
+                text: 'โปรดติดต่อผู้ดูแลระบบหากคุณต้องการสิทธิ์เพิ่มเติม',
+                icon: 'error',
+                confirmButtonText: 'ตกลง',
+            });
+            return;
+        }
+
+        // หากมีสิทธิ์ (roleName เป็น Admin หรือ email ตรงกับ created_by)
+        Swal.fire({
+            title: 'คุณแน่ใจหรือไม่?',
+            text: "การลบข้อมูลนี้ไม่สามารถกู้คืนได้!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ใช่, ลบเลย!',
+            cancelButtonText: 'ยกเลิก',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // ส่งฟอร์มลบ
+                document.getElementById(`delete-form-${itemId}`).submit();
+
+                // แจ้งเตือนหลังลบ
+                Swal.fire({
+                    title: 'ลบสำเร็จ!',
+                    text: 'ข้อมูลได้ถูกลบเรียบร้อยแล้ว.',
+                    icon: 'success',
+                    timer: 3000,
+                    showConfirmButton: false,
+                });
+            }
+        });
+    }
+</script>
+
+
 @if (session('success'))
     <script>
         Swal.fire({
             title: 'สำเร็จ!',
             text: "{{ session('success') }}",
             icon: 'success',
-            confirmButtonText: 'ตกลง'
+            timer: 2000,
+            showConfirmButton: false,
         });
     </script>
 @endif
