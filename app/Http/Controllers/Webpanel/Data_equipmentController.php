@@ -28,8 +28,8 @@ class Data_equipmentController extends Controller
 
     public function add()
     {
-         // ตรวจสอบสิทธิ์
-         if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+        // ตรวจสอบสิทธิ์
+        if (Auth::guard('admin')->user()->role_name !== 'Admin') {
             return redirect()->route('data_equipment.index')->with('error', 'คุณไม่มีสิทธิ์ในการเพิ่มข้อมูล');
         }
         // ส่งตัวแปรไปยัง View
@@ -42,14 +42,20 @@ class Data_equipmentController extends Controller
 
     public function insert(Request $request)
     {
-        
+
         $validated = $request->validate([
             'name_equipment' => 'required|string|max:255',
             'pic_equipment' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'price' => 'required|integer|max:10000',
             'quantity' => 'required|integer|max:10000',
-
         ]);
+
+        // ดึงข้อมูลผู้ใช้งานปัจจุบันเพื่อใช้ในการบันทึกชื่อลงในdatabase
+        $user = Auth::guard('admin')->user();
+        if (!$user) {
+            return redirect()->back()->with('error', 'ไม่พบผู้ใช้งานที่ล็อกอิน');
+        }
+
         $picequipmentFilename = null;
         if ($request->hasFile('pic_equipment')) {
             $picequipmentFilename = time() . '_' . $request->file('pic_equipment')->getClientOriginalName();
@@ -62,8 +68,8 @@ class Data_equipmentController extends Controller
             'pic_equipment' => $picequipmentFilename,
             'price' => $validated['price'],
             'quantity' => $validated['quantity'],
+            'created_by' => $user->email, // บันทึกอีเมลผู้สร้าง
             'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         return redirect()->route('data_equipment.index')->with('success', 'เพิ่มข้อมูลสำเร็จ');
@@ -71,8 +77,8 @@ class Data_equipmentController extends Controller
 
     public function edit($id)
     {
-          // ตรวจสอบสิทธิ์
-          if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+        // ตรวจสอบสิทธิ์
+        if (Auth::guard('admin')->user()->role_name !== 'Admin') {
             return redirect()->route('data_equipment.index')->with('error', 'คุณไม่มีสิทธิ์ในการแก้ไขข้มูลข้อมูล');
         }
         // ดึงข้อมูลจากฐานข้อมูลตาม ID
@@ -107,6 +113,13 @@ class Data_equipmentController extends Controller
             'price' => 'required|integer|max:10000',
             'quantity' => 'required|integer|max:10000',
         ]);
+
+        // ดึงข้อมูลผู้ใช้งานปัจจุบันเพื่อใช้ในการบันทึกชื่อลงในdatabase
+        $user = Auth::guard('admin')->user();
+        if (!$user) {
+            return redirect()->back()->with('error', 'ไม่พบผู้ใช้งานที่ล็อกอิน');
+        }
+
         // จัดการรูปภาพ (ถ้ามีการอัปโหลด) - pic_equipment
         $picequipmentFilename = $item->pic_equipment; // ใช้ไฟล์เดิมเป็นค่าเริ่มต้น
         if ($request->hasFile('pic_equipment')) {
@@ -139,6 +152,7 @@ class Data_equipmentController extends Controller
             'pic_equipment' => $picequipmentFilename,
             'price' => $validated['price'],
             'quantity' => $validated['quantity'],
+            'updated_by' => $user->email, // บันทึกอีเมล
             'updated_at' => now(),
         ]);
 
@@ -151,27 +165,27 @@ class Data_equipmentController extends Controller
 
     public function destroy($id)
     {
-         // ตรวจสอบสิทธิ์
-         if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+        // ตรวจสอบสิทธิ์
+        if (Auth::guard('admin')->user()->role_name !== 'Admin') {
             return redirect()->route('data_equipment.index');
         }
         // ค้นหาข้อมูลลูกค้าในฐานข้อมูล
         $item = DB::table('equipment_models')->where('id', $id)->first();
-    
-        if (!$item ) {
+
+        if (!$item) {
             return redirect()->route('data_equipment.index')->with('error', 'ไม่พบข้อมูลที่ต้องการลบ');
         }
-    
+
         // ลบไฟล์จาก public
-        if (!empty($item ->pic_equipment)) {
-            $cardSlipFilePath = public_path('pic_equipments/' . $item ->pic_equipment);
+        if (!empty($item->pic_equipment)) {
+            $cardSlipFilePath = public_path('pic_equipments/' . $item->pic_equipment);
             if (is_file($cardSlipFilePath)) { // ตรวจสอบว่าเป็นไฟล์
                 unlink($cardSlipFilePath); // ลบไฟล์จากระบบ
             }
         }
         // ลบข้อมูลจากฐานข้อมูล
         DB::table('equipment_models')->where('id', $id)->delete();
-    
+
         return redirect()->route('data_equipment.index');
     }
 }

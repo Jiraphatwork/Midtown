@@ -51,6 +51,11 @@ class Data_contactController extends Controller
             'tel.digits' => 'หมายเลขเบอร์โทรศัพท์ต้องมีความยาว 10 หลักเท่านั้น',
         ]);
 
+        // ดึงข้อมูลผู้ใช้งานปัจจุบันเพื่อใช้ในการบันทึกชื่อลงในdatabase
+        $user = Auth::guard('admin')->user();
+        if (!$user) {
+            return redirect()->back()->with('error', 'ไม่พบผู้ใช้งานที่ล็อกอิน');
+        }
         $mapFilename = null;
         if ($request->hasFile('map')) {
             $mapFilename = time() . '_' . $request->file('map')->getClientOriginalName();
@@ -61,6 +66,7 @@ class Data_contactController extends Controller
             'map' => $mapFilename,
             'address' => $validated['address'],
             'tel' => $validated['tel'],
+            'created_by' => $user->email, // บันทึกอีเมลผู้สร้าง
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -106,7 +112,11 @@ class Data_contactController extends Controller
         ], [
             'tel.digits' => 'หมายเลขเบอร์โทรศัพท์ต้องมีความยาว 10 หลักเท่านั้น',
         ]);
-
+        // ดึงข้อมูลผู้ใช้งานปัจจุบันเพื่อใช้ในการบันทึกชื่อลงในdatabase
+        $user = Auth::guard('admin')->user();
+        if (!$user) {
+            return redirect()->back()->with('error', 'ไม่พบผู้ใช้งานที่ล็อกอิน');
+        }
         // เริ่มต้นการจัดการไฟล์แผนที่
         $mapFilename = $item->map; // ใช้ไฟล์เดิมเป็นค่าเริ่มต้น
 
@@ -143,6 +153,7 @@ class Data_contactController extends Controller
             'map' => $mapFilename,
             'address' => $validated['address'],
             'tel' => $validated['tel'],
+            'updated_by' => $user->email, // บันทึกอีเมล
             'updated_at' => now(),
         ]);
 

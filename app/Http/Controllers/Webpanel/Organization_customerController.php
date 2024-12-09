@@ -30,8 +30,8 @@ class Organization_customerController extends Controller
 
     public function add()
     {
-         // ตรวจสอบสิทธิ์
-         if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+        // ตรวจสอบสิทธิ์
+        if (Auth::guard('admin')->user()->role_name !== 'Admin') {
             return redirect()->route('organization_customer.index')->with('error', 'คุณไม่มีสิทธิ์ในการเพิ่มข้อมูล');
         }
         // ส่งตัวแปรไปยัง View
@@ -43,7 +43,7 @@ class Organization_customerController extends Controller
     }
 
     public function insert(Request $request)
-    {  
+    {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
@@ -62,6 +62,12 @@ class Organization_customerController extends Controller
             'fax.digits' => 'หมายเลขแฟกซ์ต้องมีความยาว 10 หลักเท่านั้น',
         ]);
 
+
+        // ดึงข้อมูลผู้ใช้งานปัจจุบันเพื่อใช้ในการบันทึกชื่อลงในdatabase
+        $user = Auth::guard('admin')->user();
+        if (!$user) {
+            return redirect()->back()->with('error', 'ไม่พบผู้ใช้งานที่ล็อกอิน');
+        }
 
         $businessCardFilename = null;
         if ($request->hasFile('business_card')) {
@@ -87,6 +93,7 @@ class Organization_customerController extends Controller
             'tel2' => $validated['tel2'] ?? null,
             'tax_id' => $validated['tax_id'] ?? null,
             'card_slip' => $cardSlipFilename ?? null,
+            'created_by' => $user->email, // บันทึกอีเมลผู้สร้าง
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -144,7 +151,11 @@ class Organization_customerController extends Controller
             'tel.digits' => 'หมายเลขเบอร์โทรศัพท์ต้องมีความยาว 10 หลักเท่านั้น',
             'tax_id.digits' => 'หมายเลขผู้เสียภาษีต้องมีความยาว 13 หลักเท่านั้น',
         ]);
-
+        // ดึงข้อมูลผู้ใช้งานปัจจุบันเพื่อใช้ในการบันทึกชื่อลงในdatabase
+        $user = Auth::guard('admin')->user();
+        if (!$user) {
+            return redirect()->back()->with('error', 'ไม่พบผู้ใช้งานที่ล็อกอิน');
+        }
         // เริ่มต้นการจัดการไฟล์ (ใช้ไฟล์เดิมถ้าไม่มีการอัปโหลดใหม่)
         $businessCardFilename = $item->business_card; // ใช้ไฟล์เดิมเป็นค่าเริ่มต้น
         if ($request->hasFile('business_card')) {
@@ -206,6 +217,7 @@ class Organization_customerController extends Controller
             'tel2' => $validated['tel2'] ?? null,
             'tax_id' => $validated['tax_id'] ?? null,
             'card_slip' => $cardSlipFilename,
+            'updated_by' => $user->email, // บันทึกอีเมล
             'updated_at' => now(),
         ]);
 
@@ -217,40 +229,40 @@ class Organization_customerController extends Controller
 
 
     public function destroy($id)
-{
-    // ตรวจสอบสิทธิ์
-    if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+    {
+        // ตรวจสอบสิทธิ์
+        if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+            return redirect()->route('organization_customer.index');
+        }
+
+        // ค้นหาข้อมูลลูกค้าในฐานข้อมูล
+        $history = DB::table('organization_customer_models')->where('id', $id)->first();
+
+        if (!$history) {
+            return redirect()->route('organization_customer.index')->with('error', 'ไม่พบข้อมูลที่ต้องการลบ');
+        }
+
+        // ลบไฟล์จาก public/card_slips หากมีไฟล์
+        if (!empty($history->card_slip)) {
+            $cardSlipFilePath = public_path('card_slips/' . $history->card_slip);
+            if (is_file($cardSlipFilePath)) { // ตรวจสอบว่าเป็นไฟล์
+                unlink($cardSlipFilePath); // ลบไฟล์จากระบบ
+            }
+        }
+
+        // ลบไฟล์จาก public/business_cards หากมีไฟล์
+        if (!empty($history->business_card)) {
+            $businessCardFilePath = public_path('business_cards/' . $history->business_card);
+            if (is_file($businessCardFilePath)) { // ตรวจสอบว่าเป็นไฟล์
+                unlink($businessCardFilePath); // ลบไฟล์จากระบบ
+            }
+        }
+
+        // ลบข้อมูลจากฐานข้อมูล
+        DB::table('organization_customer_models')->where('id', $id)->delete();
+
         return redirect()->route('organization_customer.index');
     }
-
-    // ค้นหาข้อมูลลูกค้าในฐานข้อมูล
-    $history = DB::table('organization_customer_models')->where('id', $id)->first();
-
-    if (!$history) {
-        return redirect()->route('organization_customer.index')->with('error', 'ไม่พบข้อมูลที่ต้องการลบ');
-    }
-
-    // ลบไฟล์จาก public/card_slips หากมีไฟล์
-    if (!empty($history->card_slip)) {
-        $cardSlipFilePath = public_path('card_slips/' . $history->card_slip);
-        if (is_file($cardSlipFilePath)) { // ตรวจสอบว่าเป็นไฟล์
-            unlink($cardSlipFilePath); // ลบไฟล์จากระบบ
-        }
-    }
-
-    // ลบไฟล์จาก public/business_cards หากมีไฟล์
-    if (!empty($history->business_card)) {
-        $businessCardFilePath = public_path('business_cards/' . $history->business_card);
-        if (is_file($businessCardFilePath)) { // ตรวจสอบว่าเป็นไฟล์
-            unlink($businessCardFilePath); // ลบไฟล์จากระบบ
-        }
-    }
-
-    // ลบข้อมูลจากฐานข้อมูล
-    DB::table('organization_customer_models')->where('id', $id)->delete();
-
-    return redirect()->route('organization_customer.index');
-}
 
 
 }

@@ -41,7 +41,8 @@
                                     <h2 class="text-center mb-4 text-dark">ประวัติการจอง</h2>
 
                                     <div class="d-flex justify-content-between mb-3">
-                                        <form action="{{ route('reserve_history.index') }}" method="GET" class="d-flex align-items-center">
+                                        <form action="{{ route('reserve_history.index') }}" method="GET"
+                                            class="d-flex align-items-center">
                                             <div class="input-group">
                                                 <select name="type" class="form-select me-3"
                                                     onchange="this.form.submit()">
@@ -103,7 +104,7 @@
                                                         <td>
                                                             @if ($history->pic_area)
                                                                 <img src="{{ asset('pic_areas_reserve/' . $history->pic_area) }}"
-                                                                    alt="error" width="60px"
+                                                                    alt="error" width="80px"
                                                                     style="cursor: pointer;" data-bs-toggle="modal"
                                                                     data-bs-target="#imageModal{{ $history->id }}">
                                                             @else
@@ -125,9 +126,10 @@
                                                             </form>
 
                                                             <button type="button" class="btn btn-danger btn-sm"
-                                                                onclick="confirmDelete('{{ $history->id }}', '{{ Auth::guard('admin')->user()->role_name }}')">
+                                                                onclick="confirmDelete('{{ $history->id }}', '{{ Auth::guard('admin')->user()->role_name }}', '{{ Auth::guard('admin')->user()->email }}', '{{ $history->created_by }}')">
                                                                 ลบ
                                                             </button>
+
                                                         </td>
                                                     </tr>
 
@@ -140,7 +142,7 @@
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title"
                                                                         id="detailsModalLabel{{ $history->id }}">
-                                                                        ชื่อ-นามสกุล: {{ $history->name }}
+                                                                        ข้อมูลของ: {{ $history->name }}
                                                                     </h5>
                                                                     <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
                                                                         data-bs-dismiss="modal" aria-label="Close">
@@ -151,13 +153,13 @@
                                                                 </div>
                                                                 <div class="modal-body text-start">
                                                                     <p><strong>วันที่จ่ายเงิน:</strong>
-                                                                        {{ \Carbon\Carbon::parse($history->now_date)->format('d/m/Y') }}
+                                                                        {{ \Carbon\Carbon::parse($history->now_date)->locale('th')->isoFormat('D MMMM YYYY') }}
                                                                     </p>
                                                                     <p><strong>วันแรกของการจอง:</strong>
-                                                                        {{ \Carbon\Carbon::parse($history->first_date)->format('d/m/Y') }}
+                                                                        {{ \Carbon\Carbon::parse($history->first_date)->locale('th')->isoFormat('D MMMM YYYY') }}
                                                                     </p>
                                                                     <p><strong>วันสุดท้ายของการจอง:</strong>
-                                                                        {{ \Carbon\Carbon::parse($history->last_date)->format('d/m/Y') }}
+                                                                        {{ \Carbon\Carbon::parse($history->last_date)->locale('th')->isoFormat('D MMMM YYYY') }}
                                                                     </p>
                                                                 </div>
 
@@ -202,8 +204,6 @@
                                                 @endforelse
                                             </tbody>
                                         </table>
-
-
                                     </div>
                                 </div>
                             </div>
@@ -249,11 +249,12 @@
 </html>
 <script>
     // แจ้งเตือนการลบ
-    function confirmDelete(historyId, roleName) {
-        if (roleName !== 'Admin') {
+    function confirmDelete(historyId, roleName, currentUserEmail, createdBy) {
+        // ตรวจสอบสิทธิ์: ให้ Admin ลบได้ทั้งหมด, หรือ email ต้องตรงกับ created_by
+        if (roleName !== 'Admin' && currentUserEmail !== createdBy) {
             // แสดงข้อความแจ้งเตือนหากไม่มีสิทธิ์
             Swal.fire({
-                title: 'คุณไม่มีสิทธิ์ในการลบข้อมูล',
+                title: 'คุณไม่มีสิทธิ์ในการลบข้อมูลของผู้อื่น',
                 text: 'โปรดติดต่อผู้ดูแลระบบหากคุณต้องการสิทธิ์เพิ่มเติม',
                 icon: 'error',
                 confirmButtonText: 'ตกลง',
@@ -261,7 +262,7 @@
             return;
         }
 
-        // หากมีสิทธิ์ (roleName เป็น Admin)
+        // หากมีสิทธิ์ (roleName เป็น Admin หรือ email ตรงกับ created_by)
         Swal.fire({
             title: 'คุณแน่ใจหรือไม่?',
             text: "การลบข้อมูลนี้ไม่สามารถกู้คืนได้!",
@@ -289,7 +290,7 @@
     }
 </script>
 
-<!--แจ้งเตือนการแก้ไข-->
+
 @if (session('success'))
     <script>
         Swal.fire({

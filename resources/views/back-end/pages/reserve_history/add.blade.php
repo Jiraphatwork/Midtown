@@ -85,7 +85,8 @@
                                                 <div class="col-md-6">
                                                     <label for="type" class="form-label">รูปแบบพื้นที่</label>
                                                     <select class="form-select" id="type" name="type" required>
-                                                        <option value="" disabled selected>-- เลือกรูปแบบพื้นที่ --</option>
+                                                        <option value="" disabled selected>-- เลือกรูปแบบพื้นที่
+                                                            --</option>
                                                         <option value="รูปแบบที่1">รูปแบบที่1</option>
                                                         <option value="รูปแบบที่2">รูปแบบที่2</option>
                                                         <option value="รูปแบบที่3">รูปแบบที่3</option>
@@ -233,3 +234,27 @@
         });
     });
 </script>
+@if (session('success'))
+    <script>
+        console.log("Success Message: {{ session('success') }}"); // ตรวจสอบค่าที่ส่งมา
+        Swal.fire({
+            title: 'สำเร็จ!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            timer: 2000,
+            showConfirmButton: false,
+        });
+    </script>
+@endif
+
+@if (session('error'))
+    <script>
+        console.log("Error Message: {{ session('error') }}"); // ตรวจสอบค่าที่ส่งมา
+        Swal.fire({
+            title: 'ข้อผิดพลาด!',
+            text: "{{ session('error') }}",
+            icon: 'error',
+            confirmButtonText: 'ตกลง'
+        });
+    </script>
+@endif

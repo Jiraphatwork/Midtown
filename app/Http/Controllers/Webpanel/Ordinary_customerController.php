@@ -62,6 +62,12 @@ class Ordinary_customerController extends Controller
             'tel2.digits' => 'หมายเลขตัวแทนติดต่อต้องมีความยาว 10 หลักเท่านั้น',
         ]);
 
+        // ดึงข้อมูลผู้ใช้งานปัจจุบันเพื่อใช้ในการบันทึกชื่อลงในdatabase
+        $user = Auth::guard('admin')->user();
+        if (!$user) {
+            return redirect()->back()->with('error', 'ไม่พบผู้ใช้งานที่ล็อกอิน');
+        }
+
         // จัดการรูปภาพ (ถ้ามีการอัปโหลด)
         $filename = null;
         if ($request->hasFile('pic_id_card')) {
@@ -81,6 +87,7 @@ class Ordinary_customerController extends Controller
             'tel' => $validated['tel'],
             'tel2' => $validated['tel2'] ?? null,
             'tax_id' => $validated['tax_id'] ?? null,
+            'created_by' => $user->email, // บันทึกอีเมลผู้สร้าง
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -144,6 +151,11 @@ class Ordinary_customerController extends Controller
             'tel2.digits' => 'หมายเลขตัวแทนติดต่อต้องมีความยาว 10 หลักเท่านั้น',
 
         ]);
+        // ดึงข้อมูลผู้ใช้งานปัจจุบันเพื่อใช้ในการบันทึกชื่อลงในdatabase
+        $user = Auth::guard('admin')->user();
+        if (!$user) {
+            return redirect()->back()->with('error', 'ไม่พบผู้ใช้งานที่ล็อกอิน');
+        }
 
         // เริ่มต้นการจัดการรูปภาพ (ใช้ไฟล์เดิมถ้าไม่มีการอัปโหลดใหม่)
         $filename = $item->pic_id_card; // ใช้ไฟล์เดิมเป็นค่าเริ่มต้น
@@ -185,6 +197,7 @@ class Ordinary_customerController extends Controller
             'tel' => $validated['tel'],
             'tel2' => $validated['tel2'] ?? null,
             'tax_id' => $validated['tax_id'] ?? null,
+            'updated_by' => $user->email, // บันทึกอีเมล
             'updated_at' => now(),
         ]);
 

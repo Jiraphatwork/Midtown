@@ -79,11 +79,11 @@
                                                         <td>
                                                             @php
                                                                 $text = $item->address;
-                                                                $shortText = Str::limit($text, 10); // ตัดข้อความ
+                                                                $shortText = Str::limit($text, 20); // ตัดข้อความ
                                                             @endphp
 
                                                             <span>{{ $shortText }}</span>
-                                                            @if (strlen($text) > 10)
+                                                            @if (strlen($text) > 20)
                                                                 <button class="btn btn-link p-0" data-bs-toggle="modal"
                                                                     data-bs-target="#detailsModal{{ $item->id }}">
                                                                     อ่านเพิ่มเติม
@@ -137,6 +137,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
+ 
                                                     <!-- Modal -->
                                                     <div class="modal fade" id="detailsModal{{ $item->id }}"
                                                         tabindex="-1"
@@ -161,7 +162,6 @@
                                                                     {{ $text }}
                                                                 </div>
                                                                 <div class="modal-footer">
-
                                                                 </div>
                                                             </div>
                                                         </div>

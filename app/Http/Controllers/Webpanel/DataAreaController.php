@@ -43,13 +43,13 @@ class DataAreaController extends Controller
         if (Auth::guard('admin')->user()->role_name !== 'Admin') {
             return redirect()->route('dataarea.index')->with('error', 'คุณไม่มีสิทธิ์ในการเพิ่มข้อมูล');
         }
-        
+
         // ส่งตัวแปรไปยัง View
         return view('back-end.pages.dataarea.add', [
             'prefix' => $this->prefix,
             'segment' => $this->segment,
             'folder' => $this->folder,
-            
+
         ]);
     }
 
@@ -64,6 +64,11 @@ class DataAreaController extends Controller
             'area.unique' => 'ชื่อพื้นที่นี้มีในระบบแล้ว กรุณากรอกชื่อพื้นที่ที่แตกต่าง',
         ]);
 
+        // ดึงข้อมูลผู้ใช้งานปัจจุบันเพื่อใช้ในการบันทึกชื่อลงในdatabase
+        $user = Auth::guard('admin')->user();
+        if (!$user) {
+            return redirect()->back()->with('error', 'ไม่พบผู้ใช้งานที่ล็อกอิน');
+        }
 
         $picareaFilename = null;
         if ($request->hasFile('pic_area')) {
@@ -77,8 +82,8 @@ class DataAreaController extends Controller
             'pic_area' => $picareaFilename,
             'area' => $validated['area'],
             'price' => $validated['price'],
+            'created_by' => $user->email, // บันทึกอีเมลผู้สร้าง
             'created_at' => now(),
-            'updated_at' => now(),
         ]);
         return redirect()->route('dataarea.index')->with('success', 'เพิ่มข้อมูลสำเร็จ');
     }
@@ -123,8 +128,13 @@ class DataAreaController extends Controller
         ], [
             'area.unique' => 'ชื่อพื้นที่นี้มีในระบบแล้ว กรุณากรอกชื่อพื้นที่ที่แตกต่าง',
         ]);
-        
-        
+
+        // ดึงข้อมูลผู้ใช้งานปัจจุบันเพื่อใช้ในการบันทึกชื่อลงในdatabase
+        $user = Auth::guard('admin')->user();
+        if (!$user) {
+            return redirect()->back()->with('error', 'ไม่พบผู้ใช้งานที่ล็อกอิน');
+        }
+
         // จัดการรูปภาพ (ถ้ามีการอัปโหลด) 
         $picareaFilename = $item->pic_area; // ใช้ไฟล์เดิมเป็นค่าเริ่มต้น
         if ($request->hasFile('pic_area')) {
@@ -157,7 +167,7 @@ class DataAreaController extends Controller
             'pic_area' => $picareaFilename,
             'area' => $validated['area'],
             'price' => $validated['price'],
-            'created_at' => now(),
+            'updated_by' => $user->email, // บันทึกอีเมล
             'updated_at' => now(),
         ]);
 
@@ -170,28 +180,28 @@ class DataAreaController extends Controller
 
     public function destroy($id)
     {
-         // ตรวจสอบสิทธิ์
-         if (Auth::guard('admin')->user()->role_name !== 'Admin') {
+        // ตรวจสอบสิทธิ์
+        if (Auth::guard('admin')->user()->role_name !== 'Admin') {
             return redirect()->route('dataarea.index');
         }
         // ค้นหาข้อมูลลูกค้าในฐานข้อมูล
         $item = DB::table('data_area_models')->where('id', $id)->first();
-    
-        if (!$item ) {
+
+        if (!$item) {
             return redirect()->route('dataarea.index')->with('error', 'ไม่พบข้อมูลที่ต้องการลบ');
         }
-    
+
         // ลบไฟล์จาก public
-        if (!empty($item ->pic_area)) {
-            $picareaFilename = public_path('pic_areas/' . $item ->pic_area);
-            if (is_file( $picareaFilename)) { // ตรวจสอบว่าเป็นไฟล์
-                unlink( $picareaFilename); // ลบไฟล์จากระบบ
+        if (!empty($item->pic_area)) {
+            $picareaFilename = public_path('pic_areas/' . $item->pic_area);
+            if (is_file($picareaFilename)) { // ตรวจสอบว่าเป็นไฟล์
+                unlink($picareaFilename); // ลบไฟล์จากระบบ
             }
         }
-    
+
         // ลบข้อมูลจากฐานข้อมูล
         DB::table('data_area_models')->where('id', $id)->delete();
-    
+
         return redirect()->route('dataarea.index');
     }
 }

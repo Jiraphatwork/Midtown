@@ -43,7 +43,7 @@ class Agent_customerController extends Controller
 
     public function insert(Request $request)
     {
-       
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
@@ -61,7 +61,11 @@ class Agent_customerController extends Controller
             'tel.digits' => 'หมายเลขเบอร์โทรศัพท์ต้องมีความยาว 10 หลักเท่านั้น',
             'tax_id.digits' => 'หมายเลขผู้เสียภาษีต้องมีความยาว 13 หลักเท่านั้น',
         ]);
-
+        // ดึงข้อมูลผู้ใช้งานปัจจุบันเพื่อใช้ในการบันทึกชื่อลงในdatabase
+        $user = Auth::guard('admin')->user();
+        if (!$user) {
+            return redirect()->back()->with('error', 'ไม่พบผู้ใช้งานที่ล็อกอิน');
+        }
 
         $businessCardFilename = null;
         if ($request->hasFile('business_card')) {
@@ -103,6 +107,7 @@ class Agent_customerController extends Controller
             'tel2' => $validated['tel2'] ?? null,         // ใช้ null หากไม่มีค่า
             'tax_id' => $validated['tax_id'] ?? null,     // ใช้ null หากไม่มีค่า
             'slip_card' => $slipcardFilename,
+            'created_by' => $user->email, // บันทึกอีเมลผู้สร้าง
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -164,6 +169,11 @@ class Agent_customerController extends Controller
             'tax_id.digits' => 'หมายเลขผู้เสียภาษีต้องมีความยาว 13 หลักเท่านั้น',
         ]);
 
+        // ดึงข้อมูลผู้ใช้งานปัจจุบันเพื่อใช้ในการบันทึกชื่อลงในdatabase
+        $user = Auth::guard('admin')->user();
+        if (!$user) {
+            return redirect()->back()->with('error', 'ไม่พบผู้ใช้งานที่ล็อกอิน');
+        }
         // จัดการไฟล์ (ถ้ามีการอัปโหลด)
         $businessCardFilename = $item->business_card;
         if ($request->hasFile('business_card')) {
@@ -237,6 +247,7 @@ class Agent_customerController extends Controller
             'tel2' => $validated['tel2'] ?? null,
             'tax_id' => $validated['tax_id'] ?? null,
             'slip_card' => $slipCardFilename,
+            'updated_by' => $user->email, // บันทึกอีเมล
             'updated_at' => now(),
         ]);
         // ถ้าอัปเดตสำเร็จให้กลับไปที่หน้ารายการลูกค้า

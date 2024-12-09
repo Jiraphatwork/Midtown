@@ -133,6 +133,18 @@
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
+                                                                        <th class="text-end">ใบทะเบียนภาษีมูลค่าเพิ่ม</th>
+                                                                        <td class="text-center">
+                                                                            @if ($item->tax_card)
+                                                                                <img src="{{ asset('tax_cards/' . $item->tax_card) }}"
+                                                                                    style="width: 50%" alt="Tax_card"
+                                                                                    class="img-fluid">
+                                                                            @else
+                                                                                <p>ไม่มีข้อมูล</p>
+                                                                            @endif
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
                                                                         <th class="text-end">ใบหัก ณ ที่จ่าย</th>
                                                                         <td class="text-center">
                                                                             @if ($item->slip_card)

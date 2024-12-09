@@ -50,6 +50,12 @@ class promotionController extends Controller
             'first_date' => 'required|date',
             'last_date' => 'required|date',
         ]);
+        // ดึงข้อมูลผู้ใช้งานปัจจุบันเพื่อใช้ในการบันทึกชื่อลงในdatabase
+        $user = Auth::guard('admin')->user();
+        if (!$user) {
+            return redirect()->back()->with('error', 'ไม่พบผู้ใช้งานที่ล็อกอิน');
+        }
+
         $picpromotionFilename = null;
         if ($request->hasFile('pic_promotion')) {
             $picpromotionFilename = time() . '_' . $request->file('pic_promotion')->getClientOriginalName();
@@ -62,8 +68,8 @@ class promotionController extends Controller
             'detail' => $validated['detail'],
             'first_date' => $validated['first_date'],
             'last_date' => $validated['last_date'],
+            'created_by' => $user->email, // บันทึกอีเมลผู้สร้าง
             'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         return redirect()->route('promotion.index')->with('success', 'เพิ่มข้อมูลสำเร็จ');
@@ -107,7 +113,11 @@ class promotionController extends Controller
             'first_date' => 'required|date',
             'last_date' => 'required|date',
         ]);
-
+        // ดึงข้อมูลผู้ใช้งานปัจจุบันเพื่อใช้ในการบันทึกชื่อลงในdatabase
+        $user = Auth::guard('admin')->user();
+        if (!$user) {
+            return redirect()->back()->with('error', 'ไม่พบผู้ใช้งานที่ล็อกอิน');
+        }
         // จัดการรูปภาพ (ถ้ามีการอัปโหลด) -pic_promotion
         $picpromotionFilename = $item->pic_promotion; // ใช้ไฟล์เดิมเป็นค่าเริ่มต้น
         if ($request->hasFile('pic_promotion')) {
@@ -141,6 +151,7 @@ class promotionController extends Controller
             'detail' => $validated['detail'],
             'first_date' => $validated['first_date'],
             'last_date' => $validated['last_date'],
+            'updated_by' => $user->email, // บันทึกอีเมล
             'updated_at' => now(),
         ]);
 

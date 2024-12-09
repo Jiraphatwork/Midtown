@@ -204,6 +204,7 @@
 <!--end::Body-->
 
 </html>
+
 <script>
     function updateLength() {
         var input = document.getElementById('id_card');
@@ -306,4 +307,5 @@
             faxId.setCustomValidity(""); // รีเซ็ตข้อความ error
         }
     }
-</script>
+    </script>
+

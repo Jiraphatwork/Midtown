@@ -273,3 +273,27 @@
         });
     });
 </script>
+@if (session('success'))
+    <script>
+        console.log("Success Message: {{ session('success') }}"); // ตรวจสอบค่าที่ส่งมา
+        Swal.fire({
+            title: 'สำเร็จ!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            timer: 2000,
+            showConfirmButton: false,
+        });
+    </script>
+@endif
+
+@if (session('error'))
+    <script>
+        console.log("Error Message: {{ session('error') }}"); // ตรวจสอบค่าที่ส่งมา
+        Swal.fire({
+            title: 'ข้อผิดพลาด!',
+            text: "{{ session('error') }}",
+            icon: 'error',
+            confirmButtonText: 'ตกลง'
+        });
+    </script>
+@endif

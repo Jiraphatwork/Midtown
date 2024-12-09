@@ -84,8 +84,9 @@
                                                                 </button>
                                                             @endif
                                                         </td>
-                                                        <td>{{ $item->first_date }}</td>
-                                                        <td>{{ $item->last_date }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($item->first_date)->locale('th')->isoFormat('D MMMM YYYY') }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($item->last_date)->locale('th')->isoFormat('D MMMM YYYY') }}</td>
+                                                        
                                                         <td>
                                                             <a href="{{ route('promotion.edit', $item->id) }}"
                                                                 class="btn btn-warning btn-sm">แก้ไข</a>
