@@ -49,22 +49,38 @@
                                                     <input type="text" class="form-control" id="name"
                                                         name="name" placeholder="กรอกชื่อ-นามสกุล" required>
                                                 </div>
-                                                <div class="col-md-6">
+
+                                                <div class="col-md-6 position-relative">
                                                     <label for="now_date" class="form-label">วันที่จ่ายเงิน</label>
-                                                    <input type="date" class="form-control" id="now_date"
-                                                        name="now_date" required>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control datepicker"
+                                                            id="now_date" name="now_date" required>
+                                                        <span class="input-group-text"><i
+                                                                class="bi bi-calendar3"></i></span>
+                                                    </div>
+
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-6 position-relative">
                                                     <label for="first_date" class="form-label">วันแรกของการจอง</label>
-                                                    <input type="date" class="form-control" id="first_date"
-                                                        name="first_date" required>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control datepicker"
+                                                            id="first_date" name="first_date" required>
+                                                        <span class="input-group-text"><i
+                                                                class="bi bi-calendar3"></i></span>
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-6">
+
+                                                <div class="col-md-6 position-relative">
                                                     <label for="last_date"
                                                         class="form-label">วันสุดท้ายของการจอง</label>
-                                                    <input type="date" class="form-control" id="last_date"
-                                                        name="last_date" required>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control datepicker"
+                                                            id="last_date" name="last_date" required>
+                                                        <span class="input-group-text"><i
+                                                                class="bi bi-calendar3"></i></span>
+                                                    </div>
                                                 </div>
+
                                                 <div class="col-md-6">
                                                     <label for="status" class="form-label">สถานะ</label>
                                                     <select class="form-select" id="status" name="status" required>
@@ -72,6 +88,7 @@
                                                         <option value="ยังไม่จ่าย">ยังไม่จ่าย</option>
                                                     </select>
                                                 </div>
+                                                
                                                 <div class="col-md-6">
                                                     <label for="product_type" class="form-label">ประเภทสินค้า</label>
                                                     <input type="text" class="form-control" id="product_type"
@@ -258,3 +275,10 @@
         });
     </script>
 @endif
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        flatpickr('.datepicker', {
+            dateFormat: 'Y-m-d', // กำหนดรูปแบบวันที่
+        });
+    });
+</script>

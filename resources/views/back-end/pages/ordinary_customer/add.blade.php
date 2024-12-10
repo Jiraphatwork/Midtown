@@ -65,6 +65,7 @@
                                                     <input type="file" class="form-control" id="pic_id_card"
                                                         name="pic_id_card" accept="image/*" required>
                                                 </div>
+                                                
                                                 <div class="col-md-6">
                                                     <label for="id_card" class="form-label">เลขบัตรประชาชน</label>
                                                     <input type="text" class="form-control" id="id_card"

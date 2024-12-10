@@ -54,28 +54,44 @@
                                                         name="name" value="{{ old('name', $history->name) }}"
                                                         required>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-6 position-relative">
                                                     <label for="now_date" class="form-label">วันที่จ่ายเงิน</label>
-                                                    <input type="date" class="form-control" id="now_date"
-                                                        name="now_date"
-                                                        value="{{ old('now_date', \Carbon\Carbon::parse($history->now_date)->format('Y-m-d')) }}"
-                                                        required>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control datepicker"
+                                                            id="now_date" name="now_date"
+                                                            value="{{ old('now_date', $history->now_date ? \Carbon\Carbon::parse($history->now_date)->format('Y-m-d') : '') }}"
+                                                            required>
+                                                        <span class="input-group-text"><i
+                                                                class="bi bi-calendar3"></i></span>
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-6">
+
+                                                <div class="col-md-6 position-relative">
                                                     <label for="first_date" class="form-label">วันแรกของการจอง</label>
-                                                    <input type="date" class="form-control" id="first_date"
-                                                        name="first_date"
-                                                        value="{{ old('first_date', \Carbon\Carbon::parse($history->first_date)->format('Y-m-d')) }}"
-                                                        required>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control datepicker"
+                                                            id="first_date" name="first_date"
+                                                            value="{{ old('first_date', $history->first_date ? \Carbon\Carbon::parse($history->first_date)->format('Y-m-d') : '') }}"
+                                                            required>
+                                                        <span class="input-group-text"><i
+                                                                class="bi bi-calendar3"></i></span>
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-6">
+
+                                                <div class="col-md-6 position-relative">
                                                     <label for="last_date"
                                                         class="form-label">วันสุดท้ายของการจอง</label>
-                                                    <input type="date" class="form-control" id="last_date"
-                                                        name="last_date"
-                                                        value="{{ old('last_date', \Carbon\Carbon::parse($history->last_date)->format('Y-m-d')) }}"
-                                                        required>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control datepicker"
+                                                            id="last_date" name="last_date"
+                                                            value="{{ old('last_date', $history->last_date ? \Carbon\Carbon::parse($history->last_date)->format('Y-m-d') : '') }}"
+                                                            required>
+                                                        <span class="input-group-text"><i
+                                                                class="bi bi-calendar3"></i></span>
+                                                    </div>
                                                 </div>
+
+
                                                 <div class="col-md-6">
                                                     <label for="status" class="form-label">สถานะ</label>
                                                     <select class="form-select" id="status" name="status" required>
@@ -101,7 +117,8 @@
                                             <div class="row g-3">
                                                 <div class="col-md-6">
                                                     <label for="type" class="form-label">รูปแบบพื้นที่</label>
-                                                    <select class="form-select" id="type" name="type" required>
+                                                    <select class="form-select" id="type" name="type"
+                                                        required>
                                                         <option value="รูปแบบที่1"
                                                             {{ old('type', $history->type) == 'รูปแบบที่1' ? 'selected' : '' }}>
                                                             รูปแบบที่1</option>
@@ -297,3 +314,10 @@
         });
     </script>
 @endif
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        flatpickr('.datepicker', {
+            dateFormat: 'Y-m-d', // กำหนดรูปแบบวันที่
+        });
+    });
+</script>

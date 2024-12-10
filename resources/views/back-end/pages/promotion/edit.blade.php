@@ -69,15 +69,34 @@
                                         
                                             <div class="mb-3">
                                                 <label for="first_date" class="form-label">วันเริ่มต้นโปรโมชั่น</label>
-                                                <input type="date" class="form-control" id="first_date" name="first_date" 
-                                                    value="{{ old('first_date', $item->first_date) }}" placeholder="วันเริ่มต้น" required>
+                                                <div class="input-group">
+                                                    <input 
+                                                        type="text" 
+                                                        class="form-control datepicker" 
+                                                        id="first_date" 
+                                                        name="first_date" 
+                                                        value="{{ old('first_date', $item->first_date ? \Carbon\Carbon::parse($item->first_date)->format('Y-m-d') : '') }}" 
+                                                        placeholder="วันเริ่มต้น" 
+                                                        required>
+                                                    <span class="input-group-text"><i class="bi bi-calendar3"></i></span>
+                                                </div>
                                             </div>
-
+                                            
                                             <div class="mb-3">
                                                 <label for="last_date" class="form-label">วันสิ้นสุดโปรโมชั่น</label>
-                                                <input type="date" class="form-control" id="last_date" name="last_date" 
-                                                    value="{{ old('last_date', $item->last_date) }}" placeholder="วันสิ้นสุด" required>
+                                                <div class="input-group">
+                                                    <input 
+                                                        type="text" 
+                                                        class="form-control datepicker" 
+                                                        id="last_date" 
+                                                        name="last_date" 
+                                                        value="{{ old('last_date', $item->last_date ? \Carbon\Carbon::parse($item->last_date)->format('Y-m-d') : '') }}" 
+                                                        placeholder="วันสิ้นสุด" 
+                                                        required>
+                                                    <span class="input-group-text"><i class="bi bi-calendar3"></i></span>
+                                                </div>
                                             </div>
+                                            
                                         
                                             <div class="text-center">
                                                 <button type="submit" class="btn btn-primary">บันทึก</button>
@@ -129,3 +148,10 @@
 <!--end::Body-->
 
 </html>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        flatpickr('.datepicker', {
+            dateFormat: 'Y-m-d', // กำหนดรูปแบบวันที่
+        });
+    });
+</script>
