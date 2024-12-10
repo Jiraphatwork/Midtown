@@ -41,7 +41,7 @@
                                     <h2 class="text-center mb-4 text-dark">ตั้งค่าสิทธิ์ผู้ใช้งาน</h2>
                                     <div class="d-flex justify-content-end mb-3">
                                         <a href="{{ route('settingadmin.add') }}"
-                                            class="btn btn-success">+เพิ่มข้อมูล</a>
+                                            class="btn btn-success btn-sm"><i class="fas fa-plus"></i> เพิ่มข้อมูล</a>
                                     </div>
                                     <div class="table-responsive shadow-lg rounded">
                                         <table class="table table-hover table-striped align-middle text-center">
@@ -76,8 +76,10 @@
                                                         </td>
                                                         <td>
                                                             <a href="{{ route('settingadmin.edit', $item->id) }}"
-                                                                class="btn btn-warning btn-sm">แก้ไข</a>
+                                                                class="btn btn-warning btn-sm"><i
+                                                                class="fas fa-edit"></i> แก้ไข</a>
 
+                                                            <!-- ฟอร์มสำหรับส่งคำขอการลบ -->
                                                             <form id="delete-form-{{ $item->id }}" method="POST"
                                                                 action="{{ route('settingadmin.destroy', $item->id) }}"
                                                                 style="display: none;">
@@ -85,9 +87,10 @@
                                                                 @method('DELETE')
                                                             </form>
 
+                                                            <!-- ปุ่มลบ -->
                                                             <button type="button" class="btn btn-danger btn-sm"
-                                                                onclick="confirmDelete('{{ $item->id }}', '{{ Auth::guard('admin')->user()->role_name }}', '{{ Auth::guard('admin')->user()->email }}', '{{ $item->created_by }}')">
-                                                                ลบ
+                                                                onclick="confirmDelete('{{ $item->id }}', '{{ Auth::guard('admin')->user()->role_name }}')">
+                                                                <i class="fas fa-trash-alt"></i> ลบ
                                                             </button>
                                                         </td>
 
@@ -160,10 +163,8 @@
 </script>
 <script>
     // แจ้งเตือนการลบ
-    function confirmDelete(historyId, roleName, currentUserEmail, createdBy) {
-        // ตรวจสอบสิทธิ์: ให้ Admin ลบได้ทั้งหมด, หรือ email ต้องตรงกับ created_by
+    function confirmDelete(itemId, roleName, currentUserEmail, createdBy) {
         if (roleName !== 'Admin' && currentUserEmail !== createdBy) {
-            // แสดงข้อความแจ้งเตือนหากไม่มีสิทธิ์
             Swal.fire({
                 title: 'คุณไม่มีสิทธิ์ในการลบข้อมูลของผู้อื่น',
                 text: 'โปรดติดต่อผู้ดูแลระบบหากคุณต้องการสิทธิ์เพิ่มเติม',
@@ -173,7 +174,6 @@
             return;
         }
 
-        // หากมีสิทธิ์ (roleName เป็น Admin หรือ email ตรงกับ created_by)
         Swal.fire({
             title: 'คุณแน่ใจหรือไม่?',
             text: "การลบข้อมูลนี้ไม่สามารถกู้คืนได้!",
@@ -185,22 +185,12 @@
             cancelButtonText: 'ยกเลิก',
         }).then((result) => {
             if (result.isConfirmed) {
-                // ส่งฟอร์มลบ
                 document.getElementById(`delete-form-${itemId}`).submit();
-
-                // แจ้งเตือนหลังลบ
-                Swal.fire({
-                    title: 'ลบสำเร็จ!',
-                    text: 'ข้อมูลได้ถูกลบเรียบร้อยแล้ว.',
-                    icon: 'success',
-                    timer: 3000,
-                    showConfirmButton: false,
-                });
+                // ลบการแจ้งเตือน "ลบสำเร็จ!" ตรงนี้
             }
         });
     }
 </script>
-
 
 @if (session('success'))
     <script>

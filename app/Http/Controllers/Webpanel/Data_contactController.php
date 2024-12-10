@@ -169,10 +169,6 @@ class Data_contactController extends Controller
         if (Auth::guard('admin')->user()->role_name !== 'Admin') {
             return redirect()->route('data_contact.index');
         }
-        // ตรวจสอบสิทธิ์
-        if (Auth::guard('admin')->user()->role_name !== 'Admin') {
-            return redirect()->route('data_contact.index');
-        }
         // ค้นหาข้อมูลลูกค้าในฐานข้อมูล
         $item = DB::table('data_contact_models')->where('id', $id)->first();
 

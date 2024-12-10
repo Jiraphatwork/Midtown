@@ -41,7 +41,7 @@
                                     <h2 class="text-center mb-4 text-dark">ข้อมูลลูกค้า(องกรณ์)</h2>
                                     <div class="d-flex justify-content-end mb-3">
                                         <a href="{{ route('organization_customer.add') }}"
-                                            class="btn btn-success">+เพิ่มข้อมูล</a>
+                                            class="btn btn-success btn-sm"><i class="fas fa-plus"></i> เพิ่มข้อมูล</a>
                                     </div>
                                     <div class="table-responsive shadow-lg rounded">
                                         <table class="table table-hover table-striped  text-center align-middle">
@@ -68,7 +68,7 @@
                                                         </td>
                                                         <td>
                                                             <a href="{{ route('organization_customer.edit', $item->id) }}"
-                                                                class="btn btn-warning btn-sm">แก้ไข</a>
+                                                                class="btn btn-warning btn-sm"> <i class="fas fa-edit"></i> แก้ไข</a>
 
                                                             <!-- ฟอร์มสำหรับส่งคำขอการลบ -->
                                                             <form id="delete-form-{{ $item->id }}" method="POST"
@@ -81,7 +81,7 @@
                                                             <!-- ปุ่มลบ -->
                                                             <button type="button" class="btn btn-danger btn-sm"
                                                                 onclick="confirmDelete('{{ $item->id }}', '{{ Auth::guard('admin')->user()->role_name }}')">
-                                                                ลบ
+                                                                <i class="fas fa-trash-alt"></i> ลบ
                                                             </button>
                                                         </td>
                                                     </tr>

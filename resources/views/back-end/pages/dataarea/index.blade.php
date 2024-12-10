@@ -56,8 +56,10 @@
                                                 </option>
                                             </select>
                                         </form>
-                                        <a href="{{ route('dataarea.add') }}" class="btn btn-success">+เพิ่มข้อมูล</a>
-                                    </div>
+                                        <a href="{{ route('dataarea.add') }}" class="btn btn-success btn-sm">
+                                            <i class="fas fa-plus"></i> เพิ่มข้อมูล
+                                        </a>
+                                                                            </div>
                                     <div class="table-responsive shadow-lg rounded">
                                         <table class="table table-hover table-striped align-middle text-center">
                                             <thead class="table-dark">
@@ -89,7 +91,8 @@
                                                         <td>{{ $item->price }}</td>
                                                         <td>
                                                             <a href="{{ route('dataarea.edit', $item->id) }}"
-                                                                class="btn btn-warning btn-sm">แก้ไข</a>
+                                                                class="btn btn-warning btn-sm"><i
+                                                                    class="fas fa-edit"></i> แก้ไข</a>
 
                                                             <!-- ฟอร์มสำหรับส่งคำขอการลบ -->
                                                             <form id="delete-form-{{ $item->id }}" method="POST"
@@ -102,7 +105,7 @@
                                                             <!-- ปุ่มลบ -->
                                                             <button type="button" class="btn btn-danger btn-sm"
                                                                 onclick="confirmDelete('{{ $item->id }}', '{{ Auth::guard('admin')->user()->role_name }}')">
-                                                                ลบ
+                                                                <i class="fas fa-trash-alt"></i> ลบ
                                                             </button>
                                                         </td>
                                                     </tr>

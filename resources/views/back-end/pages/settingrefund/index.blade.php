@@ -40,8 +40,7 @@
                                 <div class="container mt-5">
                                     <h2 class="text-center mb-4 text-dark">ตั้งค่าข้อมูลเงื่อนไขการคืนเงินการยกเลิก</h2>
                                     <div class="d-flex justify-content-end mb-3">
-                                        <a href="webpanel/settingrefund/add"
-                                            class="btn btn-success">+เพิ่มข้อมูล</a>
+                                        <a href="webpanel/settingrefund/add" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> เพิ่มข้อมูล</a>
                                     </div>
                                     <div class="table-responsive shadow-lg rounded">
                                         <table class="table table-hover table-striped  text-center align-middle">
@@ -74,9 +73,12 @@
                                                             @endif
                                                         <td class="text-center">
                                                             <a href="{{ route('settingrefund.edit', $item->id) }}"
-                                                                class="btn btn-warning btn-sm">แก้ไข</a>
+                                                                class="btn btn-warning btn-sm"><i
+                                                                    class="fas fa-edit"></i> แก้ไข</a>
+
                                                             <a href="javascript:void(0);" class="btn btn-danger btn-sm"
-                                                                onclick="check_destroy({{ $item->id }}, '{{ Auth::guard('admin')->user()->role_name }}')">ลบ</a>
+                                                                onclick="check_destroy({{ $item->id }}, '{{ Auth::guard('admin')->user()->role_name }}')">
+                                                                <i class="fas fa-trash-alt"></i> ลบ</a>
                                                         </td>
                                                     </tr>
                                                     <!-- Modal -->
@@ -217,7 +219,8 @@
             text: "{{ session('success') }}",
             icon: 'success',
             timer: 2000,
-            showConfirmButton: false,        });
+            showConfirmButton: false,
+        });
     </script>
 @endif
 
@@ -231,4 +234,3 @@
         });
     </script>
 @endif
-

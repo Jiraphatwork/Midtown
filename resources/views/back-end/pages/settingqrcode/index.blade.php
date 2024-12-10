@@ -41,7 +41,7 @@
                                     <h2 class="text-center mb-4 text-dark">ตั้งค่าข้อมูลการสแกนจ่าย Qr Code
                                     </h2>
                                     <div class="d-flex justify-content-end mb-3">
-                                        <a href="webpanel/settingqrcode/add" class="btn btn-success">+เพิ่มข้อมูล</a>
+                                        <a href="webpanel/settingqrcode/add" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> เพิ่มข้อมูล</a>
                                     </div>
                                     <div class="table-responsive shadow-lg rounded">
                                         <table class="table table-hover table-striped  text-center align-middle">
@@ -71,10 +71,12 @@
                                                             <td>{{ $item->name_account }}</td>
                                                             <td class="text-center">
                                                                 <a href="{{ route('settingqrcode.edit', $item->id) }}"
-                                                                    class="btn btn-warning btn-sm">แก้ไข</a>
+                                                                    class="btn btn-warning btn-sm"><i
+                                                                    class="fas fa-edit"></i> แก้ไข</a>
+
                                                                 <a href="javascript:void(0);"
                                                                     class="btn btn-danger btn-sm"
-                                                                    onclick="check_destroy({{ $item->id }}, '{{ Auth::guard('admin')->user()->role_name }}')">ลบ</a>
+                                                                    onclick="check_destroy({{ $item->id }}, '{{ Auth::guard('admin')->user()->role_name }}')"><i class="fas fa-trash-alt"></i> ลบ</a>
                                                             </td>
                                                         </tr>
                                                     @endforeach

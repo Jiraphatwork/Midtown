@@ -40,8 +40,8 @@
                                 <div class="container mt-5">
                                     <h2 class="text-center mb-4 text-dark">ตั้งค่าข้อมูลเงื่อนการสมัครสมาชิกข้อตกลง</h2>
                                     <div class="d-flex justify-content-end mb-3">
-                                         <a href="webpanel/settingmembership/add"
-                                            class="btn btn-success">+เพิ่มข้อมูล</a>
+                                        <a href="webpanel/settingmembership/add"
+                                            class="btn btn-success btn-sm"><i class="fas fa-plus"></i> เพิ่มข้อมูล</a>
                                     </div>
                                     <div class="table-responsive shadow-lg rounded">
                                         <table class="table table-hover table-striped  text-center align-middle">
@@ -67,15 +67,18 @@
                                                             <span>{{ $shortText }}</span>
                                                             @if (strlen($text) > 100)
                                                                 <button class="btn btn-link p-0" data-bs-toggle="modal"
-                                                                    data-bs-target="#detailsModal{{ $item->id }}">  อ่านเพิ่มเติม 
+                                                                    data-bs-target="#detailsModal{{ $item->id }}">
+                                                                    อ่านเพิ่มเติม
                                                                 </button>
                                                             @endif
-                                                             <td class="text-center">
-                                                                <a href="{{ route('settingmembership.edit', $item->id) }}"
-                                                                    class="btn btn-warning btn-sm">แก้ไข</a>
-                                                                <a href="javascript:void(0);"
-                                                                    class="btn btn-danger btn-sm"
-                                                                    onclick="check_destroy({{ $item->id }}, '{{ Auth::guard('admin')->user()->role_name }}')">ลบ</a>
+                                                        <td class="text-center">
+                                                            <a href="{{ route('settingmembership.edit', $item->id) }}"
+                                                                class="btn btn-warning btn-sm"><i
+                                                                    class="fas fa-edit"></i> แก้ไข</a>
+
+                                                            <a href="javascript:void(0);" class="btn btn-danger btn-sm"
+                                                                onclick="check_destroy({{ $item->id }}, '{{ Auth::guard('admin')->user()->role_name }}')">
+                                                                <i class="fas fa-trash-alt"></i> ลบ</a>
                                                         </td>
                                                     </tr>
                                                     <!-- Modal -->
@@ -224,7 +227,7 @@
             icon: 'success',
             timer: 2000,
             showConfirmButton: false,
-                });
+        });
     </script>
 @endif
 

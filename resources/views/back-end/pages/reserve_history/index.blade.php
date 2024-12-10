@@ -60,8 +60,8 @@
                                             </div>
                                         </form>
 
-                                        <a href="{{ route('reserve_history.add') }}"
-                                            class="btn btn-success">+เพิ่มข้อมูล</a>
+                                        <a href="{{ route('reserve_history.add') }}" class="btn btn-success btn-sm">
+                                            <i class="fas fa-plus"></i> เพิ่มข้อมูล</a>
                                     </div>
                                     <div class="table-responsive shadow-lg rounded">
                                         <table class="table table-hover table-striped align-middle text-center">
@@ -116,7 +116,9 @@
 
                                                         <td>
                                                             <a href="{{ route('reserve_history.edit', $history->id) }}"
-                                                                class="btn btn-warning btn-sm">แก้ไข</a>
+                                                                class="btn btn-warning btn-sm">
+                                                                <i class="fas fa-edit"></i> แก้ไข
+                                                            </a>
 
                                                             <form id="delete-form-{{ $history->id }}" method="POST"
                                                                 action="{{ route('reserve_history.destroy', $history->id) }}"
@@ -127,9 +129,10 @@
 
                                                             <button type="button" class="btn btn-danger btn-sm"
                                                                 onclick="confirmDelete('{{ $history->id }}', '{{ Auth::guard('admin')->user()->role_name }}', '{{ Auth::guard('admin')->user()->email }}', '{{ $history->created_by }}')">
-                                                                ลบ
+                                                                <i class="fas fa-trash-alt"></i> ลบ
                                                             </button>
                                                         </td>
+
                                                     </tr>
 
                                                     <!-- Modal สำหรับแสดงข้อมูลวันที่ -->
