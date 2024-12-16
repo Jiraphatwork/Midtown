@@ -43,14 +43,17 @@
                                         <a href="webpanel/settingmembership/add"
                                             class="btn btn-success btn-sm"><i class="fas fa-plus"></i> เพิ่มข้อมูล</a>
                                     </div>
-                                    <div class="table-responsive shadow-lg rounded">
-                                        <table class="table table-hover table-striped  text-center align-middle">
+                                    <div class="card rounded ">
+                                        <div class="card-body">
+                                            <div class="table-responsive rounded">
+
+                                                <table class="table table-hover table-striped text-center align-middle">
                                             <thead class="table-dark">
                                                 <tr>
                                                     <th scope="col">ลำดับ</th>
                                                     <th scope="col">ชื่อเงื่อนไข</h>
                                                     <th scope="col">รายละเอียด</th>
-                                                    <th scope="col">จัดการ</th>
+                                                    <th scope="col" style="width: 20%;">จัดการ</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -117,6 +120,10 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
 
                         <div id="kt_app_content" class="app-content flex-column-fluid">
                             <!--begin::Content container-->

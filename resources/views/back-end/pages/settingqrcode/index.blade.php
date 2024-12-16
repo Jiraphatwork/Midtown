@@ -41,100 +41,111 @@
                                     <h2 class="text-center mb-4 text-dark">ตั้งค่าข้อมูลการสแกนจ่าย Qr Code
                                     </h2>
                                     <div class="d-flex justify-content-end mb-3">
-                                        <a href="webpanel/settingqrcode/add" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> เพิ่มข้อมูล</a>
+                                        <a href="webpanel/settingqrcode/add" class="btn btn-success btn-sm"><i
+                                                class="fas fa-plus"></i> เพิ่มข้อมูล</a>
                                     </div>
-                                    <div class="table-responsive shadow-lg rounded">
-                                        <table class="table table-hover table-striped  text-center align-middle">
-                                                <thead class="table-dark">
-                                                    <tr>
-                                                        <th scope="col">ลำดับ</th>
-                                                        <th scope="col">Qrcode</th>
-                                                        <th scope="col">ชื่อบัญชี</th>
-                                                        <th scope="col">จัดการ</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($items as $index => $item)
-                                                        <tr class="text-center">
-                                                            <td>{{ $index + 1 }}</td>
-                                                            <td>
-                                                                @if ($item->image_path)
-                                                                    <!-- รูปภาพที่สามารถคลิกเพื่อดูใน Modal -->
-                                                                    <img src="{{ asset($item->image_path) }}"
-                                                                        alt="error" width="60px"
-                                                                        style="cursor: pointer;" data-bs-toggle="modal"
-                                                                        data-bs-target="#imageModal-{{ $item->id }}">
-                                                                @else
-                                                                    ไม่มีรูปภาพ
-                                                                @endif
-                                                            </td>
-                                                            <td>{{ $item->name_account }}</td>
-                                                            <td class="text-center">
-                                                                <a href="{{ route('settingqrcode.edit', $item->id) }}"
-                                                                    class="btn btn-warning btn-sm"><i
-                                                                    class="fas fa-edit"></i> แก้ไข</a>
+                                    <div class="card rounded ">
+                                        <div class="card-body">
+                                            <div class="table-responsive rounded">
 
-                                                                <a href="javascript:void(0);"
-                                                                    class="btn btn-danger btn-sm"
-                                                                    onclick="check_destroy({{ $item->id }}, '{{ Auth::guard('admin')->user()->role_name }}')"><i class="fas fa-trash-alt"></i> ลบ</a>
-                                                            </td>
+                                                <table class="table table-hover table-striped text-center align-middle">
+                                                    <thead class="table-dark">
+                                                        <tr>
+                                                            <th scope="col">ลำดับ</th>
+                                                            <th scope="col">Qrcode</th>
+                                                            <th scope="col">ชื่อบัญชี</th>
+                                                            <th scope="col" style="width: 20%;">จัดการ</th>
                                                         </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                    </div>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($items as $index => $item)
+                                                            <tr class="text-center">
+                                                                <td>{{ $index + 1 }}</td>
+                                                                <td>
+                                                                    @if ($item->image_path)
+                                                                        <!-- รูปภาพที่สามารถคลิกเพื่อดูใน Modal -->
+                                                                        <img src="{{ asset($item->image_path) }}"
+                                                                            alt="error" width="60px"
+                                                                            style="cursor: pointer;"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#imageModal-{{ $item->id }}">
+                                                                    @else
+                                                                        ไม่มีรูปภาพ
+                                                                    @endif
+                                                                </td>
+                                                                <td>{{ $item->name_account }}</td>
+                                                                <td class="text-center">
+                                                                    <a href="{{ route('settingqrcode.edit', $item->id) }}"
+                                                                        class="btn btn-warning btn-sm"><i
+                                                                            class="fas fa-edit"></i> แก้ไข</a>
 
-                                    <!-- Modal สำหรับแสดงรูปภาพ -->
-                                    @foreach ($items as $index => $item)
-                                        <div class="modal fade" id="imageModal-{{ $item->id }}" tabindex="-1"
-                                            aria-labelledby="exampleModalLabel-{{ $item->id }}" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title"
-                                                            id="exampleModalLabel{{ $item->id }}">
-                                                            ชื่อบัญชี: {{ $item->name_account }}
-                                                        </h5>
-                                                        <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
-                                                            data-bs-dismiss="modal" aria-label="Close">
-                                                            <i class="ki-duotone ki-cross fs-1"><span
-                                                                    class="path1"></span><span
-                                                                    class="path2"></span></i>
+                                                                    <a href="javascript:void(0);"
+                                                                        class="btn btn-danger btn-sm"
+                                                                        onclick="check_destroy({{ $item->id }}, '{{ Auth::guard('admin')->user()->role_name }}')"><i
+                                                                            class="fas fa-trash-alt"></i> ลบ</a>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <!-- Modal สำหรับแสดงรูปภาพ -->
+                                            @foreach ($items as $index => $item)
+                                                <div class="modal fade" id="imageModal-{{ $item->id }}"
+                                                    tabindex="-1"
+                                                    aria-labelledby="exampleModalLabel-{{ $item->id }}"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title"
+                                                                    id="exampleModalLabel{{ $item->id }}">
+                                                                    ชื่อบัญชี: {{ $item->name_account }}
+                                                                </h5>
+                                                                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+                                                                    data-bs-dismiss="modal" aria-label="Close">
+                                                                    <i class="ki-duotone ki-cross fs-1"><span
+                                                                            class="path1"></span><span
+                                                                            class="path2"></span></i>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-body text-center">
+                                                                <!-- แสดงรูปภาพใน Modal -->
+                                                                <img src="{{ asset($item->image_path) }}"
+                                                                    alt="Image" class="img-fluid">
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="modal-body text-center">
-                                                        <!-- แสดงรูปภาพใน Modal -->
-                                                        <img src="{{ asset($item->image_path) }}" alt="Image"
-                                                            class="img-fluid">
-                                                    </div>
                                                 </div>
-                                            </div>
+                                            @endforeach
                                         </div>
-                                    @endforeach
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div id="kt_app_content" class="app-content flex-column-fluid">
-                            <!--begin::Content container-->
-                            <div id="kt_app_content_container" class="app-container container-xxl">
+                    <div id="kt_app_content" class="app-content flex-column-fluid">
+                        <!--begin::Content container-->
+                        <div id="kt_app_content_container" class="app-container container-xxl">
 
-                            </div>
-                            <!--end::Content container-->
                         </div>
-
+                        <!--end::Content container-->
                     </div>
-                    <!--end::Content wrapper-->
 
-                    <!--begin::Footer-->
-                    <div id="kt_app_footer" class="app-footer">
-                        @include("$prefix.layout.footer")
-                    </div>
-                    <!--End::Footer-->
                 </div>
-                <!--End::Main-->
+                <!--end::Content wrapper-->
+
+                <!--begin::Footer-->
+                <div id="kt_app_footer" class="app-footer">
+                    @include("$prefix.layout.footer")
+                </div>
+                <!--End::Footer-->
             </div>
+            <!--End::Main-->
         </div>
+    </div>
     </div>
 
     <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
@@ -223,7 +234,8 @@
             text: "{{ session('success') }}",
             icon: 'success',
             timer: 2000,
-            showConfirmButton: false,        });
+            showConfirmButton: false,
+        });
     </script>
 @endif
 

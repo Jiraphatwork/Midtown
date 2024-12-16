@@ -59,117 +59,127 @@
                                         <a href="{{ route('dataarea.add') }}" class="btn btn-success btn-sm">
                                             <i class="fas fa-plus"></i> เพิ่มข้อมูล
                                         </a>
-                                                                            </div>
-                                    <div class="table-responsive shadow-lg rounded">
-                                        <table class="table table-hover table-striped align-middle text-center">
-                                            <thead class="table-dark">
-                                                <tr>
-                                                    <th>ลำดับ</th>
-                                                    <th>รูปแบบพื้นที่</th>
-                                                    <th>รูปภาพ</th>
-                                                    <th>พื้นที่</th>
-                                                    <th>ราคา</th>
-                                                    <th>จัดการ</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($data_area_models as $index => $item)
-                                                    <tr>
-                                                        <td class="text-muted">{{ $index + 1 }}</td>
-                                                        <td class="fw-bold">{{ $item->type }}</td>
-                                                        <td>
-                                                            @if ($item->pic_area)
-                                                                <img src="{{ asset('pic_areas/' . $item->pic_area) }}"
-                                                                    alt="error" width="100px"
-                                                                    style="cursor: pointer;" data-bs-toggle="modal"
-                                                                    data-bs-target="#imageModal{{ $item->id }}">
-                                                            @else
-                                                                ไม่มีรูปภาพ
-                                                            @endif
-                                                        </td>
-                                                        <td>{{ $item->area }}</td>
-                                                        <td>{{ $item->price }}</td>
-                                                        <td>
-                                                            <a href="{{ route('dataarea.edit', $item->id) }}"
-                                                                class="btn btn-warning btn-sm"><i
-                                                                    class="fas fa-edit"></i> แก้ไข</a>
+                                    </div>
+                                    <div class="card rounded ">
+                                        <div class="card-body">
+                                            <div class="table-responsive rounded">
 
-                                                            <!-- ฟอร์มสำหรับส่งคำขอการลบ -->
-                                                            <form id="delete-form-{{ $item->id }}" method="POST"
-                                                                action="{{ route('dataarea.destroy', $item->id) }}"
-                                                                style="display: none;">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                            </form>
-
-                                                            <!-- ปุ่มลบ -->
-                                                            <button type="button" class="btn btn-danger btn-sm"
-                                                                onclick="confirmDelete('{{ $item->id }}', '{{ Auth::guard('admin')->user()->role_name }}')">
-                                                                <i class="fas fa-trash-alt"></i> ลบ
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                    <!-- Modal สำหรับรูป -->
-                                                    <div class="modal fade" id="imageModal{{ $item->id }}"
-                                                        tabindex="-1"
-                                                        aria-labelledby="PicareaModalLabel{{ $item->id }}"
-                                                        aria-hidden="true">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title"
-                                                                        id="PicareaModalLabel{{ $item->id }}">
-                                                                        รูปภาพพื้นที่: {{ $item->type }}
-                                                                    </h5>
-                                                                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
-                                                                        data-bs-dismiss="modal" aria-label="Close">
-                                                                        <i class="ki-duotone ki-cross fs-1"><span
-                                                                                class="path1"></span><span
-                                                                                class="path2"></span></i>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-body text-center">
+                                                <table class="table table-hover table-striped text-center align-middle">
+                                                    <thead class="table-dark">
+                                                        <tr>
+                                                            <th scope="col">ลำดับ</th>
+                                                            <th scope="col">รูปแบบพื้นที่</th>
+                                                            <th scope="col">รูปภาพ</th>
+                                                            <th scope="col">พื้นที่</th>
+                                                            <th scope="col">ราคา</th>
+                                                            <th scope="col" style="width: 20%;">จัดการ</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($data_area_models as $index => $item)
+                                                            <tr>
+                                                                <td class="text-muted">{{ $index + 1 }}</td>
+                                                                <td class="fw-bold">{{ $item->type }}</td>
+                                                                <td>
                                                                     @if ($item->pic_area)
                                                                         <img src="{{ asset('pic_areas/' . $item->pic_area) }}"
-                                                                            alt="Business Card" class="img-fluid">
+                                                                            alt="error" width="100px"
+                                                                            style="cursor: pointer;"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#imageModal{{ $item->id }}">
                                                                     @else
-                                                                        <p>ไม่มีรูปภาพ</p>
+                                                                        ไม่มีรูปภาพ
                                                                     @endif
+                                                                </td>
+                                                                <td>{{ $item->area }}</td>
+                                                                <td>{{ $item->price }}</td>
+                                                                <td>
+                                                                    <a href="{{ route('dataarea.edit', $item->id) }}"
+                                                                        class="btn btn-warning btn-sm"><i
+                                                                            class="fas fa-edit"></i> แก้ไข</a>
+
+                                                                    <!-- ฟอร์มสำหรับส่งคำขอการลบ -->
+                                                                    <form id="delete-form-{{ $item->id }}"
+                                                                        method="POST"
+                                                                        action="{{ route('dataarea.destroy', $item->id) }}"
+                                                                        style="display: none;">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                    </form>
+
+                                                                    <!-- ปุ่มลบ -->
+                                                                    <button type="button" class="btn btn-danger btn-sm"
+                                                                        onclick="confirmDelete('{{ $item->id }}', '{{ Auth::guard('admin')->user()->role_name }}')">
+                                                                        <i class="fas fa-trash-alt"></i> ลบ
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- Modal สำหรับรูป -->
+                                                            <div class="modal fade" id="imageModal{{ $item->id }}"
+                                                                tabindex="-1"
+                                                                aria-labelledby="PicareaModalLabel{{ $item->id }}"
+                                                                aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title"
+                                                                                id="PicareaModalLabel{{ $item->id }}">
+                                                                                รูปภาพพื้นที่: {{ $item->type }}
+                                                                            </h5>
+                                                                            <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+                                                                                data-bs-dismiss="modal"
+                                                                                aria-label="Close">
+                                                                                <i class="ki-duotone ki-cross fs-1"><span
+                                                                                        class="path1"></span><span
+                                                                                        class="path2"></span></i>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-body text-center">
+                                                                            @if ($item->pic_area)
+                                                                                <img src="{{ asset('pic_areas/' . $item->pic_area) }}"
+                                                                                    alt="Business Card"
+                                                                                    class="img-fluid">
+                                                                            @else
+                                                                                <p>ไม่มีรูปภาพ</p>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!--end::Toolbar-->
+                </div>
+                <!--end::Toolbar-->
 
-                    <!--begin::Content-->
-                    <div id="kt_app_content" class="app-content flex-column-fluid">
-                        <div id="kt_app_content_container" class="app-container container-xxl">
-
-                        </div>
-                        <!--end::Table-->
+                <!--begin::Content-->
+                <div id="kt_app_content" class="app-content flex-column-fluid">
+                    <div id="kt_app_content_container" class="app-container container-xxl">
 
                     </div>
+                    <!--end::Table-->
+
                 </div>
-                <!--end::Content-->
-
             </div>
-            <!--end::Content wrapper-->
+            <!--end::Content-->
 
-            <!--begin::Footer-->
-            <div id="kt_app_footer" class="app-footer">
-                @include("$prefix.layout.footer")
-            </div>
-            <!--End::Footer-->
         </div>
-        <!--end::Main-->
+        <!--end::Content wrapper-->
+
+        <!--begin::Footer-->
+        <div id="kt_app_footer" class="app-footer">
+            @include("$prefix.layout.footer")
+        </div>
+        <!--End::Footer-->
+    </div>
+    <!--end::Main-->
     </div>
     </div>
     </div>

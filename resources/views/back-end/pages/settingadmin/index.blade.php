@@ -40,92 +40,99 @@
                                 <div class="container mt-5">
                                     <h2 class="text-center mb-4 text-dark">ตั้งค่าสิทธิ์ผู้ใช้งาน</h2>
                                     <div class="d-flex justify-content-end mb-3">
-                                        <a href="{{ route('settingadmin.add') }}"
-                                            class="btn btn-success btn-sm"><i class="fas fa-plus"></i> เพิ่มข้อมูล</a>
+                                        <a href="{{ route('settingadmin.add') }}" class="btn btn-success btn-sm"><i
+                                                class="fas fa-plus"></i> เพิ่มข้อมูล</a>
                                     </div>
-                                    <div class="table-responsive shadow-lg rounded">
-                                        <table class="table table-hover table-striped align-middle text-center">
-                                            <thead class="table-dark">
-                                                <tr>
-                                                    <th>ลำดับ</th>
-                                                    <th>ชื่อ</th>
-                                                    <th>Username</th>
-                                                    <th>Password</th>
-                                                    <th>Role</th>
-                                                    <th>จัดการ</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($tb_admin as $index => $item)
-                                                    <tr>
-                                                        <td class="text-muted">{{ $index + 1 }}</td>
-                                                        <td class="fw-bold">{{ $item->name }}</td>
-                                                        <td>{{ $item->email }}</td>
-                                                        <td class="text-truncate" style="width:100;">
-                                                            {{ $item->password }}
-                                                        </td>
+                                    <div class="card rounded ">
+                                        <div class="card-body">
+                                            <div class="table-responsive rounded">
 
-                                                        <td>
-                                                            @if ($item->role_name == 'Admin')
-                                                                <span class="badge bg-success"
-                                                                    style="font-size: 11px">Admin</span>
-                                                            @else
-                                                                <span class="badge bg-primary"
-                                                                    style="font-size: 11px">User</span>
-                                                            @endif
-                                                        </td>
-                                                        <td>
-                                                            <a href="{{ route('settingadmin.edit', $item->id) }}"
-                                                                class="btn btn-warning btn-sm"><i
-                                                                class="fas fa-edit"></i> แก้ไข</a>
+                                                <table class="table table-hover table-striped text-center align-middle">
+                                                    <thead class="table-dark">
+                                                        <tr>
+                                                            <th scope="col">ลำดับ</th>
+                                                            <th scope="col">ชื่อ</th>
+                                                            <th scope="col">Username</th>
+                                                            <th scope="col">Password</th>
+                                                            <th scope="col">Role</th>
+                                                            <th scope="col" style="width: 20%;">จัดการ</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($tb_admin as $index => $item)
+                                                            <tr>
+                                                                <td class="text-muted">{{ $index + 1 }}</td>
+                                                                <td class="fw-bold">{{ $item->name }}</td>
+                                                                <td>{{ $item->email }}</td>
+                                                                <td class="text-truncate" style="width:100;">
+                                                                    {{ $item->password }}
+                                                                </td>
 
-                                                            <!-- ฟอร์มสำหรับส่งคำขอการลบ -->
-                                                            <form id="delete-form-{{ $item->id }}" method="POST"
-                                                                action="{{ route('settingadmin.destroy', $item->id) }}"
-                                                                style="display: none;">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                            </form>
+                                                                <td>
+                                                                    @if ($item->role_name == 'Admin')
+                                                                        <span class="badge bg-success"
+                                                                            style="font-size: 11px">Admin</span>
+                                                                    @else
+                                                                        <span class="badge bg-primary"
+                                                                            style="font-size: 11px">User</span>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    <a href="{{ route('settingadmin.edit', $item->id) }}"
+                                                                        class="btn btn-warning btn-sm"><i
+                                                                            class="fas fa-edit"></i> แก้ไข</a>
 
-                                                            <!-- ปุ่มลบ -->
-                                                            <button type="button" class="btn btn-danger btn-sm"
-                                                                onclick="confirmDelete('{{ $item->id }}', '{{ Auth::guard('admin')->user()->role_name }}')">
-                                                                <i class="fas fa-trash-alt"></i> ลบ
-                                                            </button>
-                                                        </td>
+                                                                    <!-- ฟอร์มสำหรับส่งคำขอการลบ -->
+                                                                    <form id="delete-form-{{ $item->id }}"
+                                                                        method="POST"
+                                                                        action="{{ route('settingadmin.destroy', $item->id) }}"
+                                                                        style="display: none;">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                    </form>
 
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                                                    <!-- ปุ่มลบ -->
+                                                                    <button type="button" class="btn btn-danger btn-sm"
+                                                                        onclick="confirmDelete('{{ $item->id }}', '{{ Auth::guard('admin')->user()->role_name }}')">
+                                                                        <i class="fas fa-trash-alt"></i> ลบ
+                                                                    </button>
+                                                                </td>
+
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!--end::Toolbar-->
+                </div>
+                <!--end::Toolbar-->
 
-                    <!--begin::Content-->
-                    <div id="kt_app_content" class="app-content flex-column-fluid">
-                        <div id="kt_app_content_container" class="app-container container-xxl">
-
-                        </div>
-                        <!--end::Table-->
+                <!--begin::Content-->
+                <div id="kt_app_content" class="app-content flex-column-fluid">
+                    <div id="kt_app_content_container" class="app-container container-xxl">
 
                     </div>
+                    <!--end::Table-->
+
                 </div>
-                <!--end::Content-->
-
             </div>
-            <!--end::Content wrapper-->
+            <!--end::Content-->
 
-            <!--begin::Footer-->
-            <div id="kt_app_footer" class="app-footer">
-                @include("$prefix.layout.footer")
-            </div>
-            <!--End::Footer-->
         </div>
-        <!--end::Main-->
+        <!--end::Content wrapper-->
+
+        <!--begin::Footer-->
+        <div id="kt_app_footer" class="app-footer">
+            @include("$prefix.layout.footer")
+        </div>
+        <!--End::Footer-->
+    </div>
+    <!--end::Main-->
     </div>
     </div>
     </div>

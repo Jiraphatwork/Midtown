@@ -42,118 +42,124 @@
                                 <div class="container mt-5">
                                     <h2 class="text-center mb-4 text-dark">ข้อมูลอุปกรณ์</h2>
                                     <div class="d-flex justify-content-end mb-3">
-                                        <a href="{{ route('data_equipment.add') }}"
-                                            class="btn btn-success btn-sm"><i class="fas fa-plus"></i> เพิ่มข้อมูล</a>
+                                        <a href="{{ route('data_equipment.add') }}" class="btn btn-success btn-sm"><i
+                                                class="fas fa-plus"></i> เพิ่มข้อมูล</a>
                                     </div>
-                                    <div class="table-responsive shadow-lg rounded">
-                                        <table
-                                            class="table table-hover table-striped  text-center align-middle">
-                                            <thead class="table-dark">
-                                                <tr>
-                                                    <th scope="col">ลำดับ</th>
-                                                    <th scope="col">ชื่ออุปกรณ์</h>
-                                                    <th scope="col">รูปอุปกรณ์</th>
-                                                    <th scope="col">ราคา</th>
-                                                    <th scope="col">จำนวน</th>
-                                                    <th scope="col">จัดการ</th>
+                                    <div class="card rounded ">
+                                        <div class="card-body">
+                                            <div class="table-responsive rounded">
 
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($equipment_models as $index => $item)
-                                                    <tr class="text-center">
-                                                        <td>{{ $index + 1 }}</td>
-                                                        <td>{{ $item->name_equipment }}</td>
-                                                        <td>
-                                                            @if ($item->pic_equipment)
-                                                                <img src="{{ asset('pic_equipments/' . $item->pic_equipment) }}"
-                                                                    alt="error" width="70px"
-                                                                    style="cursor: pointer;" data-bs-toggle="modal"
-                                                                    data-bs-target="#imageModal{{ $item->id }}">
-                                                            @else
-                                                                ไม่มีรูปภาพ
-                                                            @endif
-                                                        </td>
-                                                        <td>{{ $item->price }}</td>
-                                                        <td>{{ $item->quantity }}</td>
-                                                        <td>
-                                                            <a href="{{ route('data_equipment.edit', $item->id) }}" class="btn btn-warning btn-sm">
-                                                                <i class="fas fa-edit"></i> แก้ไข</a>
+                                                <table class="table table-hover table-striped text-center align-middle">
+                                                    <thead class="table-dark">
+                                                        <tr>
+                                                            <th scope="col">ลำดับ</th>
+                                                            <th scope="col">ชื่ออุปกรณ์</h>
+                                                            <th scope="col">รูปอุปกรณ์</th>
+                                                            <th scope="col">ราคา</th>
+                                                            <th scope="col">จำนวน</th>
+                                                            <th scope="col" style="width: 20%;">จัดการ</th>
 
-                                                            <!-- ฟอร์มสำหรับส่งคำขอการลบ -->
-                                                            <form id="delete-form-{{ $item->id }}" method="POST"
-                                                                action="{{ route('data_equipment.destroy', $item->id) }}"
-                                                                style="display: none;">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                            </form>
-
-                                                            <!-- ปุ่มลบ -->
-                                                            <button type="button" class="btn btn-danger btn-sm"
-                                                                onclick="confirmDelete('{{ $item->id }}', '{{ Auth::guard('admin')->user()->role_name }}')">
-                                                                <i class="fas fa-trash-alt"></i> ลบ
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-
-                                                    <!-- Modal สำหรับรูป -->
-                                                    <div class="modal fade" id="imageModal{{ $item->id }}"
-                                                        tabindex="-1"
-                                                        aria-labelledby="businessCardModalLabel{{ $item->id }}"
-                                                        aria-hidden="true">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title"
-                                                                        id="businessCardModalLabel{{ $item->id }}">
-                                                                        รูปอุปกรณ์: {{ $item->name_equipment }}
-                                                                    </h5>
-                                                                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
-                                                                        data-bs-dismiss="modal" aria-label="Close">
-                                                                        <i class="ki-duotone ki-cross fs-1"><span
-                                                                                class="path1"></span><span
-                                                                                class="path2"></span></i>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-body text-center">
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($equipment_models as $index => $item)
+                                                            <tr class="text-center">
+                                                                <td>{{ $index + 1 }}</td>
+                                                                <td>{{ $item->name_equipment }}</td>
+                                                                <td>
                                                                     @if ($item->pic_equipment)
                                                                         <img src="{{ asset('pic_equipments/' . $item->pic_equipment) }}"
-                                                                            alt="Business Card" class="img-fluid">
+                                                                            alt="error" width="70px"
+                                                                            style="cursor: pointer;"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#imageModal{{ $item->id }}">
                                                                     @else
-                                                                        <p>ไม่มีรูปภาพ</p>
+                                                                        ไม่มีรูปภาพ
                                                                     @endif
-                                                                </div>
-                                                            </div>
+                                                                </td>
+                                                                <td>{{ $item->price }}</td>
+                                                                <td>{{ $item->quantity }}</td>
+                                                                <td>
+                                                                    <a href="{{ route('data_equipment.edit', $item->id) }}"
+                                                                        class="btn btn-warning btn-sm">
+                                                                        <i class="fas fa-edit"></i> แก้ไข</a>
+
+                                                                    <!-- ฟอร์มสำหรับส่งคำขอการลบ -->
+                                                                    <form id="delete-form-{{ $item->id }}"
+                                                                        method="POST"
+                                                                        action="{{ route('data_equipment.destroy', $item->id) }}"
+                                                                        style="display: none;">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                    </form>
+
+                                                                    <!-- ปุ่มลบ -->
+                                                                    <button type="button" class="btn btn-danger btn-sm"
+                                                                        onclick="confirmDelete('{{ $item->id }}', '{{ Auth::guard('admin')->user()->role_name }}')">
+                                                                        <i class="fas fa-trash-alt"></i> ลบ
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                            </div>
+                                        </div>
+                                        <!-- Modal สำหรับรูป -->
+                                        <div class="modal fade" id="imageModal{{ $item->id }}" tabindex="-1"
+                                            aria-labelledby="businessCardModalLabel{{ $item->id }}"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title"
+                                                            id="businessCardModalLabel{{ $item->id }}">
+                                                            รูปอุปกรณ์: {{ $item->name_equipment }}
+                                                        </h5>
+                                                        <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+                                                            data-bs-dismiss="modal" aria-label="Close">
+                                                            <i class="ki-duotone ki-cross fs-1"><span
+                                                                    class="path1"></span><span
+                                                                    class="path2"></span></i>
                                                         </div>
                                                     </div>
-                                                @endforeach
-                                            </tbody>
+                                                    <div class="modal-body text-center">
+                                                        @if ($item->pic_equipment)
+                                                            <img src="{{ asset('pic_equipments/' . $item->pic_equipment) }}"
+                                                                alt="Business Card" class="img-fluid">
+                                                        @else
+                                                            <p>ไม่มีรูปภาพ</p>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                        </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div id="kt_app_content" class="app-content flex-column-fluid">
-                            <!--begin::Content container-->
-                            <div id="kt_app_content_container" class="app-container container-xxl">
-
-                            </div>
-                            <!--end::Content container-->
-                        </div>
-
                     </div>
-                    <!--end::Content wrapper-->
-
-                    <!--begin::Footer-->
-                    <div id="kt_app_footer" class="app-footer">
-                        @include("$prefix.layout.footer")
-                    </div>
-                    <!--End::Footer-->
                 </div>
-                <!--End::Main-->
+                <div id="kt_app_content" class="app-content flex-column-fluid">
+                    <!--begin::Content container-->
+                    <div id="kt_app_content_container" class="app-container container-xxl">
+
+                    </div>
+                    <!--end::Content container-->
+                </div>
+
             </div>
+            <!--end::Content wrapper-->
+
+            <!--begin::Footer-->
+            <div id="kt_app_footer" class="app-footer">
+                @include("$prefix.layout.footer")
+            </div>
+            <!--End::Footer-->
         </div>
+        <!--End::Main-->
+    </div>
+    </div>
     </div>
 
     <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">

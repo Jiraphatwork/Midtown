@@ -43,51 +43,59 @@
                                         <a href="{{ route('organization_customer.add') }}"
                                             class="btn btn-success btn-sm"><i class="fas fa-plus"></i> เพิ่มข้อมูล</a>
                                     </div>
-                                    <div class="table-responsive shadow-lg rounded">
-                                        <table class="table table-hover table-striped  text-center align-middle">
-                                            <thead class="table-dark">
-                                                <tr>
-                                                    <th scope="col">ลำดับ</th>
-                                                    <th scope="col">ชื่อ-นามสกุล</th>
-                                                    <th scope="col">อีเมล</th>
-                                                    <th scope="col">ดูข้อมูล</th>
-                                                    <th scope="col">จัดการ</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($organization_customer as $index => $item)
-                                                    <tr class="text-center">
-                                                        <td>{{ $index + 1 }}</td>
-                                                        <td>{{ $item->name }}</td>
-                                                        <td>{{ $item->email }}</td>
-                                                        <td>
-                                                            <!-- ปุ่มเปิด Modal -->
-                                                            <button type="button" class="btn btn-primary btn-sm"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#detailModal-{{ $item->id }}">ดูข้อมูล</button>
-                                                        </td>
-                                                        <td>
-                                                            <a href="{{ route('organization_customer.edit', $item->id) }}"
-                                                                class="btn btn-warning btn-sm"> <i class="fas fa-edit"></i> แก้ไข</a>
+                                    <div class="card rounded ">
+                                        <div class="card-body">
+                                            <div class="table-responsive rounded">
 
-                                                            <!-- ฟอร์มสำหรับส่งคำขอการลบ -->
-                                                            <form id="delete-form-{{ $item->id }}" method="POST"
-                                                                action="{{ route('organization_customer.destroy', $item->id) }}"
-                                                                style="display: none;">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                            </form>
+                                                <table class="table table-hover table-striped text-center align-middle">
+                                                    <thead class="table-dark">
+                                                        <tr>
+                                                            <th scope="col">ลำดับ</th>
+                                                            <th scope="col">ชื่อ-นามสกุล</th>
+                                                            <th scope="col">อีเมล</th>
+                                                            <th scope="col">ดูข้อมูล</th>
+                                                            <th scope="col" style="width: 20%;">จัดการ</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($organization_customer as $index => $item)
+                                                            <tr class="text-center">
+                                                                <td>{{ $index + 1 }}</td>
+                                                                <td>{{ $item->name }}</td>
+                                                                <td>{{ $item->email }}</td>
+                                                                <td>
+                                                                    <!-- ปุ่มเปิด Modal -->
+                                                                    <button type="button"
+                                                                        class="btn btn-primary btn-sm"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#detailModal-{{ $item->id }}">ดูข้อมูล</button>
+                                                                </td>
+                                                                <td>
+                                                                    <a href="{{ route('organization_customer.edit', $item->id) }}"
+                                                                        class="btn btn-warning btn-sm"> <i
+                                                                            class="fas fa-edit"></i> แก้ไข</a>
 
-                                                            <!-- ปุ่มลบ -->
-                                                            <button type="button" class="btn btn-danger btn-sm"
-                                                                onclick="confirmDelete('{{ $item->id }}', '{{ Auth::guard('admin')->user()->role_name }}')">
-                                                                <i class="fas fa-trash-alt"></i> ลบ
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                                                    <!-- ฟอร์มสำหรับส่งคำขอการลบ -->
+                                                                    <form id="delete-form-{{ $item->id }}"
+                                                                        method="POST"
+                                                                        action="{{ route('organization_customer.destroy', $item->id) }}"
+                                                                        style="display: none;">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                    </form>
+
+                                                                    <!-- ปุ่มลบ -->
+                                                                    <button type="button" class="btn btn-danger btn-sm"
+                                                                        onclick="confirmDelete('{{ $item->id }}', '{{ Auth::guard('admin')->user()->role_name }}')">
+                                                                        <i class="fas fa-trash-alt"></i> ลบ
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <!-- Modal -->
@@ -112,7 +120,7 @@
                                                         <table
                                                             class="table table-hover table-striped table-bordered align-middle">
                                                             <tbody>
-                                                                
+
                                                                 <tr>
                                                                     <th class="text-end">ใบประกอบกิจการ</th>
                                                                     <td class="text-center">
@@ -127,15 +135,18 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="text-end">ที่อยู่</th>
-                                                                    <td>{{ $item->address ?? 'ไม่มีข้อมูล' }}</td>
+                                                                    <td>{{ $item->address ?? 'ไม่มีข้อมูล' }}
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="text-end">ที่อยู่สอง</th>
-                                                                    <td>{{ $item->address2 ?? 'ไม่มีข้อมูล' }}</td>
+                                                                    <td>{{ $item->address2 ?? 'ไม่มีข้อมูล' }}
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="text-end">ที่อยู่สาม</th>
-                                                                    <td>{{ $item->address3 ?? 'ไม่มีข้อมูล' }}</td>
+                                                                    <td>{{ $item->address3 ?? 'ไม่มีข้อมูล' }}
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="text-end">เบอร์โทร</th>
@@ -151,7 +162,8 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="text-end">เลขผู้เสียภาษี</th>
-                                                                    <td>{{ $item->tax_id ?? 'ไม่มีข้อมูล' }}</td>
+                                                                    <td>{{ $item->tax_id ?? 'ไม่มีข้อมูล' }}
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="text-end">ใบหัก ณ ที่จ่าย</th>
@@ -179,7 +191,8 @@
                         </div>
                     </div>
                 </div>
-
+            </div>
+            
                 <div id="kt_app_content" class="app-content flex-column-fluid">
                     <!--begin::Content container-->
                     <div id="kt_app_content_container" class="app-container container-xxl">
