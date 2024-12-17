@@ -38,7 +38,7 @@
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                                 <div class="container mt-5">
-                                    <h2 class="text-center mb-4 text-dark">ตั้งค่าข้อมูลพื้นที่</h2>
+                                    <h1 class="text-center mb-4 text-dark">ตั้งค่าข้อมูลพื้นที่</h1>
                                     <!-- ฟิลเตอร์ -->
                                     <div class="d-flex justify-content-between mb-3">
                                         <form action="{{ route('dataarea.index') }}" method="GET" class="d-flex">
@@ -56,9 +56,10 @@
                                                 </option>
                                             </select>
                                         </form>
-                                        <a href="{{ route('dataarea.add') }}" class="btn btn-success btn-sm">
-                                            <i class="fas fa-plus"></i> เพิ่มข้อมูล
-                                        </a>
+                                        <div class="d-flex justify-content-end mb-3">
+                                            <a href="{{ route('dataarea.add') }}" class="btn btn-success btn-sm"><i
+                                                    class="fas fa-plus"></i> เพิ่มข้อมูล</a>
+                                        </div>
                                     </div>
                                     <div class="card rounded ">
                                         <div class="card-body">
@@ -78,7 +79,7 @@
                                                     <tbody>
                                                         @foreach ($data_area_models as $index => $item)
                                                             <tr>
-                                                                <td class="text-muted">{{ $index + 1 }}</td>
+                                                                <td>{{ $index + 1 }}</td>
                                                                 <td class="fw-bold">{{ $item->type }}</td>
                                                                 <td>
                                                                     @if ($item->pic_area)

@@ -38,7 +38,7 @@
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                                 <div class="container mt-5">
-                                    <h2 class="text-center mb-4 text-dark">ข้อมูลติดต่อเรา</h2>
+                                    <h1 class="text-center mb-4 text-dark">ข้อมูลติดต่อเรา</h1>
                                     <div class="d-flex justify-content-end mb-3">
                                         <a href="{{ route('data_contact.add') }}"
                                             class="btn btn-success btn-sm"><i class="fas fa-plus"></i> เพิ่มข้อมูล</a>
@@ -50,7 +50,7 @@
                                                 <table class="table table-hover table-striped text-center align-middle">
                                             <thead class="table-dark">
                                                 <tr>
-                                                    <th scope="col">ลำดับ</th>
+                                                    <th scope="col" style="width: 10%">ลำดับ</th>
                                                     <th scope="col">แผนที่</h>
                                                     <th scope="col">ที่อยู่</th>
                                                     <th scope="col">เบอร์โทร</th>
@@ -60,7 +60,7 @@
                                             <tbody>
                                                 @foreach ($data_contact_models as $index => $item)
                                                     <tr class="text-center">
-                                                        <td>{{ $index + 1 }}</td>
+                                                        <td >{{ $index + 1 }}</td>
                                                         <td>
                                                             @if ($item->map)
                                                                 <img src="{{ asset('maps/' . $item->map) }}"
@@ -78,12 +78,12 @@
                                                             @endphp
                                                             <span>{{ $shortText }}</span>
                                                             @if (strlen($text) > 30)
-                                                                <button class="btn btn-link p-0" data-bs-toggle="modal"
-                                                                    data-bs-target="#detailsModal{{ $item->id }}">
+                                                                <button class="btn btn-link p-0" style="font-size: 0.8rem;" data-bs-toggle="modal" data-bs-target="#detailsModal{{ $item->id }}">
                                                                     อ่านเพิ่มเติม
                                                                 </button>
                                                             @endif
                                                         </td>
+                                                        
                                                         <td>{{ $item->tel }}</td>
                                                         <td>
                                                             <a href="{{ route('data_contact.edit', $item->id) }}"

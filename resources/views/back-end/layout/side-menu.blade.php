@@ -72,7 +72,7 @@
                                                 <i class="{{ $menu->icon }}"> </i>
                                             </span>
                                             <span class="menu-title"
-                                                style="font-size: 15px; font-weight: 300;">{{ $menu->name }}</span>
+                                                style="font-size: 14px; font-weight: 500;">{{ $menu->name }}</span>
                                         </a>
                                     </div>
                                 @else
@@ -109,7 +109,7 @@
                         @endforeach
                     @endif
 
-                    <!-- Help Section -->
+                    {{-- <!-- Help Section -->
                     <div class="menu-item pt-5">
                         <div class="menu-content">
                             <span class="menu-heading fw-bold text-uppercase fs-7">Help</span>
@@ -138,7 +138,8 @@
                             </span>
                             <span class="menu-title">Changelog v8.2.0</span>
                         </a>
-                    </div>
+                    </div> --}}
+
                 </div>
             </div>
         </div>

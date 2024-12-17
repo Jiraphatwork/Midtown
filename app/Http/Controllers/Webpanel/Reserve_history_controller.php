@@ -21,6 +21,7 @@ class Reserve_history_controller extends Controller
     {
         // รับค่าจาก query string 'type'
         $type = $request->input('type');
+        $status = $request->input('status');
 
         // เริ่มต้นคำสั่ง query
         $query = DB::table('reserve_histories');
@@ -28,6 +29,9 @@ class Reserve_history_controller extends Controller
         // ถ้ามีการเลือก 'type' ให้กรองข้อมูลตาม 'type'
         if ($type) {
             $query->where('type', $type);
+        }
+        if ($status) {
+            $query->where('status', $status);
         }
 
         // ดึงข้อมูลจากฐานข้อมูลตาม query ที่กรองแล้ว
@@ -291,6 +295,6 @@ class Reserve_history_controller extends Controller
         // ลบข้อมูลจากฐานข้อมูล
         DB::table('reserve_histories')->where('id', $id)->delete();
 
-        return redirect()->route('reserve_history.index')->with('success', 'ลบข้อมูลสำเร็จ');
+        return redirect()->route('reserve_history.index');
     }
 }

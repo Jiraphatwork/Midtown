@@ -39,42 +39,45 @@
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                                 <div class="container mt-5">
-                                    <h2 class="text-center mb-4 text-dark">ประวัติการจอง</h2>
+                                    <h1 class="text-center mb-6 text-dark" >ประวัติการจอง </h1>
 
-                                    <div class="d-flex justify-content-between mb-3">
-                                        <form action="{{ route('reserve_history.index') }}" method="GET"
-                                            class="d-flex align-items-center">
-                                            <div class="input-group">
-                                                <select name="type" class="form-select me-3"
-                                                    onchange="this.form.submit()">
+                                    <div class="d-flex justify-content-end mb-3 align-items-center">
+                                        <form action="{{ route('reserve_history.index') }}" method="GET" class="d-flex align-items-center">
+                                            <!-- ฟิลเตอร์รูปแบบพื้นที่ -->
+                                            <div class="input-group me-3">
+                                                <select name="type" class="form-select" onchange="this.form.submit()">
                                                     <option value="">-- เลือกรูปแบบพื้นที่ --</option>
-                                                    <option value="รูปแบบที่1"
-                                                        {{ request('type') == 'รูปแบบที่1' ? 'selected' : '' }}>
-                                                        รูปแบบที่1</option>
-                                                    <option value="รูปแบบที่2"
-                                                        {{ request('type') == 'รูปแบบที่2' ? 'selected' : '' }}>
-                                                        รูปแบบที่2</option>
-                                                    <option value="รูปแบบที่3"
-                                                        {{ request('type') == 'รูปแบบที่3' ? 'selected' : '' }}>
-                                                        รูปแบบที่3</option>
+                                                    <option value="รูปแบบที่1" {{ request('type') == 'รูปแบบที่1' ? 'selected' : '' }}>รูปแบบที่1</option>
+                                                    <option value="รูปแบบที่2" {{ request('type') == 'รูปแบบที่2' ? 'selected' : '' }}>รูปแบบที่2</option>
+                                                    <option value="รูปแบบที่3" {{ request('type') == 'รูปแบบที่3' ? 'selected' : '' }}>รูปแบบที่3</option>
+                                                </select>
+                                            </div>
+                                    
+                                            <!-- ฟิลเตอร์สถานะ -->
+                                            <div class="input-group me-3">
+                                                <select name="status" class="form-select" onchange="this.form.submit()">
+                                                    <option value="">-- เลือกดูสถานะ --</option>
+                                                    <option value="จ่ายแล้ว" {{ request('status') == 'จ่ายแล้ว' ? 'selected' : '' }}>จ่ายแล้ว</option>
+                                                    <option value="ยังไม่จ่าย" {{ request('status') == 'ยังไม่จ่าย' ? 'selected' : '' }}>ยังไม่จ่าย</option>
                                                 </select>
                                             </div>
                                         </form>
-
-                                        <div class="d-flex justify-content-end mb-3">
-                                            <a href="{{ route('reserve_history.add') }}" class="btn btn-success btn-sm">
-                                                <i class="fas fa-plus"></i> เพิ่มข้อมูล</a>
-                                        </div>
+                                    
+                                        <!-- ปุ่มเพิ่มข้อมูล -->
+                                        <a href="{{ route('reserve_history.add') }}" class="btn btn-success btn-sm">
+                                            <i class="fas fa-plus"></i> เพิ่มข้อมูล
+                                        </a>
                                     </div>
+                                    
+                                    
 
                                     <div class="card rounded ">
                                         <div class="card-body">
                                             <div class="table-responsive rounded">
-
                                                 <table class="table table-hover table-striped text-center align-middle">
                                                     <thead class="table-dark">
                                                         <tr>
-                                                            <th scope="col">ลำดับ</th>
+                                                            <th scope="col" style="width: 10%">ลำดับ</th>
                                                             <th scope="col">ชื่อ-นามสกุล</th>
                                                             <th scope="col">รวมวันที่</th>
                                                             <th scope="col">สถานะ</th>
@@ -83,7 +86,7 @@
                                                             <th scope="col">รูปภาพ</th>
                                                             <th scope="col">พื้นที่</th>
                                                             <th scope="col">ราคา</th>
-                                                            <th scope="col">จัดการ</th>
+                                                            <th scope="col" >จัดการ</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -95,6 +98,7 @@
                                                                     <!-- ปุ่มสำหรับเปิด Modal -->
                                                                     <button type="button"
                                                                         class="btn btn-primary btn-sm"
+                                                                        
                                                                         data-bs-toggle="modal"
                                                                         data-bs-target="#dateModal{{ $history->id }}">
                                                                         ดูข้อมูล
@@ -102,9 +106,9 @@
                                                                 </td>
                                                                 <td>
                                                                     @if ($history->status == 'จ่ายแล้ว')
-                                                                        <span class="badge bg-success">จ่ายแล้ว</span>
+                                                                        <span class="badge bg-success" style="color: #fff">จ่ายแล้ว</span>
                                                                     @else
-                                                                        <span class="badge bg-danger">ยังไม่จ่าย</span>
+                                                                        <span class="badge bg-danger" style="color: #fff">ยังไม่จ่าย</span>
                                                                     @endif
                                                                 </td>
                                                                 <td>{{ $history->product_type }}</td>
@@ -128,7 +132,6 @@
                                                                         class="btn btn-warning btn-sm">
                                                                         <i class="fas fa-edit"></i> แก้ไข
                                                                     </a>
-
                                                                     <form id="delete-form-{{ $history->id }}"
                                                                         method="POST"
                                                                         action="{{ route('reserve_history.destroy', $history->id) }}"

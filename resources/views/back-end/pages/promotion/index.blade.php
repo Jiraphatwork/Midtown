@@ -38,7 +38,7 @@
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                                 <div class="container mt-5">
-                                    <h2 class="text-center mb-4 text-dark">ข้อมูลโปรโมชั่น</h2>
+                                    <h1 class="text-center mb-4 text-dark">ข้อมูลโปรโมชั่น</h1>
                                     <div class="d-flex justify-content-end mb-3">
                                         <a href="{{ route('promotion.add') }}" class="btn btn-success btn-sm"><i
                                                 class="fas fa-plus"></i> เพิ่มข้อมูล</a>
@@ -46,11 +46,10 @@
                                     <div class="card rounded ">
                                         <div class="card-body">
                                             <div class="table-responsive rounded">
-
                                                 <table class="table table-hover table-striped text-center align-middle">
                                                     <thead class="table-dark">
                                                         <tr>
-                                                            <th scope="col">ลำดับ</th>
+                                                            <th scope="col" style="width: 10%">ลำดับ</th>
                                                             <th scope="col">ชื่อโปรโมชั่น</th>
                                                             <th scope="col">รูปภาพ</th>
                                                             <th scope="col">รายละเอียด</th>
@@ -83,7 +82,7 @@
 
                                                                     <span>{{ $shortText }}</span>
                                                                     @if (strlen($text) > 30)
-                                                                        <button class="btn btn-link p-0"
+                                                                        <button class="btn btn-link p-0" style="font-size: 0.8rem;"
                                                                             data-bs-toggle="modal"
                                                                             data-bs-target="#detailsModal{{ $item->id }}">
                                                                             อ่านเพิ่มเติม

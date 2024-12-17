@@ -53,43 +53,44 @@ class SettingadminController extends Controller
     {
         // ดึงข้อมูลเดิมจากฐานข้อมูล
         $tb_admin = DB::table('tb_admin')->where('id', $id)->first();
-
+    
         // Validate ข้อมูลที่ได้รับจากฟอร์ม
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'email' => 'required|string|unique:tb_admin,email,' . $id,
             'role_name' => 'required|in:Admin,User',
-
+            'password' => 'nullable|string|min:4|confirmed', // ไม่จำเป็นต้องกรอกรหัสผ่าน
         ]);
+    
         // ดึงข้อมูลผู้ใช้งานปัจจุบัน
         $user = Auth::guard('admin')->user();
         if (!$user) {
             return redirect()->route('reserve_history.index')->with('error', 'ไม่พบผู้ใช้งานที่ล็อกอิน');
         }
-
-
-        // ตรวจสอบว่าไม่มีการเปลี่ยนแปลงข้อมูล
-        if (
-            $tb_admin->name == $validated['name'] &&
-            $tb_admin->role_name == $validated['role_name']
-
-        ) {
-            return redirect()->route('settingadmin.index')->with('success', 'ข้อมูลอัปเดตสำเร็จ');
-        }
-        // อัปเดตข้อมูลในฐานข้อมูล
-        $updated = DB::table('tb_admin')->where('id', $id)->update([
+    
+        // อัปเดตข้อมูล
+        $updateData = [
             'name' => $validated['name'],
+            'email' => $validated['email'],
             'role_name' => $validated['role_name'],
-            'updated_by' => $user->email, // บันทึกชื่อผู้แก้ไข
+            'updated_by' => $user->email,
             'updated_at' => now(),
-        ]);
-
+        ];
+    
+        // ถ้ามีการกรอกรหัสผ่านใหม่ ให้ทำการแฮชและอัปเดตรหัสผ่าน
+        if ($request->filled('password')) {
+            $updateData['password'] = Hash::make($validated['password']);
+        }
+    
+        $updated = DB::table('tb_admin')->where('id', $id)->update($updateData);
+    
         if ($updated) {
             return redirect()->route('settingadmin.index')->with('success', 'ข้อมูลอัปเดตสำเร็จ');
         } else {
             return back()->with('error', 'ไม่สามารถอัปเดตข้อมูลได้');
         }
     }
-
+    
     public function add()
     {
 

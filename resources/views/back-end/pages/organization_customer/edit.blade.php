@@ -129,9 +129,15 @@
                                                 <small class="text-muted">* หากไม่ต้องการเปลี่ยนไฟล์ ไม่ต้องเลือกไฟล์</small>
                                             </div>
                                 
-                                            <div class="text-center">
-                                                <button type="submit" class="btn btn-primary">บันทึก</button>
-                                                <a href="{{ route('organization_customer.index') }}" class="btn btn-secondary">ยกเลิก</a>
+                                            <!-- ปุ่มบันทึก และ ยกเลิก -->
+                                            <div class="text-center mt-4">
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="fa-solid fa-save"></i> บันทึก
+                                                </button>
+                                                
+                                                <a href="{{ route('organization_customer.index') }}" class="btn btn-secondary">
+                                                    <i class="fa-solid fa-circle-xmark"></i> ยกเลิก
+                                                </a>
                                             </div>
                                         </form>
                                     </div>

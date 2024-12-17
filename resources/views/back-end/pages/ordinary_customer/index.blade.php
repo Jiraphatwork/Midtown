@@ -38,7 +38,7 @@
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                                 <div class="container mt-5">
-                                    <h2 class="text-center mb-4 text-dark">ข้อมูลลูกค้า(บุคคล)</h2>
+                                    <h1 class="text-center mb-4 text-dark">ข้อมูลลูกค้า(บุคคล)</h1>
                                     <div class="d-flex justify-content-end mb-3">
                                         <a href="{{ route('ordinary_customer.add') }}" class="btn btn-success btn-sm">
                                             <i class="fas fa-plus"></i> เพิ่มข้อมูล</a>

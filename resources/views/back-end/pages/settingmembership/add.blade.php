@@ -52,16 +52,26 @@
                                             @csrf
                                             <div class="mb-3">
                                                 <label for="name_condition" class="form-label">ชื่อเงื่อนไข</label>
-                                                <input type="text" class="form-control" id="name_condition" name="name_condition"
-                                                    placeholder="กรอกชื่อเงื่อนไข" required>
+                                                <input type="text" class="form-control" id="name_condition"
+                                                    name="name_condition" placeholder="กรอกชื่อเงื่อนไข" required>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="details" class="form-label">รายละเอียด</label>
                                                 <textarea class="form-control" id="details" name="details" rows="4" placeholder="กรอกรายละเอียด" required></textarea>
                                             </div>
+
                                             <div class="d-flex justify-content-center text-center">
-                                                <a href="javascript:void(0)" class="btn btn-primary me-2" id="submit" onclick="check_add()">บันทึก</a>
-                                                <button type="reset" onclick="history.back()" class="btn btn-light btn-active-light-primary">ยกเลิก</button>
+                                                <!-- ปุ่มบันทึก  -->
+                                                <a href="javascript:void(0)" class="btn btn-primary me-2" id="submit"
+                                                    onclick="check_add()">
+                                                    <i class="fa-solid fa-save"></i> บันทึก
+                                                </a>
+
+                                                <!-- ปุ่มยกเลิก  -->
+                                                <button type="reset" onclick="history.back()"
+                                                    class="btn btn-light btn-active-light-primary">
+                                                    <i class="fa-solid fa-circle-xmark"></i> ยกเลิก
+                                                </button>
                                             </div>
                                         </form>
                                     </div>
@@ -146,8 +156,8 @@
                                 icon: 'success',
                                 title: "สำเร็จ!",
                                 text: "เพิ่มข้อมูลสำเร็จ",
-                                showCancelButton: false,
-                                confirmButtonText: 'ตกลง',
+                                timer: 2000,
+                                showConfirmButton: false,
                             }).then((result) => {
                                 location.href =
                                     "{{ url('webpanel/settingmembership') }}";
@@ -158,7 +168,7 @@
                                 title: "Error",
                                 text: "Something is wrong",
                                 showCancelButton: false,
-                                confirmButtonText: 'Close',
+                                confirmButtonText: 'ปิด',
                             });
                         }
                     }
@@ -167,8 +177,6 @@
                 return false;
             }
         });
-
         return false;
     }
-
 </script>

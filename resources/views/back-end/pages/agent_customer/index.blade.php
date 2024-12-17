@@ -38,7 +38,7 @@
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                                 <div class="container mt-5">
-                                    <h2 class="text-center mb-4 text-dark">ข้อมูลลูกค้า(Agent)</h2>
+                                    <h1 class="text-center mb-4 text-dark">ข้อมูลลูกค้า(Agent)</h1>
                                     <div class="d-flex justify-content-end mb-3">
                                         <a href="{{ route('agent_customer.add') }}"
                                             class="btn btn-success btn-sm"><i class="fas fa-plus"></i> เพิ่มข้อมูล</a>
@@ -50,9 +50,9 @@
                                                 <table class="table table-hover table-striped text-center align-middle">
                                             <thead class="table-dark">
                                                 <tr>
-                                                    <th scope="col" style="width: 5%;">ลำดับ</th>
-                                                    <th scope="col" style="width: 25%;">ชื่อ-นามสกุล</th>
-                                                    <th scope="col" style="width: 30%;">อีเมล</th>
+                                                    <th scope="col" style="width: 10%;">ลำดับ</th>
+                                                    <th scope="col" style="width: 20%;">ชื่อ-นามสกุล</th>
+                                                    <th scope="col" style="width: 20%;">อีเมล</th>
                                                     <th scope="col" style="width: 10%;">รายละเอียด</th>
                                                     <th scope="col" style="width: 20%;">จัดการ</th>
                                                 </tr>

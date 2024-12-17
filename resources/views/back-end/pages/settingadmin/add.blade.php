@@ -37,12 +37,11 @@
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                                 <div class="container mt-5 d-flex justify-content-center">
-                                    <div class="card shadow-sm"
-                                        style="width: 40rem; border-radius: 12px; border: none;">
+                                    <div class="card shadow-sm" style="width: 40rem; border-radius: 12px; border: none;">
                                         <div class="card-header text-center"
                                             style="background: linear-gradient(135deg, #293038, #2b3032); color: white; padding: 1.5rem;">
-                                            <h4 class="mb-0" style="font-size: 1.75rem; font-weight: 600;">
-                                                เพิ่มข้อมูลผู้ดูแลระบบ</h4>
+                                            <h4 class="mb-0" style="font-size: 1.75rem; font-weight: 600; color:#fff">
+                                                <i class="fa-solid fa-user-plus fs-2" style="margin-right: 10px; "></i> เพิ่มข้อมูลผู้ดูแลระบบ</h4>
                                         </div>
                                         <div class="card-body p-4" style="background-color: #f7f9fc;">
                                             <form action="{{ route('settingadmin.add') }}" method="POST">
@@ -50,60 +49,53 @@
                                                 <!-- ชื่อ -->
                                                 <div class="form-group mb-4">
                                                     <label for="name" class="form-label">ชื่อ</label>
-                                                    <input type="text" class="form-control" id="name"
-                                                        name="name" placeholder="กรอกชื่อ" required>
+                                                    <input type="text" class="form-control" id="name" name="name" placeholder="กรอกชื่อ" required>
                                                 </div>
-
+                                
                                                 <!-- Username -->
                                                 <div class="form-group mb-4">
                                                     <label for="email" class="form-label">Username</label>
                                                     <input type="text" class="form-control" id="email" name="email" placeholder="กรอก Username" required>
                                                 </div>
-                                                
-
+                                
                                                 <!-- Password -->
                                                 <div class="form-group mb-4">
                                                     <label for="password" class="form-label">รหัสผ่าน</label>
-                                                    <input type="password" class="form-control" id="password"
-                                                        name="password" placeholder="กรอกรหัสผ่าน" required>
+                                                    <input type="password" class="form-control" id="password" name="password" placeholder="กรอกรหัสผ่าน" required>
                                                 </div>
-
+                                
                                                 <!-- Confirm Password -->
                                                 <div class="form-group mb-4">
-                                                    <label for="password_confirmation"
-                                                        class="form-label">ยืนยันรหัสผ่าน</label>
-                                                    <input type="password" class="form-control"
-                                                        id="password_confirmation" name="password_confirmation"
-                                                        placeholder="กรอกยืนยันรหัสผ่าน" required>
+                                                    <label for="password_confirmation" class="form-label">ยืนยันรหัสผ่าน</label>
+                                                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="กรอกยืนยันรหัสผ่าน" required>
                                                 </div>
-
+                                
                                                 <!-- Role -->
                                                 <div class="form-group mb-4">
                                                     <label for="role_name" class="form-label">Role</label>
-                                                    <select class="form-select" id="role_name" name="role_name"
-                                                        required>
+                                                    <select class="form-select" id="role_name" name="role_name" required>
                                                         <option value="Admin">Admin</option>
                                                         <option value="User">User</option>
                                                     </select>
                                                 </div>
-
-                                               <!-- ปุ่ม -->
-                                               <div class="text-center mt-4">
-                                                <button type="submit" class="btn btn-primary px-4 py-2"
-                                                    style="border-radius: 30px; font-weight: 600;">
-                                                    <i class="bi bi-save"></i> บันทึก
-                                                </button>
-                                                <a href="{{ route('settingadmin.index') }}"
-                                                    class="btn btn-outline-secondary px-4 py-2"
-                                                    style="border-radius: 30px; font-weight: 600;">
-                                                    <i class="bi bi-x-circle"></i> ยกเลิก
-                                                </a>
-                                            </div>
+                                
+                                                <!-- ปุ่ม -->
+                                                <div class="text-center mt-4">
+                                                    <button type="submit" class="btn btn-primary px-4 py-2" style="border-radius: 30px; font-weight: 600;">
+                                                        <i class="fa-solid fa-floppy-disk"></i> บันทึก
+                                                    </button>
+                                                    <a href="{{ route('settingadmin.index') }}" class="btn btn-outline-secondary px-4 py-2" style="border-radius: 30px; font-weight: 600;">
+                                                        <i class="fa-solid fa-circle-xmark"></i> ยกเลิก
+                                                    </a>
+                                                </div>
                                             </form>
-
+                                
                                         </div>
                                     </div>
                                 </div>
+                                
+
+
                             </div>
                         </div>
                     </div>

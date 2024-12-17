@@ -73,8 +73,17 @@
                                             <input type="hidden" name="delete_image" id="delete_image" value="">
 
                                             <div class="d-flex justify-content-center text-center">
-                                                <a href="javascript:void(0)" class="btn btn-primary me-2" id="submit" onclick="check_add()">บันทึก</a>
-                                                <button type="reset" onclick="history.back()" class="btn btn-light btn-active-light-primary">ยกเลิก</button>
+                                                <!-- ปุ่มบันทึก  -->
+                                                <a href="javascript:void(0)" class="btn btn-primary me-2" id="submit"
+                                                    onclick="check_add()">
+                                                    <i class="fa-solid fa-save"></i> บันทึก
+                                                </a>
+
+                                                <!-- ปุ่มยกเลิก  -->
+                                                <button type="reset" onclick="history.back()"
+                                                    class="btn btn-light btn-active-light-primary">
+                                                    <i class="fa-solid fa-circle-xmark"></i> ยกเลิก
+                                                </button>
                                             </div>
                                         </form>
                                     </div>
@@ -156,8 +165,8 @@
                                 icon: 'success',
                                 title: "สำเร็จ!",
                                 text: "แก้ไขข้อมูลสำเร็จ",
-                                showCancelButton: false,
-                                confirmButtonText: 'Close',
+                                timer: 2000,
+                                showConfirmButton: false,
                             }).then((result) => {
                                 location.href = "{{ url('webpanel/settingqrcode') }}";
                             });

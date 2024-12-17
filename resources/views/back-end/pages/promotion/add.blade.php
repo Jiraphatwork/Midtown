@@ -70,9 +70,14 @@
                                             </div>
                                         
                                             <!-- ปุ่มบันทึกและยกเลิก -->
-                                            <div class="text-center mt-3">
-                                                <button type="submit" class="btn btn-primary">บันทึก</button>
-                                                <a href="{{ route('promotion.index') }}" class="btn btn-secondary">ยกเลิก</a>
+                                            <div class="text-center mt-4">
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="fa-solid fa-save"></i> บันทึก
+                                                </button>
+                                                
+                                                <a href="{{ route('promotion.index') }}" class="btn btn-secondary">
+                                                    <i class="fa-solid fa-circle-xmark"></i> ยกเลิก
+                                                </a>
                                             </div>
                                         </form>
                                         
@@ -127,3 +132,28 @@
         });
     });
 </script>
+@if (session('success'))
+    <script>
+        console.log("Success Message: {{ session('success') }}"); // ตรวจสอบค่าที่ส่งมา
+        Swal.fire({
+            title: 'สำเร็จ!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            timer: 2000,
+            showConfirmButton: false,
+        });
+    </script>
+@endif
+
+@if (session('error'))
+    <script>
+        console.log("Error Message: {{ session('error') }}"); // ตรวจสอบค่าที่ส่งมา
+        Swal.fire({
+            title: 'ข้อผิดพลาด!',
+            text: "{{ session('error') }}",
+            icon: 'error',
+            confirmButtonText: 'ตกลง'
+        });
+    </script>
+@endif
+

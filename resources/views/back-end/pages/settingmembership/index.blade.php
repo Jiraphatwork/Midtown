@@ -38,113 +38,117 @@
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                                 <div class="container mt-5">
-                                    <h2 class="text-center mb-4 text-dark">ตั้งค่าข้อมูลเงื่อนการสมัครสมาชิกข้อตกลง</h2>
+                                    <h1 class="text-center mb-4 text-dark">ตั้งค่าข้อมูลเงื่อนการสมัครสมาชิกข้อตกลง</h1>
                                     <div class="d-flex justify-content-end mb-3">
-                                        <a href="webpanel/settingmembership/add"
-                                            class="btn btn-success btn-sm"><i class="fas fa-plus"></i> เพิ่มข้อมูล</a>
+                                        <a href="webpanel/settingmembership/add" class="btn btn-success btn-sm"><i
+                                                class="fas fa-plus"></i> เพิ่มข้อมูล</a>
                                     </div>
                                     <div class="card rounded ">
                                         <div class="card-body">
                                             <div class="table-responsive rounded">
 
                                                 <table class="table table-hover table-striped text-center align-middle">
-                                            <thead class="table-dark">
-                                                <tr>
-                                                    <th scope="col">ลำดับ</th>
-                                                    <th scope="col">ชื่อเงื่อนไข</h>
-                                                    <th scope="col">รายละเอียด</th>
-                                                    <th scope="col" style="width: 20%;">จัดการ</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($items as $index => $item)
-                                                    <tr class="text-center">
-                                                        <td>{{ $index + 1 }}</td>
-                                                        <td>{{ $item->name_condition }}</td>
-                                                        <td>
-                                                            @php
-                                                                $text = $item->details;
-                                                                $shortText = Str::limit($text, 50);
-                                                            @endphp
+                                                    <thead class="table-dark">
+                                                        <tr>
+                                                            <th scope="col" style="width: 10%">ลำดับ</th>
+                                                            <th scope="col">ชื่อเงื่อนไข</h>
+                                                            <th scope="col">รายละเอียด</th>
+                                                            <th scope="col" style="width: 20%;">จัดการ</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($items as $index => $item)
+                                                            <tr class="text-center">
+                                                                <td>{{ $index + 1 }}</td>
+                                                                <td>{{ $item->name_condition }}</td>
+                                                                <td>
+                                                                    @php
+                                                                        $text = $item->details;
+                                                                        $shortText = Str::limit($text, 50);
+                                                                    @endphp
 
-                                                            <span>{{ $shortText }}</span>
-                                                            @if (strlen($text) > 100)
-                                                                <button class="btn btn-link p-0" data-bs-toggle="modal"
-                                                                    data-bs-target="#detailsModal{{ $item->id }}">
-                                                                    อ่านเพิ่มเติม
-                                                                </button>
-                                                            @endif
-                                                        <td class="text-center">
-                                                            <a href="{{ route('settingmembership.edit', $item->id) }}"
-                                                                class="btn btn-warning btn-sm"><i
-                                                                    class="fas fa-edit"></i> แก้ไข</a>
+                                                                    <span>{{ $shortText }}</span>
+                                                                    @if (strlen($text) > 100)
+                                                                        <button class="btn btn-link p-0" style="font-size: 0.8rem;"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#detailsModal{{ $item->id }}">
+                                                                            อ่านเพิ่มเติม
+                                                                        </button>
+                                                                    @endif
+                                                                <td class="text-center">
+                                                                    <a href="{{ route('settingmembership.edit', $item->id) }}"
+                                                                        class="btn btn-warning btn-sm"><i
+                                                                            class="fas fa-edit"></i> แก้ไข</a>
 
-                                                            <a href="javascript:void(0);" class="btn btn-danger btn-sm"
-                                                                onclick="check_destroy({{ $item->id }}, '{{ Auth::guard('admin')->user()->role_name }}')">
-                                                                <i class="fas fa-trash-alt"></i> ลบ</a>
-                                                        </td>
-                                                    </tr>
-                                                    <!-- Modal -->
-                                                    <div class="modal fade" id="detailsModal{{ $item->id }}"
-                                                        tabindex="-1"
-                                                        aria-labelledby="detailsModalLabel{{ $item->id }}"
-                                                        aria-hidden="true">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title"
-                                                                        id="detailsModalLabel{{ $item->id }}">
-                                                                        ชื่อเงื่อนไข: {{ $item->name_condition }}
-                                                                    </h5>
+                                                                    <a href="javascript:void(0);"
+                                                                        class="btn btn-danger btn-sm"
+                                                                        onclick="check_destroy({{ $item->id }}, '{{ Auth::guard('admin')->user()->role_name }}')">
+                                                                        <i class="fas fa-trash-alt"></i> ลบ</a>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- Modal -->
+                                                            <div class="modal fade" id="detailsModal{{ $item->id }}"
+                                                                tabindex="-1"
+                                                                aria-labelledby="detailsModalLabel{{ $item->id }}"
+                                                                aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title"
+                                                                                id="detailsModalLabel{{ $item->id }}">
+                                                                                ชื่อเงื่อนไข:
+                                                                                {{ $item->name_condition }}
+                                                                            </h5>
 
-                                                                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
-                                                                        data-bs-dismiss="modal" aria-label="Close">
-                                                                        <i class="ki-duotone ki-cross fs-1"><span
-                                                                                class="path1"></span><span
-                                                                                class="path2"></span></i>
+                                                                            <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+                                                                                data-bs-dismiss="modal"
+                                                                                aria-label="Close">
+                                                                                <i class="ki-duotone ki-cross fs-1"><span
+                                                                                        class="path1"></span><span
+                                                                                        class="path2"></span></i>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            {{ $text }}
+                                                                        </div>
+                                                                        <div class="modal-footer">
+
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="modal-body">
-                                                                    {{ $text }}
-                                                                </div>
-                                                                <div class="modal-footer">
-
-                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
 
-                        <div id="kt_app_content" class="app-content flex-column-fluid">
-                            <!--begin::Content container-->
-                            <div id="kt_app_content_container" class="app-container container-xxl">
+                    <div id="kt_app_content" class="app-content flex-column-fluid">
+                        <!--begin::Content container-->
+                        <div id="kt_app_content_container" class="app-container container-xxl">
 
-                            </div>
-                            <!--end::Content container-->
                         </div>
-
+                        <!--end::Content container-->
                     </div>
-                    <!--end::Content wrapper-->
 
-                    <!--begin::Footer-->
-                    <div id="kt_app_footer" class="app-footer">
-                        @include("$prefix.layout.footer")
-                    </div>
-                    <!--End::Footer-->
                 </div>
-                <!--End::Main-->
+                <!--end::Content wrapper-->
+
+                <!--begin::Footer-->
+                <div id="kt_app_footer" class="app-footer">
+                    @include("$prefix.layout.footer")
+                </div>
+                <!--End::Footer-->
             </div>
+            <!--End::Main-->
         </div>
+    </div>
     </div>
 
     <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
@@ -180,8 +184,9 @@
 
         // ถ้าเป็น Admin ให้ดำเนินการลบข้อมูล
         Swal.fire({
+            title: 'คุณแน่ใจหรือไม่?',
+            text: "การลบข้อมูลนี้ไม่สามารถกู้คืนได้!",
             icon: 'warning',
-            title: 'การลบข้อมูลนี้ไม่สามารถกู้คืนได้!',
             showCancelButton: true,
             confirmButtonText: 'ใช่, ลบเลย!',
             cancelButtonText: 'ยกเลิก',
@@ -198,8 +203,8 @@
                                 icon: 'success',
                                 title: "ลบสำเร็จ!",
                                 text: "ข้อมูลได้ถูกลบเรียบร้อยแล้ว.",
-                                showCancelButton: false,
-                                confirmButtonText: 'Close',
+                                timer: 2000,
+                                showConfirmButton: false,
                             }).then(() => {
                                 location.reload(); // รีโหลดหน้าเพื่อให้ข้อมูลอัพเดต
                             });

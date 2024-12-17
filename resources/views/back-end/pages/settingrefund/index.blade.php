@@ -38,7 +38,7 @@
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                                 <div class="container mt-5">
-                                    <h2 class="text-center mb-4 text-dark">ตั้งค่าข้อมูลเงื่อนไขการคืนเงินการยกเลิก</h2>
+                                    <h1 class="text-center mb-4 text-dark">ตั้งค่าข้อมูลเงื่อนไขการคืนเงินการยกเลิก</h1>
                                     <div class="d-flex justify-content-end mb-3">
                                         <a href="webpanel/settingrefund/add" class="btn btn-success btn-sm"><i
                                                 class="fas fa-plus"></i> เพิ่มข้อมูล</a>
@@ -50,7 +50,7 @@
                                                 <table class="table table-hover table-striped text-center align-middle">
                                                     <thead class="table-dark">
                                                         <tr>
-                                                            <th scope="col">ลำดับ</th>
+                                                            <th scope="col" style="width: 20%">ลำดับ</th>
                                                             <th scope="col">ชื่อเงื่อนไข</th>
                                                             <th scope="col">รายละเอียด</th>
                                                             <th scope="col" style="width: 20%;">จัดการ</th>
@@ -60,7 +60,7 @@
                                                         <!-- Loop through the items to display each one -->
                                                         @foreach ($items as $index => $item)
                                                             <tr class="text-center">
-                                                                <td>{{ $index + 1 }}</td>
+                                                                <td >{{ $index + 1 }}</td>
                                                                 <td>{{ $item->name }}</td>
                                                                 <td>
                                                                     @php
@@ -70,7 +70,7 @@
 
                                                                     <span>{{ $shortText }}</span>
                                                                     @if (strlen($text) > 30)
-                                                                        <button class="btn btn-link p-0"
+                                                                        <button class="btn btn-link p-0" style="font-size:0.8rem;"
                                                                             data-bs-toggle="modal"
                                                                             data-bs-target="#detailsModal{{ $item->id }}">
                                                                             อ่านเพิ่มเติม
@@ -177,8 +177,9 @@
         }
 
         Swal.fire({
+            title: 'คุณแน่ใจหรือไม่?',
+            text: "การลบข้อมูลนี้ไม่สามารถกู้คืนได้!",
             icon: 'warning',
-            title: 'การลบข้อมูลนี้ไม่สามารถกู้คืนได้!',
             showCancelButton: true,
             confirmButtonText: 'ใช่, ลบเลย!',
             cancelButtonText: 'ยกเลิก',
@@ -194,8 +195,8 @@
                                 icon: 'success',
                                 title: "ลบสำเร็จ!",
                                 text: "ข้อมูลได้ถูกลบเรียบร้อยแล้ว.",
-                                showCancelButton: false,
-                                confirmButtonText: 'Close',
+                                timer: 2000,
+                                showConfirmButton: false,
                             }).then(() => {
                                 location.reload(); // รีโหลดหน้าเพื่อให้ข้อมูลอัพเดต
                             });

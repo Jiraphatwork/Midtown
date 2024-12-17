@@ -38,7 +38,7 @@
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
                             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                                 <div class="container mt-5">
-                                    <h2 class="text-center mb-4 text-dark">ตั้งค่าสิทธิ์ผู้ใช้งาน</h2>
+                                    <h1 class="text-center mb-4 text-dark">ตั้งค่าสิทธิ์ผู้ใช้งาน</h1>
                                     <div class="d-flex justify-content-end mb-3">
                                         <a href="{{ route('settingadmin.add') }}" class="btn btn-success btn-sm"><i
                                                 class="fas fa-plus"></i> เพิ่มข้อมูล</a>
@@ -50,7 +50,7 @@
                                                 <table class="table table-hover table-striped text-center align-middle">
                                                     <thead class="table-dark">
                                                         <tr>
-                                                            <th scope="col">ลำดับ</th>
+                                                            <th scope="col"style="width: 10%">ลำดับ</th>
                                                             <th scope="col">ชื่อ</th>
                                                             <th scope="col">Username</th>
                                                             <th scope="col">Password</th>
@@ -61,20 +61,21 @@
                                                     <tbody>
                                                         @foreach ($tb_admin as $index => $item)
                                                             <tr>
-                                                                <td class="text-muted">{{ $index + 1 }}</td>
+                                                                <td>{{ $index + 1 }} </td>
                                                                 <td class="fw-bold">{{ $item->name }}</td>
                                                                 <td>{{ $item->email }}</td>
                                                                 <td class="text-truncate" style="width:100;">
-                                                                    {{ $item->password }}
+                                                                    {{ \Illuminate\Support\Str::limit($item->password, 15) }}
                                                                 </td>
+                                                                
 
                                                                 <td>
                                                                     @if ($item->role_name == 'Admin')
                                                                         <span class="badge bg-success"
-                                                                            style="font-size: 11px">Admin</span>
+                                                                            style="font-size: 11px;color:#fff">Admin</span>
                                                                     @else
                                                                         <span class="badge bg-primary"
-                                                                            style="font-size: 11px">User</span>
+                                                                            style="font-size: 11px; color:#fff">User</span>
                                                                     @endif
                                                                 </td>
                                                                 <td>

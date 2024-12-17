@@ -50,6 +50,13 @@ class promotionController extends Controller
             'first_date' => 'required|date',
             'last_date' => 'required|date',
         ]);
+
+           // ตรวจสอบว่า last_date มาก่อน first_date หรือไม่
+           if ($validated['last_date'] < $validated['first_date']) {
+            // ส่งข้อมูลข้อผิดพลาดไปยัง view พร้อมกับข้อมูลที่กรอก
+            return redirect()->back()->with('error', 'วันสิ้นสุดโปรโมชั่นไม่สามารถมาก่อนวันเริ่มต้นโปรโมชั่นได้')->withInput();
+        }
+
         // ดึงข้อมูลผู้ใช้งานปัจจุบันเพื่อใช้ในการบันทึกชื่อลงในdatabase
         $user = Auth::guard('admin')->user();
         if (!$user) {
@@ -84,6 +91,8 @@ class promotionController extends Controller
         // ดึงข้อมูลจากฐานข้อมูลตาม ID
         $item = DB::table('promotion_models')->find($id);
 
+
+        
         if (!$item) {
             return redirect()->route('promotion.index')->with('error', 'ไม่พบข้อมูล');
         }
@@ -113,11 +122,19 @@ class promotionController extends Controller
             'first_date' => 'required|date',
             'last_date' => 'required|date',
         ]);
+
+            // ตรวจสอบว่า last_date มาก่อน first_date หรือไม่
+            if ($validated['last_date'] < $validated['first_date']) {
+                // ส่งข้อมูลข้อผิดพลาดไปยัง view พร้อมกับข้อมูลที่กรอก
+                return redirect()->back()->with('error', 'วันสิ้นสุดโปรโมชั่นไม่สามารถมาก่อนวันเริ่มต้นโปรโมชั่นได้')->withInput();
+            }
+
         // ดึงข้อมูลผู้ใช้งานปัจจุบันเพื่อใช้ในการบันทึกชื่อลงในdatabase
         $user = Auth::guard('admin')->user();
         if (!$user) {
             return redirect()->back()->with('error', 'ไม่พบผู้ใช้งานที่ล็อกอิน');
         }
+
         // จัดการรูปภาพ (ถ้ามีการอัปโหลด) -pic_promotion
         $picpromotionFilename = $item->pic_promotion; // ใช้ไฟล์เดิมเป็นค่าเริ่มต้น
         if ($request->hasFile('pic_promotion')) {
@@ -183,6 +200,6 @@ class promotionController extends Controller
         // ลบข้อมูลจากฐานข้อมูล
         DB::table('promotion_models')->where('id', $id)->delete();
 
-        return redirect()->route('promotion.index')->with('success', 'ลบข้อมูลสำเร็จ');
+        return redirect()->route('promotion.index');
     }
 }

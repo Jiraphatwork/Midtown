@@ -153,10 +153,14 @@
                                             </div>
 
                                             <!-- ปุ่มบันทึกข้อมูล -->
-                                            <div class="text-center">
-                                                <button type="submit" class="btn btn-primary">บันทึก</button>
-                                                <a href="{{ route('agent_customer.index') }}"
-                                                    class="btn btn-secondary">ยกเลิก</a>
+                                            <div class="text-center mt-4">
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="fa-solid fa-save"></i> บันทึก
+                                                </button>
+                                                
+                                              <a href="{{ route('agent_customer.index') }}" class="btn btn-secondary">
+                                                    <i class="fa-solid fa-circle-xmark"></i> ยกเลิก
+                                                </a>
                                             </div>
                                         </form>
                                     </div>
