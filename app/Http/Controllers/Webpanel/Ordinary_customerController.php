@@ -49,7 +49,7 @@ class Ordinary_customerController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'pic_id_card' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'pic_id_card' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:2048',
             'id_card' => 'required|string|digits:13',
             'address' => 'required|string',
             'tel' => 'required|string|digits:10',
@@ -68,20 +68,17 @@ class Ordinary_customerController extends Controller
             return redirect()->back()->with('error', 'ไม่พบผู้ใช้งานที่ล็อกอิน');
         }
 
-        // จัดการรูปภาพ (ถ้ามีการอัปโหลด)
-        $filename = null;
+        $picidcardFilename = null;
         if ($request->hasFile('pic_id_card')) {
-            // สร้างชื่อไฟล์ใหม่เพื่อไม่ให้ซ้ำกัน
-            $filename = time() . '_' . $request->file('pic_id_card')->getClientOriginalName();
-            // บันทึกไฟล์ไปยังโฟลเดอร์ public/id_cards
-            $request->file('pic_id_card')->move(public_path('pic_id_cards'), $filename);
+            $picidcardFilename = time() . '_' . $request->file('pic_id_card')->getClientOriginalName();
+            $request->file('pic_id_card')->move(public_path('pic_id_cards'), $picidcardFilename);
         }
 
         // บันทึกข้อมูลลงฐานข้อมูล
         DB::table('ordinary_customer_models')->insert([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'pic_id_card' => $filename,
+            'pic_id_card' => $picidcardFilename,
             'id_card' => $validated['id_card'],
             'address' => $validated['address'],
             'tel' => $validated['tel'],
@@ -138,7 +135,7 @@ class Ordinary_customerController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'pic_id_card' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'pic_id_card' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:2048',
             'id_card' => 'required|string|digits:13',
             'address' => 'required|string',
             'tel' => 'required|string|digits:10',
@@ -158,17 +155,17 @@ class Ordinary_customerController extends Controller
         }
 
         // เริ่มต้นการจัดการรูปภาพ (ใช้ไฟล์เดิมถ้าไม่มีการอัปโหลดใหม่)
-        $filename = $item->pic_id_card; // ใช้ไฟล์เดิมเป็นค่าเริ่มต้น
+        $picidcardFilename = $item->pic_id_card; // ใช้ไฟล์เดิมเป็นค่าเริ่มต้น
         if ($request->hasFile('pic_id_card')) {
             // สร้างชื่อไฟล์ใหม่เพื่อไม่ให้ซ้ำกัน
-            $filename = time() . '_' . $request->file('pic_id_card')->getClientOriginalName();
+            $picidcardFilename = time() . '_' . $request->file('pic_id_card')->getClientOriginalName();
 
             // บันทึกไฟล์ไปยังโฟลเดอร์ public/id_cards
-            $request->file('pic_id_card')->move(public_path('pic_id_card'), $filename);
+            $request->file('pic_id_card')->move(public_path('pic_id_cards'), $picidcardFilename);
 
             // ลบไฟล์เก่าถ้ามี
-            if (!empty($item->pic_id_card) && file_exists(public_path('pic_id_card/' . $item->pic_id_card))) {
-                unlink(public_path('pic_id_card/' . $item->pic_id_card));
+            if (!empty($item->pic_id_card) && file_exists(public_path('pic_id_cards/' . $item->pic_id_card))) {
+                unlink(public_path('pic_id_cards/' . $item->pic_id_card));
             }
         }
 
@@ -176,7 +173,7 @@ class Ordinary_customerController extends Controller
         if (
             $item->name == $validated['name'] &&
             $item->email == $validated['email'] &&
-            $item->pic_id_card == $filename &&
+            $item->pic_id_card == $picidcardFilename &&
             $item->id_card == $validated['id_card'] &&
             $item->address == $validated['address'] &&
             $item->tel == $validated['tel'] &&
@@ -191,7 +188,7 @@ class Ordinary_customerController extends Controller
         $updated = DB::table('ordinary_customer_models')->where('id', $id)->update([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'pic_id_card' => $filename,
+            'pic_id_card' => $picidcardFilename,
             'id_card' => $validated['id_card'],
             'address' => $validated['address'],
             'tel' => $validated['tel'],
@@ -217,10 +214,17 @@ class Ordinary_customerController extends Controller
         }
 
         // ดึงข้อมูลที่ต้องการลบ
-        $history = DB::table('ordinary_customer_models')->where('id', $id)->first();
+        $item = DB::table('ordinary_customer_models')->where('id', $id)->first();
 
-        if (!$history) {
+        if (!$item) {
             return redirect()->route('ordinary_customer.index')->with('error', 'ไม่พบข้อมูลที่ต้องการลบ');
+        }
+        
+        if (!empty($item->pic_id_card)) {
+            $picidcardFilename = public_path('pic_id_cards/' . $item->pic_id_card);
+            if (is_file($picidcardFilename)) { // ตรวจสอบว่าเป็นไฟล์
+                unlink($picidcardFilename); // ลบไฟล์จากระบบ
+            }
         }
 
         // ลบข้อมูล

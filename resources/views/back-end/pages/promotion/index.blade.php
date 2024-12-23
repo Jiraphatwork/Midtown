@@ -82,7 +82,7 @@
 
                                                                     <span>{{ $shortText }}</span>
                                                                     @if (strlen($text) > 30)
-                                                                        <button class="btn btn-link p-0" style="font-size: 0.8rem;"
+                                                                        <button class="btn btn-link p-0" style="font-size: 0.8rem;color: rgb(72, 165, 240);"
                                                                             data-bs-toggle="modal"
                                                                             data-bs-target="#detailsModal{{ $item->id }}">
                                                                             อ่านเพิ่มเติม

@@ -54,7 +54,8 @@ class Organization_customerController extends Controller
             'fax' => 'nullable|string|digits:10',
             'tel2' => 'nullable|string|digits:10',
             'tax_id' => 'nullable|string|digits:13',
-            'card_slip' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'business_card' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:2048',
+            'card_slip' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:2048',
         ], [
             'tel.digits' => 'หมายเลขเบอร์โทรศัพท์ต้องมีความยาว 10 หลักเท่านั้น',
             'tax_id.digits' => 'หมายเลขผู้เสียภาษีต้องมีความยาว 13 หลักเท่านั้น',
@@ -138,7 +139,7 @@ class Organization_customerController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'business_card' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'business_card' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:2048',
             'address' => 'required|string',
             'address2' => 'nullable|string',
             'address3' => 'nullable|string',
@@ -146,7 +147,7 @@ class Organization_customerController extends Controller
             'fax' => 'nullable|string|max:10',
             'tel2' => 'nullable|string|max:10',
             'tax_id' => 'nullable|string|digits:13',
-            'card_slip' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'card_slip' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:2048',
         ], [
             'tel.digits' => 'หมายเลขเบอร์โทรศัพท์ต้องมีความยาว 10 หลักเท่านั้น',
             'tax_id.digits' => 'หมายเลขผู้เสียภาษีต้องมีความยาว 13 หลักเท่านั้น',
@@ -236,23 +237,23 @@ class Organization_customerController extends Controller
         }
 
         // ค้นหาข้อมูลลูกค้าในฐานข้อมูล
-        $history = DB::table('organization_customer_models')->where('id', $id)->first();
+        $item = DB::table('organization_customer_models')->where('id', $id)->first();
 
-        if (!$history) {
+        if (!$item) {
             return redirect()->route('organization_customer.index')->with('error', 'ไม่พบข้อมูลที่ต้องการลบ');
         }
 
         // ลบไฟล์จาก public/card_slips หากมีไฟล์
-        if (!empty($history->card_slip)) {
-            $cardSlipFilePath = public_path('card_slips/' . $history->card_slip);
+        if (!empty($item->card_slip)) {
+            $cardSlipFilePath = public_path('card_slips/' . $item->card_slip);
             if (is_file($cardSlipFilePath)) { // ตรวจสอบว่าเป็นไฟล์
                 unlink($cardSlipFilePath); // ลบไฟล์จากระบบ
             }
         }
 
         // ลบไฟล์จาก public/business_cards หากมีไฟล์
-        if (!empty($history->business_card)) {
-            $businessCardFilePath = public_path('business_cards/' . $history->business_card);
+        if (!empty($item->business_card)) {
+            $businessCardFilePath = public_path('business_cards/' . $item->business_card);
             if (is_file($businessCardFilePath)) { // ตรวจสอบว่าเป็นไฟล์
                 unlink($businessCardFilePath); // ลบไฟล์จากระบบ
             }

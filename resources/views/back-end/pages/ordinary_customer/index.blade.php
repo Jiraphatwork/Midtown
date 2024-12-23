@@ -105,7 +105,6 @@
 
                                     <!-- Modal -->
                                     @foreach ($ordinary_customer as $item)
-                                        <!-- ใช้ $ordinary_customer แทน $organization_customer -->
                                         <div class="modal fade" id="detailModal-{{ $item->id }}" tabindex="-1"
                                             aria-labelledby="detailModalLabel-{{ $item->id }}" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -130,9 +129,24 @@
                                                                     <th class="text-end">บัตรประชาชน</th>
                                                                     <td class="text-center">
                                                                         @if ($item->pic_id_card)
-                                                                            <img src="{{ asset('pic_id_cards/' . $item->pic_id_card) }}"
-                                                                                style="width: 50%" alt="Pic_id_card"
-                                                                                class="img-fluid">
+                                                                            @php
+                                                                                $fileExtension = pathinfo($item->pic_id_card, PATHINFO_EXTENSION);
+                                                                            @endphp
+                                                                
+                                                                            @if (in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
+                                                                                <!-- แสดงรูปภาพ -->
+                                                                                <img src="{{ asset('pic_id_cards/' . $item->pic_id_card) }}"
+                                                                                     style="width: 50%" alt="Business Card" class="img-fluid">
+                                                                            @elseif ($fileExtension === 'pdf')
+                                                                                <!-- แสดงลิงก์สำหรับเปิด PDF -->
+                                                                                <a href="{{ asset('pic_id_cards/' . $item->pic_id_card) }}" 
+                                                                                   target="_blank" class="btn btn-sm btn-primary">
+                                                                                    เปิดไฟล์ PDF
+                                                                                </a>
+                                                                            @else
+                                                                                <!-- แสดงข้อความหากไฟล์ไม่ใช่ภาพหรือ PDF -->
+                                                                                <p>ไม่สามารถแสดงตัวอย่างไฟล์นี้ได้</p>
+                                                                            @endif
                                                                         @else
                                                                             <p>ไม่มีข้อมูล</p>
                                                                         @endif

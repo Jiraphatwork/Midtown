@@ -125,14 +125,30 @@
                                                                     <th class="text-end">ใบประกอบกิจการ</th>
                                                                     <td class="text-center">
                                                                         @if ($item->business_card)
-                                                                            <img src="{{ asset('business_cards/' . $item->business_card) }}"
-                                                                                style="width: 50%" alt="Business Card"
-                                                                                class="img-fluid">
+                                                                            @php
+                                                                                $fileExtension = pathinfo($item->business_card, PATHINFO_EXTENSION);
+                                                                            @endphp
+                                                                
+                                                                            @if (in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
+                                                                                <!-- แสดงรูปภาพ -->
+                                                                                <img src="{{ asset('business_cards/' . $item->business_card) }}"
+                                                                                     style="width: 50%" alt="Business Card" class="img-fluid">
+                                                                            @elseif ($fileExtension === 'pdf')
+                                                                                <!-- แสดงลิงก์สำหรับเปิด PDF -->
+                                                                                <a href="{{ asset('business_cards/' . $item->business_card) }}" 
+                                                                                   target="_blank" class="btn btn-sm btn-primary">
+                                                                                    เปิดไฟล์ PDF
+                                                                                </a>
+                                                                            @else
+                                                                                <!-- แสดงข้อความหากไฟล์ไม่ใช่ภาพหรือ PDF -->
+                                                                                <p>ไม่สามารถแสดงตัวอย่างไฟล์นี้ได้</p>
+                                                                            @endif
                                                                         @else
                                                                             <p>ไม่มีข้อมูล</p>
                                                                         @endif
                                                                     </td>
                                                                 </tr>
+                                                                
                                                                 <tr>
                                                                     <th class="text-end">ที่อยู่</th>
                                                                     <td>{{ $item->address ?? 'ไม่มีข้อมูล' }}
@@ -169,14 +185,30 @@
                                                                     <th class="text-end">ใบหัก ณ ที่จ่าย</th>
                                                                     <td class="text-center">
                                                                         @if ($item->card_slip)
-                                                                            <img src="{{ asset('card_slips/' . $item->card_slip) }}"
-                                                                                style="width: 50%" alt="Card Slip"
-                                                                                class="img-fluid">
+                                                                            @php
+                                                                                $fileExtension = pathinfo($item->card_slip, PATHINFO_EXTENSION);
+                                                                            @endphp
+                                                                
+                                                                            @if (in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
+                                                                                <!-- แสดงรูปภาพ -->
+                                                                                <img src="{{ asset('card_slips/' . $item->card_slip) }}"
+                                                                                     style="width: 50%" alt="Business Card" class="img-fluid">
+                                                                            @elseif ($fileExtension === 'pdf')
+                                                                                <!-- แสดงลิงก์สำหรับเปิด PDF -->
+                                                                                <a href="{{ asset('card_slips/' . $item->card_slip) }}" 
+                                                                                   target="_blank" class="btn btn-sm btn-primary">
+                                                                                    เปิดไฟล์ PDF
+                                                                                </a>
+                                                                            @else
+                                                                                <!-- แสดงข้อความหากไฟล์ไม่ใช่ภาพหรือ PDF -->
+                                                                                <p>ไม่สามารถแสดงตัวอย่างไฟล์นี้ได้</p>
+                                                                            @endif
                                                                         @else
                                                                             <p>ไม่มีข้อมูล</p>
                                                                         @endif
                                                                     </td>
                                                                 </tr>
+                                                                
                                                             </tbody>
                                                         </table>
                                                     </div>

@@ -47,7 +47,10 @@ class Agent_customerController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'pic_id_card' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'pic_id_card' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:2048',
+            'business_card' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:2048',
+            'tax_card' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:2048',
+            'slip_card' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:2048',
             'id_card' => 'required|string|digits:13',
             'address' => 'required|string|max:255',
             'address2' => 'nullable|string|max:255',
