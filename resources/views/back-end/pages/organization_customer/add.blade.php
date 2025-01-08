@@ -64,6 +64,7 @@
                                                     <input type="file" class="form-control" id="business_card"
                                                         name="business_card" required>
                                                 </div>
+                                                
                                                 <div class="col-md-6">
                                                     <label for="address" class="form-label">ที่อยู่ 1</label>
                                                     <textarea class="form-control" id="address" name="address" rows="2" placeholder="กรอกที่อยู่ 1" required></textarea>
